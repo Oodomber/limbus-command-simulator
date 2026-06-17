@@ -1309,17 +1309,18 @@ app.whenReady().then(async () => {
   splashWin.loadFile(path.join(__dirname, 'renderer', 'splash.html'));
   splashWin.center();
 
-  // Create main window immediately (hidden), show when loaded
-  createMainWindow();
+  // Register IPC handlers and shortcuts BEFORE loading renderer
+  registerIpcHandlers();
+  registerShortcuts();
 
+  // Create main window (hidden), show when loaded
+  createMainWindow();
   mainWindow.webContents.on('did-finish-load', () => {
     setTimeout(() => {
       mainWindow.show();
       if (!splashWin.isDestroyed()) splashWin.close();
       createOverlayWindow();
       overlayWindow.hide();
-      registerIpcHandlers();
-      registerShortcuts();
       console.log('[main] 谨遵指令 started');
     }, 300);
   });
