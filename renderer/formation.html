@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>编队排序</title>
+  <link rel="stylesheet" href="css/formation.css">
+</head>
+<body>
+  <div id="formation-container">
+    <!-- Title bar -->
+    <div id="fm-titlebar" style="-webkit-app-region: drag;">
+      <span id="fm-title">编队排序</span>
+      <span id="fm-hint">点击罪人依次编号，再点取消。罪人死亡或顺序变化时请手动更新</span>
+      <div id="fm-controls" style="-webkit-app-region: no-drag;">
+        <button id="fm-reset" title="恢复默认排序">↺</button>
+        <button id="fm-close" title="关闭">✕</button>
+      </div>
+    </div>
+
+    <!-- Formation grid: all 12 sinners continuous -->
+    <div id="fm-grid">
+      <div id="fm-all" class="fm-row">
+        <span class="fm-row-label">出击顺序 (1-12)</span>
+        <div class="fm-slots" id="fm-slots-all"></div>
+      </div>
+    </div>
+
+    <!-- Save button -->
+    <div id="fm-footer">
+      <button id="fm-save">确认编队</button>
+      <span id="fm-status"></span>
+    </div>
+  </div>
+
+  <script src="js/formation.js"></script>
+</body>
+</html>

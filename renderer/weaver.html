@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>编织器</title>
+  <link rel="stylesheet" href="css/weaver.css">
+</head>
+<body>
+  <div id="weaver-container">
+    <!-- Title bar -->
+    <div id="wv-titlebar" style="-webkit-app-region: drag;">
+      <span id="wv-title">🕸 编织器</span>
+      <div id="wv-controls" style="-webkit-app-region: no-drag;">
+        <button id="wv-clear" title="清空">🗑</button>
+        <button id="wv-pause" title="暂停/继续">⏯</button>
+        <button id="wv-close" title="关闭">✕</button>
+      </div>
+    </div>
+
+    <!-- Log area -->
+    <div id="wv-log"></div>
+  </div>
+
+  <script src="js/weaver.js"></script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+/* overlay.css — Pager floating window styles */
+
+/* ── Reset ── */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  overflow: hidden;
+  user-select: none;
+  font-family: 'Courier New', 'SimHei', monospace;
+}
+
+/* ── Pager Frame ── */
+#pager {
+  width: 100%;
+  height: 100vh;
+  background: rgba(20, 20, 40, 0.88);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: border-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* Golden flash when new instruction arrives */
+#pager.new-instruction-flash {
+  border-color: rgba(255, 215, 0, 0.9) !important;
+  box-shadow: 0 0 30px rgba(255, 215, 0, 0.4) !important;
+}
+
+/* ── Top Bar ── */
+#pager-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background: rgba(0, 0, 0, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: move;
+}
+
+#pager-logo {
+  font-size: 18px;
+  color: rgba(255, 215, 0, 0.7);
+}
+
+#pager-stats {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.pager-stat-icon {
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+  object-fit: contain;
+  margin-right: 2px;
+}
+
+#pager-blessing { color: #ffd700; font-weight: bold; }
+#pager-karma { color: #ff6b6b; font-weight: bold; }
+
+#pager-minimize,
+#pager-close {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: #888;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+#pager-minimize:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+#pager-close:hover {
+  background: rgba(244, 67, 54, 0.3);
+  color: #f44336;
+}
+
+#pager-request {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  background: transparent;
+  color: #888;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+#pager-request:hover {
+  background: rgba(255, 215, 0, 0.2);
+  color: #ffd700;
+  border-color: #ffd700;
+}
+
+/* ── Display ── */
+#pager-display {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+}
+
+#pager-text {
+  font-size: 18px;
+  color: #4af0ff;
+  text-align: center;
+  line-height: 1.6;
+  word-break: break-all;
+  text-shadow: 0 0 8px rgba(74, 240, 255, 0.3);
+  max-width: 100%;
+}
+
+#pager-text.waiting {
+  color: rgba(74, 240, 255, 0.4);
+  letter-spacing: 6px;
+}
+
+#pager-cursor {
+  font-size: 18px;
+  color: #4af0ff;
+  margin-left: 2px;
+  opacity: 0;
+}
+
+#pager-cursor.typing {
+  opacity: 1;
+  animation: none;
+}
+
+#pager-cursor.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ── Buttons ── */
+#pager-buttons,
+#pager-guidance-nav {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#pager-buttons.hidden,
+#pager-guidance-nav.hidden {
+  display: none;
+}
+
+#guidance-info {
+  padding: 8px 10px;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.pager-btn {
+  flex: 1;
+  padding: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.pager-btn.nav {
+  flex: 1;
+  padding: 8px 6px;
+  font-size: 12px;
+  background: rgba(255, 215, 0, 0.1);
+  color: #ffd700;
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.pager-btn.nav:hover {
+  background: rgba(255, 215, 0, 0.25);
+}
+
+.pager-btn.nav.dismiss {
+  color: #aaa;
+  background: rgba(255, 255, 255, 0.05);
+  border-right: none;
+}
+
+.pager-btn.complete {
+  background: rgba(76, 175, 80, 0.25);
+  color: #4caf50;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.pager-btn.complete:hover {
+  background: rgba(76, 175, 80, 0.45);
+}
+
+.pager-btn.fail {
+  background: rgba(244, 67, 54, 0.25);
+  color: #f44336;
+}
+
+.pager-btn.fail:hover {
+  background: rgba(244, 67, 54, 0.45);
+}
+
+/* ── Shutdown animation ── */
+#pager.shutting-down {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.5s ease-in;
+}
+
+/* ── In-Pager Phase Picker ── */
+#pager-phase-picker {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#pager-phase-picker.hidden { display: none; }
+
+#pager-phase-picker-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+}
+
+#pager-phase-picker-box {
+  position: relative;
+  background: #1a1a2e;
+  border: 2px solid #ffd700;
+  border-radius: 10px;
+  padding: 16px;
+  width: 90%;
+  max-width: 320px;
+  max-height: 85%;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+#pager-phase-title {
+  color: #ffd700;
+  font-size: 0.95em;
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+
+#pager-phase-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pager-phase-btn {
+  width: 100%;
+  padding: 8px 12px;
+  background: #0f0f23;
+  color: #e0e0e0;
+  border: 1px solid #2a2a4a;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+  text-align: left;
+  transition: all 0.15s;
+  font-family: inherit;
+}
+
+.pager-phase-btn:hover {
+  background: #2a2a4a;
+  border-color: #ffd700;
+  color: #ffd700;
+}
+
+#pager-phase-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+#pager-phase-cancel {
+  flex: 1;
+  padding: 6px;
+  background: #333;
+  color: #aaa;
+  border: 1px solid #444;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+#pager-phase-skip {
+  flex: 1;
+  padding: 6px;
+  background: #2a2a4a;
+  color: #ffd700;
+  border: 1px solid #ffd700;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}

@@ -1,0 +1,181 @@
+/* formation.css — 编队排序窗口样式 */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Microsoft YaHei', 'SimSun', sans-serif;
+  background: transparent;
+  color: #e0e0e0;
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#formation-container {
+  margin: 10px;
+  border-radius: 12px;
+  background: rgba(12, 12, 30, 0.92);
+  border: 1.5px solid #533b1a;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 20px);
+}
+
+/* ── Title bar ── */
+#fm-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-bottom: 1px solid #2a2a4a;
+  flex-shrink: 0;
+}
+
+#fm-title {
+  font-size: 15px;
+  font-weight: bold;
+  color: #c9a54e;
+  white-space: nowrap;
+}
+
+#fm-hint {
+  font-size: 10px;
+  color: #777;
+  flex: 1;
+}
+
+#fm-controls {
+  display: flex;
+  gap: 4px;
+}
+
+#fm-controls button {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #444;
+  background: rgba(255, 255, 255, 0.06);
+  color: #aaa;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.15s;
+}
+
+#fm-controls button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+}
+
+/* ── Grid ── */
+#fm-grid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px;
+  overflow-y: auto;
+}
+
+.fm-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fm-row-label {
+  font-size: 11px;
+  color: #888;
+  padding-left: 4px;
+}
+
+.fm-slots {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* ── Sinner card ── */
+.fm-sinner {
+  flex: 1 1 calc(33.33% - 6px);
+  min-width: 100px;
+  max-width: calc(33.33% - 6px);
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: rgba(30, 30, 60, 0.8);
+  border: 1.5px solid #3a3a5a;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.fm-sinner:hover {
+  border-color: #666;
+  background: rgba(40, 40, 80, 0.9);
+}
+
+.fm-sinner.selected {
+  border-color: #c9a54e;
+  background: rgba(201, 165, 78, 0.12);
+}
+
+.fm-sinner .fm-pos {
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  background: #c9a54e;
+  color: #111;
+  font-size: 12px; font-weight: bold;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.fm-sinner .fm-pos.empty {
+  background: #333;
+  color: #666;
+}
+
+.fm-sinner .fm-name {
+  font-size: 13px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.fm-sinner .fm-name.dim { color: #555; }
+
+/* ── Footer ── */
+#fm-footer {
+  padding: 10px 14px;
+  border-top: 1px solid #2a2a4a;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+#fm-save {
+  padding: 7px 24px;
+  border: none;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #7d5a1e, #c9a54e);
+  color: #111;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+#fm-save:hover {
+  background: linear-gradient(135deg, #c9a54e, #e0c470);
+  box-shadow: 0 0 12px rgba(201, 165, 78, 0.4);
+}
+
+#fm-status {
+  font-size: 11px;
+  color: #4a4;
+}

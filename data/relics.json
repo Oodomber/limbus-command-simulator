@@ -1,0 +1,6471 @@
+[
+  {
+    "id": "lianyuyandiezhimeng",
+    "name": "炼狱炎蝶之梦",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 198
+  },
+  {
+    "id": "daocuoc75c7",
+    "name": "倒错症",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 157
+  },
+  {
+    "id": "chenguichen",
+    "name": "尘归尘",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 148
+  },
+  {
+    "id": "caixuebao",
+    "name": "采血包",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 142
+  },
+  {
+    "id": "shishangjiachong",
+    "name": "嗜伤甲虫",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 202
+  },
+  {
+    "id": "kafeiyuzhihe",
+    "name": "咖啡与纸鹤",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 186
+  },
+  {
+    "id": "zhuhongequn",
+    "name": "朱红蛾群",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 220
+  },
+  {
+    "id": "ranxuetieding",
+    "name": "染血铁钉",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 147
+  },
+  {
+    "id": "chirec7684yuc6bdb",
+    "name": "炽热的羽毛",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 203
+  },
+  {
+    "id": "xianxuezhuangc9970",
+    "name": "鲜血装饰",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 163
+  },
+  {
+    "id": "c71c3c70e7c7684mingc8fd0",
+    "name": "燃烧的命运",
+    "tier": "未知",
+    "tags": {
+      "effect": [],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": null
+  },
+  {
+    "id": "c707crec7684c94dcc7ba1",
+    "name": "灼热的铜管",
+    "tier": "未知",
+    "tags": {
+      "effect": [],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": null
+  },
+  {
+    "id": "c738bc7684c6b8bc6e23",
+    "name": "王的残渣",
+    "tier": "未知",
+    "tags": {
+      "effect": [],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": null
+  },
+  {
+    "id": "c74f6zhongc5a74c5b69",
+    "name": "瓶中婴孩",
+    "tier": "未知",
+    "tags": {
+      "effect": [],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": null
+  },
+  {
+    "id": "c9547c9b42",
+    "name": "镇魂",
+    "tier": "未知",
+    "tags": {
+      "effect": [],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": null
+  },
+  {
+    "id": "c9648c65e7c7684zhangc888d",
+    "name": "陈旧的长袍",
+    "tier": "未知",
+    "tags": {
+      "effect": [],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": null
+  },
+  {
+    "id": "c83d6c84b2jian",
+    "name": "菖蒲剑",
+    "tier": "未知",
+    "tags": {
+      "effect": [],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": null
+  },
+  {
+    "id": "c7c89c788ec7684c6728c5236c5211c5177",
+    "name": "粉碎的木制刑具",
+    "tier": "未知",
+    "tags": {
+      "effect": [],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": null
+  },
+  {
+    "id": "ngongc53f8c5b9agexiaoc961fc7684bao",
+    "name": "N公司定格小队的包",
+    "tier": "未知",
+    "tags": {
+      "effect": [],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": null
+  },
+  {
+    "id": "c72d0yu",
+    "name": "狐雨",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 252
+  },
+  {
+    "id": "c6b64c523bc7684c795ec8272",
+    "name": "此刻的神色",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 189
+  },
+  {
+    "id": "c6210c6346c7684c7b26c5492",
+    "name": "成捆的符咒",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 143
+  },
+  {
+    "id": "c9508c8680c7684c7eaac5ff5c5e01",
+    "name": "锈蚀的纪念币",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 270
+  },
+  {
+    "id": "c818fxue",
+    "name": "膏血",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "c7effguangc679cshi",
+    "name": "绿光果实",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 146
+  },
+  {
+    "id": "c77f3c7248c5b57c7b26",
+    "name": "石版字符",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 165
+  },
+  {
+    "id": "meiguic738bc51a0",
+    "name": "玫瑰王冠",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 144
+  },
+  {
+    "id": "c9ecfc6027c6de4c6d46",
+    "name": "黏性淤浆",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 156
+  },
+  {
+    "id": "c767dc68c9hua",
+    "name": "白棉花",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "c84ddc8272c829dc5b9dc724cc6253huoc673a",
+    "name": "蓝色芝宝牌打火机",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 163
+  },
+  {
+    "id": "c5e7bc75db",
+    "name": "幻痛",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 266
+  },
+  {
+    "id": "c96f7c51fbc6728",
+    "name": "雷击木",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 252
+  },
+  {
+    "id": "rongc5316c7684c773cc7403",
+    "name": "融化的眼球",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 248
+  },
+  {
+    "id": "c7070c8272dac8863",
+    "name": "灰色大衣",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 192
+  },
+  {
+    "id": "c523ac9752cff1adac5668c665ac6210",
+    "name": "刺青：大器晚成",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 183
+  },
+  {
+    "id": "c8c37c5e95zhixing",
+    "name": "谷底之星",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 185
+  },
+  {
+    "id": "c504fjian",
+    "name": "偏见",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 152
+  },
+  {
+    "id": "c53c8xiaoc53c8c53efc80fdc5f88c574fc7684c73a9c5076",
+    "name": "又小又可能很坏的玩偶",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 191
+  },
+  {
+    "id": "c5934c9aa8shouc85cf",
+    "name": "头骨收藏",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 194
+  },
+  {
+    "id": "c8f89guangc53d8c52a8c4eea",
+    "name": "辉光变动仪",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 145
+  },
+  {
+    "id": "mengzhongc7684c7535zic7f8a",
+    "name": "梦中的电子羊",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 198
+  },
+  {
+    "id": "c6807zhunc8d1fc8f7dc7535c6c60",
+    "name": "标准负载电池",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 269
+  },
+  {
+    "id": "c5355c70b9c6253c51fbc903bc8f91c7535c8def",
+    "name": "单点打击逻辑电路",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 204
+  },
+  {
+    "id": "c5debc6bd2c5a03c5a03",
+    "name": "巫毒娃娃",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 149
+  },
+  {
+    "id": "c5361c871cc62c9",
+    "name": "卡蜜拉",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 217
+  },
+  {
+    "id": "c5f02c60f3c72e9lie",
+    "name": "异想狩猎",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 264
+  },
+  {
+    "id": "guic9014",
+    "name": "归途",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 193
+  },
+  {
+    "id": "c660ec65e5c7684c8fd0c52bf",
+    "name": "明日的运势",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 140
+  },
+  {
+    "id": "c8d64c8272zhic4ee4",
+    "name": "赤色指令",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 188
+  },
+  {
+    "id": "c70dfc973eyutiec4e1dc7f51",
+    "name": "烟霾与铁丝网",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 261
+  },
+  {
+    "id": "yuangongc8bc1",
+    "name": "员工证",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 195
+  },
+  {
+    "id": "c9707c8361shouc73af",
+    "name": "震荡手环",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 208
+  },
+  {
+    "id": "yanc9cde",
+    "name": "炎鳞",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 379
+  },
+  {
+    "id": "c70dfc6597",
+    "name": "烟斗",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 197
+  },
+  {
+    "id": "c8346c68d8c5957suo",
+    "name": "荆棘套索",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 187
+  },
+  {
+    "id": "c9508c8680c7684c7f8egongc5200",
+    "name": "锈蚀的美工刀",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 244
+  },
+  {
+    "id": "c8346c68d8zhic8def",
+    "name": "荆棘之路",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 160
+  },
+  {
+    "id": "hongranc68c9hua",
+    "name": "红染棉花",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 382
+  },
+  {
+    "id": "c77f3c51a2",
+    "name": "石冢",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 196
+  },
+  {
+    "id": "c4fbfc643ac5f0fc7535c6e90c63d2c5ea7",
+    "name": "便携式电源插座",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 190
+  },
+  {
+    "id": "c571fguic571f",
+    "name": "土归土",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 231
+  },
+  {
+    "id": "rongc5316c7684c65f6c949fc53d1c6761",
+    "name": "融化的时钟发条",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 206
+  },
+  {
+    "id": "baoyu",
+    "name": "暴雨",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 381
+  },
+  {
+    "id": "sic53f6c8349",
+    "name": "四叶草",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 260
+  },
+  {
+    "id": "c591cc89c6jing",
+    "name": "夜视镜",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 184
+  },
+  {
+    "id": "xingxiangc76d8c788ec7247",
+    "name": "星象盘碎片",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 265
+  },
+  {
+    "id": "c4ef2c51acc591czhic5669meng",
+    "name": "仲冬夜之噩梦",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 259
+  },
+  {
+    "id": "c5febc611f",
+    "name": "快感",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 384
+  },
+  {
+    "id": "c9057c9ab8c788ec7247",
+    "name": "遗骸碎片",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 205
+  },
+  {
+    "id": "c7b80c5386",
+    "name": "简历",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 155
+  },
+  {
+    "id": "c8ffdc5fc6c540ac5760",
+    "name": "追忆吊坠",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 145
+  },
+  {
+    "id": "c635fc574fc7684c5de6c8f6eshouqiang",
+    "name": "损坏的左轮手枪",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 209
+  },
+  {
+    "id": "c7f8ec611f",
+    "name": "美感",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 373
+  },
+  {
+    "id": "c96fec5316c5438c5165c5668",
+    "name": "雾化吸入器",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 218
+  },
+  {
+    "id": "c7279c522bhec7ea6",
+    "name": "特别合约",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c76dbc60c5c6b3ec5f85",
+    "name": "盛情款待",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 267
+  },
+  {
+    "id": "c62a4c8155",
+    "name": "护腕",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 161
+  },
+  {
+    "id": "c660ejingc6b62c6c34",
+    "name": "明镜止水",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 390
+  },
+  {
+    "id": "c70e7c7126c7684c5706c76d8",
+    "name": "烧焦的圆盘",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 248
+  },
+  {
+    "id": "c907fc96f7c9488",
+    "name": "避雷针",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 247
+  },
+  {
+    "id": "c5185feic80bdc8bd5c5242zu",
+    "name": "内啡肽试剂组",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 251
+  },
+  {
+    "id": "c65e0c5934c8096c50cf",
+    "name": "无头肖像",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 151
+  },
+  {
+    "id": "c5145c80fdc5f0fshouc5957",
+    "name": "充能式手套",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 394
+  },
+  {
+    "id": "c4fbfc643ac5f0fc6025c6551bao",
+    "name": "便携式急救包",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 230
+  },
+  {
+    "id": "c6b62c75dbc836f",
+    "name": "止痛药",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 183
+  },
+  {
+    "id": "c8d2ac5a6azhic9524",
+    "name": "贪婪之锤",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 213
+  },
+  {
+    "id": "jinc74ee",
+    "name": "金瓮",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 180
+  },
+  {
+    "id": "c751fc5b58c7684lic7a0bc6807",
+    "name": "生存的里程标",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 182
+  },
+  {
+    "id": "c4fe1c5ff5",
+    "name": "信念",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 424
+  },
+  {
+    "id": "c7f18c5206c6b8bc7247",
+    "name": "缘分残片",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 422
+  },
+  {
+    "id": "c6708zhic8bb0c5fc6",
+    "name": "月之记忆",
+    "tier": "V",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 600
+  },
+  {
+    "id": "c53e4c4ee3c96d5c50cf",
+    "name": "古代雕像",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 397
+  },
+  {
+    "id": "c4fddc5bc6xiec8bae",
+    "name": "保密协议",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 395
+  },
+  {
+    "id": "c6b8bc54cd",
+    "name": "残响",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 216
+  },
+  {
+    "id": "chirec7684c667ac6167",
+    "name": "炽热的智慧",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 141
+  },
+  {
+    "id": "c9508c8680c7684c7b3cc5934",
+    "name": "锈蚀的笼头",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 164
+  },
+  {
+    "id": "xuec96fe",
+    "name": "血雾",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "合成"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 421
+  },
+  {
+    "id": "c771fc7406zhic949f",
+    "name": "真理之钟",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 268
+  },
+  {
+    "id": "c9707c98a4c8026he",
+    "name": "震颤耦合",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 419
+  },
+  {
+    "id": "c8367guangdeng",
+    "name": "荧光灯",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 219
+  },
+  {
+    "id": "c604dc60dajing",
+    "name": "恍惚镜",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "破裂",
+        "合成"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 416
+  },
+  {
+    "id": "c7834c788eluoc76d8",
+    "name": "破碎罗盘",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 263
+  },
+  {
+    "id": "heic8272c4e50c8c31",
+    "name": "黑色乐谱",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "合成"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 427
+  },
+  {
+    "id": "c9a6cc8e44tiec9970c7269",
+    "name": "马蹄铁饰物",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 154
+  },
+  {
+    "id": "c798fc888b",
+    "name": "福袋",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "合成"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 410
+  },
+  {
+    "id": "c7269c7406c5c4fc853dc529bc573a",
+    "name": "物理屏蔽力场",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 262
+  },
+  {
+    "id": "c7b2cyic7c7bc6c38c52a8c673a",
+    "name": "第一类永动机",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "充能",
+        "合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 406
+  },
+  {
+    "id": "c7194c5316c7684c77f3c8721",
+    "name": "熔化的石蜡",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 150
+  },
+  {
+    "id": "c504fc632fguang",
+    "name": "偏振光",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 158
+  },
+  {
+    "id": "c90c1huo",
+    "name": "郁火",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 199
+  },
+  {
+    "id": "huoguanghua",
+    "name": "火光花",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 246
+  },
+  {
+    "id": "yehuoc6b8bc7247",
+    "name": "业火残片",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c88abc6263c7559c7684c9882c6b4c",
+    "name": "被扣留的颂歌",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 149
+  },
+  {
+    "id": "c7ea0c7f20c6346c675f",
+    "name": "纠缠捆束",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 159
+  },
+  {
+    "id": "c656cc754f",
+    "name": "敬畏",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 207
+  },
+  {
+    "id": "c5b89c606fzhic5730",
+    "name": "安息之地",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 255
+  },
+  {
+    "id": "c9b45c60d1c6b8bc7247",
+    "name": "魅惑残片",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c751fc7269c5267c6bd2c836fc74f6",
+    "name": "生物剧毒药瓶",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 259
+  },
+  {
+    "id": "c5267c6bd2c5916c76ae",
+    "name": "剧毒外皮",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 147
+  },
+  {
+    "id": "c9178c5473c7684c9152c9999",
+    "name": "酸味的酒香",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 185
+  },
+  {
+    "id": "jingc89e6c89c9c901ac611f",
+    "name": "镜触觉通感",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "chic8f6ec53d1c6761",
+    "name": "齿轮发条",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 249
+  },
+  {
+    "id": "c60f0c6027c6b8bc7247",
+    "name": "惰性残片",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c6709c70dfhuoc836f",
+    "name": "有烟火药",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "c9aa8c6869",
+    "name": "骨桩",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 152
+  },
+  {
+    "id": "c7834c4f1e",
+    "name": "破伞",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 211
+  },
+  {
+    "id": "c5bfbsic8005",
+    "name": "寻死者",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 271
+  },
+  {
+    "id": "c6b32c671bc6b8bc7247",
+    "name": "欲望残片",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c53e4c6728c9677c9631",
+    "name": "古木陷阱",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 145
+  },
+  {
+    "id": "c7834c5e03",
+    "name": "破布",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 155
+  },
+  {
+    "id": "zhuangyan",
+    "name": "庄严",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 215
+  },
+  {
+    "id": "c5f7cc65b9zhixing",
+    "name": "彼方之星",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 257
+  },
+  {
+    "id": "c8695c98dfc6b8bc7247",
+    "name": "蚕食残片",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "moc9b3csuoc4eab",
+    "name": "魔鬼所享",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "困难"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 144
+  },
+  {
+    "id": "c7effc8272c9798c7fc5",
+    "name": "绿色鞘翅",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 160
+  },
+  {
+    "id": "c9648c65e7c7684c6728c96d5renc5076",
+    "name": "陈旧的木雕人偶",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 214
+  },
+  {
+    "id": "c7559c604b",
+    "name": "留恋",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 243
+  },
+  {
+    "id": "c9a84c6162c6b8bc7247",
+    "name": "骄慢残片",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c4e0dc95f4c65adc7535c6e90zhuangc7f6e",
+    "name": "不间断电源装置",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 156
+  },
+  {
+    "id": "c89e3c9664c9650c5236c7684c9664c98a4c4eea",
+    "name": "解除限制的除颤仪",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 147
+  },
+  {
+    "id": "c5de1c903bc7528shouc7535c7b52",
+    "name": "巡逻用手电筒",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 210
+  },
+  {
+    "id": "c4effc9020c53d1c7535c673a",
+    "name": "仿造发电机",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 254
+  },
+  {
+    "id": "c6469c64e6c6b8bc7247",
+    "name": "摩擦残片",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "shouc672fc7528c5200",
+    "name": "手术用刀",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 155
+  },
+  {
+    "id": "c865ac9970c7684c548cc5e73",
+    "name": "虚饰的和平",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 148
+  },
+  {
+    "id": "c88c1c7f1dc7528c526ac5200",
+    "name": "裁缝用剪刀",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 199
+  },
+  {
+    "id": "c51b3c610f",
+    "name": "决意",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 207
+  },
+  {
+    "id": "c5ba3c5224zhic523b",
+    "name": "宣判之刻",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 256
+  },
+  {
+    "id": "c5207c5f00c7684c8bb0c5fc6",
+    "name": "切开的记忆",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c6728gongc7528zhangding",
+    "name": "木工用长钉",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 151
+  },
+  {
+    "id": "c66fec7ecfc7684c795dc798f",
+    "name": "曾经的祝福",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 213
+  },
+  {
+    "id": "c6495c88c2c7684danc5e26",
+    "name": "撕裂的弹带",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 190
+  },
+  {
+    "id": "c78e8c5c16c7684c6811c679d",
+    "name": "磨尖的树枝",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 245
+  },
+  {
+    "id": "c6d1ec7a7fc7684c8bb0c5fc6",
+    "name": "洞穿的记忆",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c4f5cc795f",
+    "name": "作祟",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 152
+  },
+  {
+    "id": "c52a0c538bc7ef7c5e26",
+    "name": "加压绷带",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 209
+  },
+  {
+    "id": "c65f6c95f4c7684c67b7c9501",
+    "name": "时间的枷锁",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 212
+  },
+  {
+    "id": "c7d27c63e1c7684c96d5c50cf",
+    "name": "紧握的雕像",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 258
+  },
+  {
+    "id": "c7c89c788ec7684c8bb0c5fc6",
+    "name": "粉碎的记忆",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c795ec8c15",
+    "name": "神谕",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 181
+  },
+  {
+    "id": "c5f3ac538bc7684c91cdc62c5",
+    "name": "强压的重担",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 242
+  },
+  {
+    "id": "c4e07nianc7096c9505",
+    "name": "万年炖锅",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "烧伤"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 208
+  },
+  {
+    "id": "c4e07nianc7089huo",
+    "name": "万年炉火",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "困难"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "c70f9c996ac79d8c8bc0c4e66",
+    "name": "烹饪秘诀书",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 260
+  },
+  {
+    "id": "c76d7c6765c7684huoc7130",
+    "name": "盗来的火焰",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 404
+  },
+  {
+    "id": "c871cc62c9c5361",
+    "name": "蜜拉卡",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 204
+  },
+  {
+    "id": "c6495c88c2c7684xuec888b",
+    "name": "撕裂的血袋",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "困难"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 259
+  },
+  {
+    "id": "c8654c8bda",
+    "name": "虔诚",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 259
+  },
+  {
+    "id": "c51faxuec6027c4f11ke",
+    "name": "出血性休克",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 405
+  },
+  {
+    "id": "c5b9dc77f3c632fzi",
+    "name": "宝石振子",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "震颤",
+        "困难"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 153
+  },
+  {
+    "id": "c6447c6643c7684c9152c6876",
+    "name": "摇晃的酒桶",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤",
+        "困难"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 211
+  },
+  {
+    "id": "c5d4chec7684chic8f6e",
+    "name": "嵌合的齿轮",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 207
+  },
+  {
+    "id": "c9707zhong",
+    "name": "震中",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "震颤",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 248
+  },
+  {
+    "id": "c65e0c632fbac65b9c949f",
+    "name": "无振八方钟",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 405
+  },
+  {
+    "id": "c7ec8c672bc7684c788ec7247",
+    "name": "终末的碎片",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂",
+        "困难"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "c8346c68d8c6355c7ef3",
+    "name": "荆棘捕绳",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 212
+  },
+  {
+    "id": "c5947c602ac7684c77f3c50cf",
+    "name": "奇怪的石像",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 249
+  },
+  {
+    "id": "c7834c706d",
+    "name": "破灭",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "破裂",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 406
+  },
+  {
+    "id": "c5982c6b4c",
+    "name": "如歌",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 156
+  },
+  {
+    "id": "c892ac8272c7684c5916c5957",
+    "name": "褪色的外套",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "困难"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 209
+  },
+  {
+    "id": "c788ec88c2c7684c9aa8c7247",
+    "name": "碎裂的骨片",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 207
+  },
+  {
+    "id": "c6d6ac666fc7403",
+    "name": "浪景球",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 251
+  },
+  {
+    "id": "c88adc6765c7684c6d6ac6f6e",
+    "name": "袭来的浪潮",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 401
+  },
+  {
+    "id": "c67d0c65e5c7684c8bb0c5fc6",
+    "name": "某日的记忆",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 213
+  },
+  {
+    "id": "c5929c4f7fsuoc79c1",
+    "name": "天使所私",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "困难"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 211
+  },
+  {
+    "id": "c8ffdc5fc6",
+    "name": "追忆",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "呼吸法"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 261
+  },
+  {
+    "id": "c6876zhuangc70c8c9152",
+    "name": "桶装烈酒",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 402
+  },
+  {
+    "id": "c5faec7f29c7535c7ebfc6746",
+    "name": "微缩电线杆",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能",
+        "困难"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 205
+  },
+  {
+    "id": "1bc578bbajiaoc87bac6813",
+    "name": "1B型八角螺栓",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 198
+  },
+  {
+    "id": "c7eddc7f18zi",
+    "name": "绝缘子",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "充能",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 254
+  },
+  {
+    "id": "c7b2cwuc7c7bc6c38c52a8c673a",
+    "name": "第五类永动机",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "充能",
+        "困难合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 410
+  },
+  {
+    "id": "c8fd4lic793cc5238",
+    "name": "返利礼券",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "xinc54c1xiaoc518c",
+    "name": "新品小册",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "c7279c522bc76eec5f55",
+    "name": "特别目录",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "tic524dc9884c7ea6c4f18c60e0c5238",
+    "name": "提前预约优惠券",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c7ffbxinc7684c5546c54c1",
+    "name": "翻新的商品",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c4f53c9a8cc578bc89c4c5212zhinan",
+    "name": "体验型规划指南",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c58f0c671bc5361",
+    "name": "声望卡",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c91cdc53e0c7684c521bc53efc8d34",
+    "name": "重叠的创可贴",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 150
+  },
+  {
+    "id": "c78e8c635fc7684c7825c77f3",
+    "name": "磨损的砥石",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 148
+  },
+  {
+    "id": "c62d0c6756c77edjian",
+    "name": "拐杖短剑",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 207
+  },
+  {
+    "id": "yunc7eb9hec9888c74f6",
+    "name": "云纹鹤颈瓶",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 264
+  },
+  {
+    "id": "c7834c788ec7684dajian",
+    "name": "破碎的大剑",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 420
+  },
+  {
+    "id": "gaodanc6027c94a2c978b",
+    "name": "高弹性钢鞋",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 148
+  },
+  {
+    "id": "jianc8bc1c7684yuc9970",
+    "name": "见证的羽饰",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 203
+  },
+  {
+    "id": "c78e8c7834c7684c8863c8896",
+    "name": "磨破的衣袖",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 251
+  },
+  {
+    "id": "c51b3c6597c6559c6750c7b2csanc5377",
+    "name": "决斗教材第三卷",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "突刺"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 407
+  },
+  {
+    "id": "c6b21c5143c5206c7c7bc56deshouxiang",
+    "name": "次元分类回收箱",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 148
+  },
+  {
+    "id": "c53e3c888bc52a9c8bb0c5361",
+    "name": "口袋助记卡",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "c6b21c5143c77e5c89c9c53d8c4f53",
+    "name": "次元知觉变体",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c590dc4ec7c8d26c7c3f",
+    "name": "复仇账簿",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 416
+  },
+  {
+    "id": "c5168xuec70e7c74f6",
+    "name": "全血烧瓶",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 199
+  },
+  {
+    "id": "xuec9999c964dc4e34",
+    "name": "血香降临",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 251
+  },
+  {
+    "id": "c6982c7387yuc9009c62e9",
+    "name": "概率与选择",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "特殊事件"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 396
+  },
+  {
+    "id": "c7ea0c7f20c7684c7f18c5206",
+    "name": "纠缠的缘分",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "解放的暴怒，束缚的色欲，停滞的怠惰，漫溢的暴食，沉溺的忧郁，自以为是的傲慢，凄惨的嫉妒"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 396
+  },
+  {
+    "id": "c732ec7ed9rec7231c90fdc5e02c7684c4f60",
+    "name": "献给热爱都市的你",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "虚张声势的傲慢，永劫的枷锁"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c5ae9c8089c9524",
+    "name": "嫩肉锤",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 155
+  },
+  {
+    "id": "c4e4cyun",
+    "name": "乌云",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "沉溺的忧郁，沉沦泛滥"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 404
+  },
+  {
+    "id": "c4e07c6076zhic7ec8c7ed3",
+    "name": "万恶之终结",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "伏行深渊合成"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 399
+  },
+  {
+    "id": "c5faec578bc6469c5929c8f6e",
+    "name": "微型摩天轮",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "梦之终焉合成，重新开园的拉·曼却领合成，无尽的游行合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 402
+  },
+  {
+    "id": "c52a0rec9524",
+    "name": "加热锤",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "震颤",
+        "教材"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 248
+  },
+  {
+    "id": "hongc9886c5e26",
+    "name": "红领带",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "教材"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c5236c5f0fc670dzhuang_liuxiehui",
+    "name": "制式服装-六协会",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "教材合成"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 398
+  },
+  {
+    "id": "c67d0renc7684c7ec8c7aef",
+    "name": "某人的终端",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "无割舍者"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 252
+  },
+  {
+    "id": "zhic4ee4c7684c5e87c62a4",
+    "name": "指令的庇护",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "无割舍者"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c4e07c80fdgongc5177",
+    "name": "万能工具",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "无割舍者"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 248
+  },
+  {
+    "id": "c88abc76d7c7684shouweirenc6742c5fd7",
+    "name": "被盗的收尾人杂志",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "打击",
+        "魅惑、彷徨、猜疑"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 247
+  },
+  {
+    "id": "rec4e1dc6b66c5668",
+    "name": "热丝武器",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "魅惑、彷徨、猜疑"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 247
+  },
+  {
+    "id": "c7a7ac767dc753bc5e03",
+    "name": "空白画布",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血",
+        "刀与作品"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "c51e1c4f5c",
+    "name": "凡作",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血",
+        "刀与作品"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "c6770c4f5c",
+    "name": "杰作",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "刀与作品合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 404
+  },
+  {
+    "id": "c8718c86dbc7f51",
+    "name": "蜘蛛网",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用",
+        "刀与作品"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 151
+  },
+  {
+    "id": "c67d0renc7684c9752c5200",
+    "name": "某人的青刀",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "刀与作品"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 199
+  },
+  {
+    "id": "c5bc4c5bbfc9b3cc6c14c7684c73afc5200",
+    "name": "寄宿鬼气的环刀",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用",
+        "诅咒事件"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 149
+  },
+  {
+    "id": "renjianheyi",
+    "name": "人剑合一",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "诅咒事件"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c892ac8272c7684c62a4shou",
+    "name": "褪色的护手",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用",
+        "诅咒事件"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 149
+  },
+  {
+    "id": "c9ec4jinc65f6c95f4",
+    "name": "黄金时间",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "诅咒事件"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c90a3yic65e5c7684c8bb0c5f55",
+    "name": "那一日的记录",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用",
+        "诅咒事件"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 149
+  },
+  {
+    "id": "c53efc80fdc6027",
+    "name": "可能性",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "诅咒事件"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c5939c6742c7740c566ac97f3c7684c5bf9c8bb2c673a",
+    "name": "夹杂着噪音的对讲机",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "琥珀色的黄昏"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 251
+  },
+  {
+    "id": "c5599c5f62c9879c94fe",
+    "name": "喙形项链",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "琥珀色的黄昏"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 249
+  },
+  {
+    "id": "wangmingzhitu",
+    "name": "亡命之徒",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "突刺",
+        "琥珀色的黄昏合成"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c6cdbc97f3",
+    "name": "泛音",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "琥珀色的黄昏"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 196
+  },
+  {
+    "id": "c884cc8fdbc8d1dsi",
+    "name": "行进贝斯",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血",
+        "琥珀色的黄昏"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "c7c89honghuac74e3",
+    "name": "粉红花瓣",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "琥珀色的黄昏"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c7c89honghuac675f",
+    "name": "粉红花束",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "琥珀色的黄昏合成"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c8702c738bc6d46c9999c6c34",
+    "name": "蜂王浆香水",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "琥珀色的黄昏"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c5c1ac4e14c6e29rec7684kafei",
+    "name": "尚且温热的咖啡",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "琥珀色的黄昏事件"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 150
+  },
+  {
+    "id": "xiaoc51e4c73a9c5076",
+    "name": "小凤玩偶",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "凤·皇"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 600
+  },
+  {
+    "id": "c8bd5c9a8ctic53d6cff1ahongc8273c715e",
+    "name": "试验提取：红艳煞",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "LCB定期体检复刻"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 246
+  },
+  {
+    "id": "c8bd5c9a8ctic53d6cff1atideng",
+    "name": "试验提取：提灯",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂",
+        "LCB定期体检复刻"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 248
+  },
+  {
+    "id": "c53d8c5f62tic53d6cff1aaedd",
+    "name": "变形提取：AEDD",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "充能",
+        "LCB定期体检复刻"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c67d0renc9057c843dc7684yuangongc8bc1",
+    "name": "某人遗落的员工证",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "LCB定期体检复刻"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 392
+  },
+  {
+    "id": "shanchahuac3001c773cjingc548cc9001c8fbec7684c4fe1",
+    "name": "山茶花、眼镜和送达的信",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "破裂",
+        "落花，无改变者合成"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 401
+  },
+  {
+    "id": "xiaoc5de7c800cc7cbec81f4c7684xiaotic7434",
+    "name": "小巧而精致的小提琴",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "去·海·边，宅邸的副产物合成"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 402
+  },
+  {
+    "id": "c91cfc4ea7c578bkgongc53f8c5b89c74ff",
+    "name": "量产型K公司安瓿",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "极限模式节点-紫色编码"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "dingyuc9524",
+    "name": "钉与锤",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "极限模式节点-1号线 : 疯狂"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c65cbc8f6cc6728c9a6cc6a21c578b",
+    "name": "旋转木马模型",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "极限模式节点-充满祝福的嘉年华"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c518dc6765yic676fcff01",
+    "name": "再来一杯！",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "极限模式节点-精灵童话"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c62cdshouc556ac556acff01",
+    "name": "拍手啪啪！",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "极限模式节点-血腥味"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c4e0dc5b8cc5584c7684c9884c77e5c773c",
+    "name": "不完善的预知眼",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "隐藏节点-蜘蛛巢的拇指"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c9057c843dc7684c795ec8c15",
+    "name": "遗落的神谕",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "隐藏节点-蜘蛛巢的食指"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c590dc4ec7c8d26c7c3fcff1ac9644c5f55",
+    "name": "复仇账簿：附录",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "打击",
+        "隐藏节点-蜘蛛巢的中指"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c5316c4e3ac4f5cc54c1c7684dac5e08zhic73af",
+    "name": "化为作品的大师指环",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "隐藏节点-蜘蛛巢的环指"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c4f5cc54c1cff1ac8dc3c52a8",
+    "name": "作品：跃动",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "充能",
+        "绞丝结线"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 246
+  },
+  {
+    "id": "c4f5cc54c1cff1ac91cec6027",
+    "name": "作品：野性",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "绞丝结线"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 246
+  },
+  {
+    "id": "c4e07c7269c7684c9aa8c67b6",
+    "name": "万物的骨架",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "绞丝结线"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "c6770c4f5ccff1ac8fdbc5316c7684c8dc3c52a8",
+    "name": "杰作：进化的跃动",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "绞丝结线合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 402
+  },
+  {
+    "id": "c6770c4f5ccff1ac5265c5236c7684c91cec6027",
+    "name": "杰作：剥制的野性",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "绞丝结线合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 402
+  },
+  {
+    "id": "zhongzhic5f0fzhic864e",
+    "name": "中指式指虎",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "打击",
+        "绞丝结线"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 243
+  },
+  {
+    "id": "c7a7ac8361c7684niaoc7b3c",
+    "name": "空荡的鸟笼",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "绞丝结线"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 198
+  },
+  {
+    "id": "c4e07c7269c7684c672cc80fd",
+    "name": "万物的本能",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "绞丝结线"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "c767bc573ac4e13c7528c97f3c54cd",
+    "name": "登场专用音响",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "打击",
+        "深夜清扫复刻"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 204
+  },
+  {
+    "id": "c5e7ccb7c5144c767bc573a",
+    "name": "幼·兄登场",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "打击",
+        "深夜清扫复刻合成"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 397
+  },
+  {
+    "id": "heic517dc4e38_c536f",
+    "name": "黑兽丸 - 卯",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂",
+        "深夜清扫复刻"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "c6697zhongc884cc52a8",
+    "name": "暗中行动",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "破裂",
+        "深夜清扫复刻合成"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 404
+  },
+  {
+    "id": "c8d64hongc7ea0c7f20c7684c8718c86dbc5de2",
+    "name": "赤红纠缠的蜘蛛巢",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "魅惑、彷徨、猜疑，教材，刀与作品，无割舍者"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c6355c7ef3",
+    "name": "捕绳",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "经验记忆"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 247
+  },
+  {
+    "id": "c767dc74f7c781ac6ef4",
+    "name": "白瓷砚滴",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "经验记忆"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 251
+  },
+  {
+    "id": "c65e0c7eb9c7684c5200c9561",
+    "name": "无纹的刀镡",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "斩击",
+        "经验记忆"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 146
+  },
+  {
+    "id": "c672cc56fdjianc8c31",
+    "name": "本国剑谱",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "斩击",
+        "经验记忆合成"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 381
+  },
+  {
+    "id": "heic6a80c80f8c9488",
+    "name": "黑檀胸针",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂",
+        "无归属者"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 192
+  },
+  {
+    "id": "c5c01zhuangc86c6chong",
+    "name": "封装蛆虫",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "无归属者"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 246
+  },
+  {
+    "id": "c5b9ac5236",
+    "name": "定制",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤",
+        "自动工厂"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 190
+  },
+  {
+    "id": "c9b3cc9644c978b",
+    "name": "鬼附鞋",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "自动工厂"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 193
+  },
+  {
+    "id": "c51b0c5c01c7684aic568e",
+    "name": "冰封的哀嚎",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "无慈悲者"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 220
+  },
+  {
+    "id": "c971cc51bbc8db3c8ff9",
+    "name": "霜冻足迹",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "自动工厂，无慈悲者合成"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 424
+  },
+  {
+    "id": "dingyuc9524zhic4e66",
+    "name": "钉与锤之书",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血",
+        "信仰与侵蚀"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 214
+  },
+  {
+    "id": "xuehongc9b03c6bdb",
+    "name": "血红鬃毛",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "信仰与侵蚀"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 203
+  },
+  {
+    "id": "c6c61c79fd",
+    "name": "污秽",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血",
+        "无作为者"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 217
+  },
+  {
+    "id": "c5b8cc5168c6027",
+    "name": "完全性",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "信仰与侵蚀，无作为者合成"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 404
+  },
+  {
+    "id": "shanchahuac679d",
+    "name": "山茶花枝",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "落花"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 252
+  },
+  {
+    "id": "c4e07huac7b52",
+    "name": "万花筒",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "落花"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 261
+  },
+  {
+    "id": "c7834c788ec7684c773cjing",
+    "name": "破碎的眼镜",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "无改变者"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 218
+  },
+  {
+    "id": "c672ac5bc4c51fac7684c4fe1",
+    "name": "未寄出的信",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "破裂",
+        "无改变者合成"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 399
+  },
+  {
+    "id": "c5b88c9547yucha",
+    "name": "守镇鱼叉",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "伏行深渊"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 202
+  },
+  {
+    "id": "c9cb8c5fc3",
+    "name": "鲸心",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "伏行深渊"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 389
+  },
+  {
+    "id": "c6355c9cb8qiangc4e49c817f",
+    "name": "捕鲸枪义腿",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "定义为恶"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 219
+  },
+  {
+    "id": "c7167c4eaec524dc65b9c7684c6c7ddeng",
+    "name": "照亮前方的汽灯",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "定义为恶合成"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 411
+  },
+  {
+    "id": "c635fc574fc7684xiaotic7434",
+    "name": "损坏的小提琴",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "宅邸的副产物"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 243
+  },
+  {
+    "id": "c5b85c90b8c6a21c578bbac97f3c76d2",
+    "name": "宅邸模型八音盒",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "宅邸的副产物"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 249
+  },
+  {
+    "id": "c9996c5e2dc7ba1c5bb6c7684c79d8c7c4d",
+    "name": "首席管家的秘籍",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "某个世界"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 212
+  },
+  {
+    "id": "shoujing",
+    "name": "手镜",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "震颤",
+        "某个世界合成"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 404
+  },
+  {
+    "id": "c7ba1c5bb6c5f0fc675fc7f1ac6cd5",
+    "name": "管家式束缚法",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "心意相悖"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 148
+  },
+  {
+    "id": "c6298c5c04c73bbc7483c7ba1",
+    "name": "折射玻璃管",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "心意相悖"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 392
+  },
+  {
+    "id": "c62c9cb7c66fcc5374c9886c81eac7531c901ac884cc5238",
+    "name": "拉·曼却领自由通行券",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "梦之终焉，重新开园的拉·曼却领，无尽的游行"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 239
+  },
+  {
+    "id": "c80dclizhic8bc1",
+    "name": "胜利之证",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "梦之终焉，重新开园的拉·曼却领，无尽的游行"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 248
+  },
+  {
+    "id": "c541ec566cyic5207c7684moc65b9",
+    "name": "吞噬一切的魔方",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "梦之终焉，重新开园的拉·曼却领，无尽的游行"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 195
+  },
+  {
+    "id": "c6e38c884cc7684c9762c5177",
+    "name": "游行的面具",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "梦之终焉，重新开园的拉·曼却领，无尽的游行"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 394
+  },
+  {
+    "id": "huorec591ac6c41c7435c7436c817f",
+    "name": "火热多汁琵琶腿",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "地狱鸡"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 259
+  },
+  {
+    "id": "c5e72c5df4c67f4c6da9c9e21c80f8c8089",
+    "name": "干巴柴涩鸡胸肉",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂",
+        "地狱鸡"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 264
+  },
+  {
+    "id": "c63a2c6208c9e21c9171c6599",
+    "name": "探戈鸡酱料",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "地狱鸡"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 275
+  },
+  {
+    "id": "c810fc6c61c7684c9488yuc7ebf",
+    "name": "脏污的针与线",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血",
+        "地狱鸡"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 208
+  },
+  {
+    "id": "c9510lic7684c9488yuc7ebf",
+    "name": "锐利的针与线",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "地狱鸡"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 271
+  },
+  {
+    "id": "c6cberanc6cb9c6c61c7684c6273shou",
+    "name": "沾染油污的扳手",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "震颤",
+        "去·海·边"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 148
+  },
+  {
+    "id": "c95eaguangc5e9fc6599",
+    "name": "闪光废料",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "去·海·边"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 191
+  },
+  {
+    "id": "c5e9fc6599c87f9c8111c9ad3c6ce1c9152",
+    "name": "废料蟹脑髓泡酒",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂",
+        "去·海·边"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 268
+  },
+  {
+    "id": "c6bdbc7403c5e3d",
+    "name": "毛球帽",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "20区的奇迹"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 150
+  },
+  {
+    "id": "c5de8dac7684c793cc7269c888b",
+    "name": "巨大的礼物袋",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "20区的奇迹"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 198
+  },
+  {
+    "id": "c60b2shangc7684c6bdbc7ed2c73a9c5076",
+    "name": "悲伤的毛绒玩偶",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "20区的奇迹"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "heic8272c8d26c7c3f",
+    "name": "黑色账簿",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "肉斩骨断"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 195
+  },
+  {
+    "id": "c9508c8680c7684c5200c67c4",
+    "name": "锈蚀的刀柄",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "斩击",
+        "肉斩骨断"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 205
+  },
+  {
+    "id": "c7834c788ec7684c5200c5203",
+    "name": "破碎的刀刃",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "肉斩骨断"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 244
+  },
+  {
+    "id": "c635fc574fc7684c5200c5203",
+    "name": "损坏的刀刃",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "肉斩骨断"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 244
+  },
+  {
+    "id": "hongc8272c6d41c82cf",
+    "name": "红色流苏",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "斩击",
+        "肉斩骨断"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 253
+  },
+  {
+    "id": "c58eec89c2",
+    "name": "壮观",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "斩击",
+        "肉斩骨断合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c4e0dc52a8",
+    "name": "不动",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "斩击",
+        "肉斩骨断合成"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c635fc574fc7684c7af9li",
+    "name": "损坏的竹笠",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "肉斩骨断"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 432
+  },
+  {
+    "id": "c94f6c8272c7684c8868c58f3",
+    "name": "银色的表壳",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 196
+  },
+  {
+    "id": "c892ac8272c7684c8868c58f3",
+    "name": "褪色的表壳",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 205
+  },
+  {
+    "id": "c8b66c544ac51fd",
+    "name": "警告函",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "时间杀人时间"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 198
+  },
+  {
+    "id": "c8680c523bc7684zhic9488",
+    "name": "蚀刻的指针",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 202
+  },
+  {
+    "id": "c9508c8680c7684zhic9488",
+    "name": "锈蚀的指针",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 207
+  },
+  {
+    "id": "c6d93c6ef4zhic676f",
+    "name": "涓滴之杯",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 245
+  },
+  {
+    "id": "c9884c652fc65f6c95f4shouc636e",
+    "name": "预支时间收据",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "时间杀人时间"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c6000c8868cff1atype_l",
+    "name": "怀表：Type L",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c6000c8868cff1atype_e",
+    "name": "怀表：Type E",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间合成"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c6000c8868cff1atype_y",
+    "name": "怀表：Type Y",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间合成"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c6000c8868cff1atype_p",
+    "name": "怀表：Type P",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间合成"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c7ecfc6d4ec8231c6298c6263c5238",
+    "name": "经济舱折扣券",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用",
+        "WARP快车谋杀案"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 151
+  },
+  {
+    "id": "c7f50zhuangc51b0c6dc7c6dcb",
+    "name": "罐装冰淇淋",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "WARP快车谋杀案"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 195
+  },
+  {
+    "id": "ec578bc6b21c5143c77edjian",
+    "name": "E型次元短剑",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c4fbfc643ac5f0fc529bc573ac7535c6c60",
+    "name": "便携式力场电池",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c751fc7269c53d1c7535c7535c6c60",
+    "name": "生物发电电池",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 203
+  },
+  {
+    "id": "c5fc3c810fc53cdc5e94c6a21c5757",
+    "name": "心脏反应模块",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 197
+  },
+  {
+    "id": "c4e49c4f53c5173jiec4f3ac670dc7535c673a",
+    "name": "义体关节伺服电机",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 207
+  },
+  {
+    "id": "xuec6db2c7ed3c6676",
+    "name": "血液结晶",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血",
+        "WARP快车谋杀案"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 195
+  },
+  {
+    "id": "c81eac52a8c5173jie",
+    "name": "自动关节",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案合成"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c8fc7c5ea6c5145c80fdc7535c6c60",
+    "name": "过度充能电池",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案合成"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c6c38c52a8c4f3ac670dc7535c673a",
+    "name": "永动伺服电机",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案合成"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c5fc3c52a8c529bc5b9dc77f3",
+    "name": "心动力宝石",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案合成"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c5b5dc5fc3",
+    "name": "孝心",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "流血",
+        "紫罗兰的正午"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 203
+  },
+  {
+    "id": "cuoc4f4dc7684c6676c4f53c7ba1",
+    "name": "错位的晶体管",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能",
+        "紫罗兰的正午"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 207
+  },
+  {
+    "id": "c7cbec795ec6c61ranc52a0c901fc6c14c4f53",
+    "name": "精神污染加速气体",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "紫罗兰的正午"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 192
+  },
+  {
+    "id": "c6cc4c9732c7684c8111feic80bd",
+    "name": "泄露的脑啡肽",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "紫罗兰的正午"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 195
+  },
+  {
+    "id": "c82e6c96be",
+    "name": "苦难",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "紫罗兰的正午"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 267
+  },
+  {
+    "id": "c8346c68d8c5934c51a0",
+    "name": "荆棘头冠",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "紫罗兰的正午"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 270
+  },
+  {
+    "id": "c5b89c606f",
+    "name": "安息",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "紫罗兰的正午"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c86c7c8715",
+    "name": "蛇蜕",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "1号线"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 188
+  },
+  {
+    "id": "c865ac5047c7684guangc76f8",
+    "name": "虚假的光相",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "1号线"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 391
+  },
+  {
+    "id": "jiec62cdc5668",
+    "name": "节拍器",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "2号线"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 207
+  },
+  {
+    "id": "c67b7c9501",
+    "name": "枷锁",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "2号线"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 396
+  },
+  {
+    "id": "c8f7bc8511c7684c89c6c7ebfc7684c8f7bc8511",
+    "name": "轻蔑的视线的轻蔑",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "3号线"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 208
+  },
+  {
+    "id": "c672ac5b75c5316c7684huoc79cd",
+    "name": "未孵化的火种",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "3号线"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 393
+  },
+  {
+    "id": "c5bf9c7f8ac63a5c5730c63d2c5934",
+    "name": "对羊接地插头",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "4号线"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 203
+  },
+  {
+    "id": "c7184c706dc7684tideng",
+    "name": "熄灭的提灯",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "震颤",
+        "20区的奇迹复刻"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 152
+  },
+  {
+    "id": "c7184c706dc7684c70dbc53f0",
+    "name": "熄灭的烛台",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "20区的奇迹复刻"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 205
+  },
+  {
+    "id": "c5f71zic602ac7269",
+    "name": "影子怪物",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "震颤",
+        "20区的奇迹复刻合成"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 251
+  },
+  {
+    "id": "baozhuangc76d2",
+    "name": "包装盒",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用",
+        "20区的奇迹复刻"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 151
+  },
+  {
+    "id": "baozhuangc7f0ec5e26",
+    "name": "包装缎带",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "20区的奇迹复刻"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 249
+  },
+  {
+    "id": "c793cc7269",
+    "name": "礼物",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "20区的奇迹复刻合成"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 398
+  },
+  {
+    "id": "c5febc4e50c7684c6bdbc7ed2c73a9c5076",
+    "name": "快乐的毛绒玩偶",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "20区的奇迹复刻合成"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 399
+  },
+  {
+    "id": "moc793aqic7ea6c66f4xin",
+    "name": "默示契约更新",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "由子弹画下的句点"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 255
+  },
+  {
+    "id": "heic7130c70dfc6597",
+    "name": "黑焰烟斗",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "突刺",
+        "由子弹画下的句点"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 252
+  },
+  {
+    "id": "c5e73deng",
+    "name": "平等",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "突刺",
+        "由子弹画下的句点"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 255
+  },
+  {
+    "id": "c8fc5c6377zhihui",
+    "name": "迅捷指挥",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "由子弹画下的句点"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 249
+  },
+  {
+    "id": "chic8f6ec788ec7247",
+    "name": "齿轮碎片",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "由子弹画下的句点"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 207
+  },
+  {
+    "id": "c8fd1c8eabgec6597c672fc6559c6750",
+    "name": "近身格斗术教材",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "由子弹画下的句点"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 251
+  },
+  {
+    "id": "c70b9huoshouc5957",
+    "name": "点火手套",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "LCB定期体检"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 151
+  },
+  {
+    "id": "c8346c68d8c6218c6597c9774",
+    "name": "荆棘战斗靴",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂",
+        "LCB定期体检"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 149
+  },
+  {
+    "id": "c91cdc71c3huohuac585e",
+    "name": "重燃火花塞",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "LCB定期体检"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 248
+  },
+  {
+    "id": "c5f3ac5316c5242mk4",
+    "name": "强化剂Mk.4",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂",
+        "LCB定期体检"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 254
+  },
+  {
+    "id": "c4f59huo",
+    "name": "余火",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "LCB定期体检"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 257
+  },
+  {
+    "id": "c7ec6c679d",
+    "name": "细枝",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂",
+        "LCB定期体检"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 244
+  },
+  {
+    "id": "c5e38c89c4c4f5cc6218c7528zhuangbei",
+    "name": "常规作战用装备",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "LCB定期体检"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 252
+  },
+  {
+    "id": "c4f5cc6218c6279zhunc5361",
+    "name": "作战批准卡",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "LCB定期体检"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 252
+  },
+  {
+    "id": "gaoc5371c4f5cc6218c7528zhuangbei",
+    "name": "高危作战用装备",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "LCB定期体检合成"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 404
+  },
+  {
+    "id": "c6728c8d28c9152c676f",
+    "name": "木质酒杯",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "肉斩骨断复刻"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 250
+  },
+  {
+    "id": "c9648c65e7c7684c5200c67c4",
+    "name": "陈旧的刀柄",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "斩击",
+        "肉斩骨断复刻"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 248
+  },
+  {
+    "id": "c7eddc666f",
+    "name": "绝景",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "肉斩骨断复刻合成"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 408
+  },
+  {
+    "id": "c7422c78e8",
+    "name": "琢磨",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "斩击",
+        "肉斩骨断复刻合成"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 387
+  },
+  {
+    "id": "c4e1byun",
+    "name": "丛云",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "斩击",
+        "肉斩骨断复刻"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c5f3ac5316c7eb9c8eab_zhongzhi",
+    "name": "强化纹身-中指",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "打击",
+        "深夜清扫"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "c5f02c6587c7b26c5492",
+    "name": "异文符咒",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂",
+        "深夜清扫"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 212
+  },
+  {
+    "id": "c536fc8db3",
+    "name": "卯足",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂",
+        "深夜清扫"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 210
+  },
+  {
+    "id": "c5fe0c4e49c9501c94fe",
+    "name": "忠义锁链",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "打击",
+        "深夜清扫"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 253
+  },
+  {
+    "id": "c954cc523bc7684c5f02c6587",
+    "name": "镌刻的异文",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂",
+        "深夜清扫"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 245
+  },
+  {
+    "id": "c5f71c7ec7c6597li",
+    "name": "影织斗笠",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "斩击",
+        "深夜清扫"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 251
+  },
+  {
+    "id": "c6c38c6052c7684c7f18c5206c9501c94fe",
+    "name": "永恒的缘分锁链",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "打击",
+        "深夜清扫合成"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 401
+  },
+  {
+    "id": "c6f06c5b57c7409c7483c94bf",
+    "name": "漆字琉璃钿",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "破裂",
+        "深夜清扫合成"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 407
+  },
+  {
+    "id": "c6ee1c6ee1c5f53c5f53c7684c71c3c6599c7f50",
+    "name": "满满当当的燃料罐",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "深夜清扫"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 252
+  },
+  {
+    "id": "c843dc5760c7684yic6ef4",
+    "name": "落坠的一滴",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "梦之终焉，重新开园的拉·曼却领，无尽的游行"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 398
+  },
+  {
+    "id": "c618bc95f7c7684c5410c606f",
+    "name": "憋闷的吐息",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "5号线"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c6ce8c5b9ac7834c788ec7684huoc70ae",
+    "name": "注定破碎的火炮",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "5号线"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 398
+  },
+  {
+    "id": "c8d2ac6b32zhic68d8",
+    "name": "贪欲之棘",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "5号线"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 397
+  },
+  {
+    "id": "c67d0c79cdc54f2c5b66",
+    "name": "某种哲学",
+    "tier": "未知",
+    "tags": {
+      "effect": [
+        "泛用"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 999
+  },
+  {
+    "id": "c5bcc",
+    "name": "富",
+    "tier": "未知",
+    "tags": {
+      "effect": [
+        "泛用",
+        "特殊事件"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 999
+  },
+  {
+    "id": "c5f3ac97e7c4e38",
+    "name": "强韧丸",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "四大家族与欲念"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "c7535c51fbc65a7",
+    "name": "电击斧",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能",
+        "四大家族与欲念"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 202
+  },
+  {
+    "id": "jingzhonghua",
+    "name": "镜中花",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "破裂",
+        "不思观望"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 255
+  },
+  {
+    "id": "c6c34zhongc6708",
+    "name": "水中月",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "呼吸法",
+        "不思观望"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 261
+  },
+  {
+    "id": "c7070c8272xingc5ea7c7684c52a0c62a4",
+    "name": "灰色星座的加护",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "憎恶与绝望"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 261
+  },
+  {
+    "id": "c672ac88abc9009zhongzhiren",
+    "name": "未被选中之人",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "憎恶与绝望"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 197
+  },
+  {
+    "id": "c6ceac950bzhijian",
+    "name": "泪锋之剑",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦",
+        "憎恶与绝望"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 254
+  },
+  {
+    "id": "moc6cd5c5c11c5973c7684c7231zhic793cc7269",
+    "name": "魔法少女的爱之礼物",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能",
+        "憎恶与绝望"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "c53efc7528zhic5904c5df2c5c3dcff0cc90c1c79efc7684c618ec6076",
+    "name": "可用之处已尽，郁积的憎恶",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "充能",
+        "憎恶与绝望"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 247
+  },
+  {
+    "id": "c7cbec795ec5c4fc853dc529bc573a",
+    "name": "精神屏蔽力场",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "憎恶与绝望"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 205
+  },
+  {
+    "id": "c4ef7c503cc5904c7f6e",
+    "name": "价值处置",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "憎恶与绝望"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 203
+  },
+  {
+    "id": "c4ea4c7ec7c7684c65f6c95f4",
+    "name": "交织的时间",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间复刻"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 147
+  },
+  {
+    "id": "c7d27c6025c6388c4e88c578bc641cc67e5guanc5fbdc7ae0",
+    "name": "紧急授予型搜查官徽章",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "时间杀人时间复刻"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 172
+  },
+  {
+    "id": "c5f3ac5236c7ea0c7f20c5b9ac5e8fc5668",
+    "name": "强制纠缠定序器",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间复刻"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 243
+  },
+  {
+    "id": "c8d85c7cbec5bc6c65f6c95f4c52a0c901fzhuangc7f6e",
+    "name": "超精密时间加速装置",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "时间杀人时间复刻"
+      ],
+      "sinAffinity": [
+        "怠惰"
+      ]
+    },
+    "price": 393
+  },
+  {
+    "id": "c84ddxingc788ec7247",
+    "name": "蓝星碎片",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "沉沦"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 246
+  },
+  {
+    "id": "c88abc9057c843dc7684c6b21c5143c62a4shou",
+    "name": "被遗落的次元护手",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案复刻"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 252
+  },
+  {
+    "id": "xueyanc5200",
+    "name": "血炎刀",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "烧伤",
+        "切磋琢春"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "heitiec9a6cc80c4",
+    "name": "黑铁马胄",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "震颤",
+        "切磋琢春"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 205
+  },
+  {
+    "id": "c8499c853dc5fc3c6249c7684hongc5e03",
+    "name": "蒙蔽心扉的红布",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "斩击",
+        "切磋琢春"
+      ],
+      "sinAffinity": [
+        "傲慢"
+      ]
+    },
+    "price": 259
+  },
+  {
+    "id": "c54c1de_c667a",
+    "name": "品德 - 智",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂",
+        "切磋琢春"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 202
+  },
+  {
+    "id": "c54c1de_c52c7",
+    "name": "品德 - 勇",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂",
+        "切磋琢春"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 202
+  },
+  {
+    "id": "c54c1de_c4ec1",
+    "name": "品德 - 仁",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "破裂",
+        "切磋琢春"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 202
+  },
+  {
+    "id": "c5207c78cbc7422c78e8",
+    "name": "切磋琢磨",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "破裂",
+        "切磋琢春合成"
+      ],
+      "sinAffinity": [
+        "忧郁"
+      ]
+    },
+    "price": 399
+  },
+  {
+    "id": "c7ecdc5174c9152",
+    "name": "绍兴酒",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "切磋琢春"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 199
+  },
+  {
+    "id": "c5bb6renc7684c6028c6068",
+    "name": "家人的怨恨",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "流血",
+        "极限模式节点-拉·曼却领之主"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "c4e3ac4e86zhihuiguan",
+    "name": "为了指挥官",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "震颤",
+        "极限模式节点-插翅虎"
+      ],
+      "sinAffinity": [
+        "暴怒"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "zhongzhic89c4c77e9",
+    "name": "中指规矩",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "打击",
+        "极限模式节点-即刻处刑时间"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "c53efc7c73c7684xiaoxiaoc793cc7269",
+    "name": "可米的小小礼物",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "极限模式节点-仲春夜之梦2"
+      ],
+      "sinAffinity": [
+        "暴食"
+      ]
+    },
+    "price": 201
+  },
+  {
+    "id": "wgongc53f8c5236c5f0fc5e3dzi",
+    "name": "W公司制式帽子",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案复刻"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 204
+  },
+  {
+    "id": "cc578bqingsaorenyuanzhuangbeic5957zu",
+    "name": "C型清扫人员装备套组",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "充能",
+        "WARP快车谋杀案复刻合成"
+      ],
+      "sinAffinity": [
+        "嫉妒"
+      ]
+    },
+    "price": 401
+  },
+  {
+    "id": "c7531xuec800cc6210zhic8089cff0cc7531c8089c800cc6210zhixue",
+    "name": "由血而成之肉，由肉而成之血",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "WARP快车谋杀案复刻"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 251
+  },
+  {
+    "id": "c786cxuezhangc67c4c5200",
+    "name": "硬血长柄刀",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "流血",
+        "WARP快车谋杀案复刻"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 247
+  },
+  {
+    "id": "heic6697c7684c6b8bc5f71",
+    "name": "黑暗的残影",
+    "tier": "I",
+    "tags": {
+      "effect": [
+        "泛用",
+        "重复获得同一件饰品"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 100
+  },
+  {
+    "id": "c5faec832bc7684c6b8bc5f71",
+    "name": "微茫的残影",
+    "tier": "II",
+    "tags": {
+      "effect": [
+        "泛用",
+        "重复获得同一件饰品"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 200
+  },
+  {
+    "id": "c95eac8000c7684c6b8bc5f71",
+    "name": "闪耀的残影",
+    "tier": "III",
+    "tags": {
+      "effect": [
+        "泛用",
+        "重复获得同一件饰品"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 300
+  },
+  {
+    "id": "c8f89c714cc7684c6b8bc5f71",
+    "name": "辉煌的残影",
+    "tier": "IV",
+    "tags": {
+      "effect": [
+        "泛用",
+        "重复获得同一件饰品"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 400
+  },
+  {
+    "id": "c6708zhic6b8bc5f71",
+    "name": "月之残影",
+    "tier": "V",
+    "tags": {
+      "effect": [
+        "泛用",
+        "重复获得同一件饰品"
+      ],
+      "sinAffinity": [
+        "色欲"
+      ]
+    },
+    "price": 500
+  }
+]

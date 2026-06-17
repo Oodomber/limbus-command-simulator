@@ -1,0 +1,3012 @@
+[
+  {
+    "id": "yi_sang_c4e4cc77b0c5200",
+    "name": "乌瞰刀",
+    "sinner": "李箱",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "暴怒": 1,
+      "怠惰": 3
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "迅捷",
+        "束缚",
+        "虚弱"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "yi_sang_c5f80c6614",
+    "name": "往昔",
+    "sinner": "李箱",
+    "level": "ZAYIN",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 3,
+      "忧郁": 3
+    },
+    "tags": {
+      "damageType": [
+        "突刺",
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "yi_sang_c7948c613fc77f3",
+    "name": "祈愿石",
+    "sinner": "李箱",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 4,
+      "忧郁": 1
+    },
+    "tags": {
+      "damageType": [
+        "突刺",
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "打击守护",
+        "怠惰守护",
+        "怠惰易损",
+        "麻痹",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "yi_sang_c7ec8c672bhuoc67f4zhiguang",
+    "name": "终末火柴之光",
+    "sinner": "李箱",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 5,
+      "怠惰": 1,
+      "暴食": 1
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "yi_sang_c6b21c5143c6495c88c2c8005",
+    "name": "次元撕裂者",
+    "sinner": "李箱",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 3,
+      "暴食": 3
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "无差别攻击",
+        "充能",
+        "次元裂痕",
+        "破裂"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "yi_sang_xiongdan",
+    "name": "凶弹",
+    "sinner": "李箱",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "傲慢": 6
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "流血",
+        "呼吸法",
+        "撕裂的回忆"
+      ],
+      "special": []
+    },
+    "attackCapacity": 7,
+    "coinCount": 1
+  },
+  {
+    "id": "yi_sang_c72d0yu",
+    "name": "狐雨",
+    "sinner": "李箱",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 4,
+      "暴食": 2,
+      "忧郁": 2,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "怠惰威力提升",
+        "怠惰易损",
+        "怠惰伤害强化",
+        "守护",
+        "突刺易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 5,
+    "coinCount": 1
+  },
+  {
+    "id": "yi_sang_sanc5343dashijie",
+    "name": "三千大世界",
+    "sinner": "李箱",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 4,
+      "忧郁": 2,
+      "傲慢": 2,
+      "嫉妒": 4
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "烧伤",
+        "呼吸法",
+        "不可摧毁的硬币",
+        "破碎的世界"
+      ],
+      "special": []
+    },
+    "attackCapacity": 7,
+    "coinCount": 2
+  },
+  {
+    "id": "faust_c8868xiangfangc5c04c5668",
+    "name": "表象放射器",
+    "sinner": "浮士德",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "暴食": 2,
+      "傲慢": 4
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "理智值恢复效率"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "faust_c8bc5c5492zhiding",
+    "name": "诅咒之钉",
+    "sinner": "浮士德",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "嫉妒": 6
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "无差别攻击",
+        "尖钉（我方）",
+        "嫉妒易损",
+        "诅咒",
+        "突刺易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "faust_9c7ae02jie",
+    "name": "9章2节",
+    "sinner": "浮士德",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 1,
+      "暴食": 3,
+      "傲慢": 1
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "烧伤",
+        "防御等级降低",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "faust_c5957suo",
+    "name": "套索",
+    "sinner": "浮士德",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 1,
+      "暴食": 3,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量",
+        "套索",
+        "暴食威力提升",
+        "迅捷",
+        "破裂"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 3
+  },
+  {
+    "id": "faust_c6db2c56ca",
+    "name": "液囊",
+    "sinner": "浮士德",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "忧郁": 4,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "守护",
+        "虚弱"
+      ],
+      "special": []
+    },
+    "attackCapacity": 5,
+    "coinCount": 1
+  },
+  {
+    "id": "faust_c7535c7ebfc6746",
+    "name": "电线杆",
+    "sinner": "浮士德",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "色欲": 3,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "麻痹",
+        "迅捷",
+        "充能",
+        "嫉妒威力提升",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "faust_c80f8c75db",
+    "name": "胸痛",
+    "sinner": "浮士德",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 1,
+      "忧郁": 1,
+      "傲慢": 5
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "雾化吸入器α",
+        "急促喘息",
+        "傲慢伤害强化",
+        "呼吸法"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "faust_zhic4ee4cff1ac7194c6bc1",
+    "name": "指令：熔毁",
+    "sinner": "浮士德",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 1,
+      "暴食": 5,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺",
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "烧伤",
+        "伤害强化",
+        "不可摧毁的硬币",
+        "破裂",
+        "硬化屏障"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "faust_hongc8273c715e",
+    "name": "红艳煞",
+    "sinner": "浮士德",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 3,
+      "怠惰": 2,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "faust_c6c38c6052",
+    "name": "永恒",
+    "sinner": "浮士德",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "怠惰": 4,
+      "忧郁": 2,
+      "傲慢": 3
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量",
+        "震颤引爆",
+        "迅捷",
+        "振幅纠缠",
+        "震颤-永恒",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "don_quixote_c6851c4e18zhixue",
+    "name": "桑丘之血",
+    "sinner": "堂吉诃德",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "色欲": 2,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "流血"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "don_quixote_yic751fc7096c83dc",
+    "name": "一生炖菜",
+    "sinner": "堂吉诃德",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 5
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "烧伤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "don_quixote_c7948c613fc77f3",
+    "name": "祈愿石",
+    "sinner": "堂吉诃德",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "怠惰": 2,
+      "傲慢": 1
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "流血",
+        "震颤引爆",
+        "呼吸法",
+        "麻痹",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "don_quixote_c7535ziaic9e23",
+    "name": "电子哀鸣",
+    "sinner": "堂吉诃德",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "傲慢": 2,
+      "嫉妒": 4
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "充能",
+        "强壮"
+      ],
+      "special": []
+    },
+    "attackCapacity": 2,
+    "coinCount": 1
+  },
+  {
+    "id": "don_quixote_c6db2c56ca",
+    "name": "液囊",
+    "sinner": "堂吉诃德",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 1,
+      "忧郁": 4,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "震颤",
+        "震颤引爆"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "don_quixote_c7535c7ebfc6746",
+    "name": "电线杆",
+    "sinner": "堂吉诃德",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "忧郁": 2,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "充能",
+        "破裂",
+        "易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "don_quixote_zhuc7b26",
+    "name": "朱符",
+    "sinner": "堂吉诃德",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 1,
+      "暴食": 5,
+      "忧郁": 2,
+      "傲慢": 1
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "防御等级降低",
+        "纠缠不休的咒符",
+        "破裂"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "don_quixote_c6e34c671b_c871cc5361c62c9",
+    "name": "渴望-蜜卡拉",
+    "sinner": "堂吉诃德",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 5,
+      "暴食": 3,
+      "傲慢": 2,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "流血",
+        "消耗血宴总数",
+        "不可摧毁的硬币",
+        "共用消耗血宴总数",
+        "饥渴的玫瑰",
+        "血宴"
+      ],
+      "special": []
+    },
+    "attackCapacity": 5,
+    "coinCount": 3
+  },
+  {
+    "id": "don_quixote_yic7231yuc618ezhic540d",
+    "name": "以爱与憎之名",
+    "sinner": "堂吉诃德",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "忧郁": 2,
+      "傲慢": 2,
+      "嫉妒": 6
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "魔法阿卡纳",
+        "魔法少女的咏唱",
+        "充能",
+        "恶人标记",
+        "魔法少女登场！",
+        "不可摧毁的硬币",
+        "破裂",
+        "反转-逆位",
+        "歇斯底里"
+      ],
+      "special": []
+    },
+    "attackCapacity": 5,
+    "coinCount": 1
+  },
+  {
+    "id": "ryoshu_c68eeluoyanxiang",
+    "name": "森罗炎象",
+    "sinner": "良秀",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "暴怒": 2,
+      "色欲": 2
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "烧伤",
+        "易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ryoshu_c7f8ec5473c82cfc6253",
+    "name": "美味苏打",
+    "sinner": "良秀",
+    "level": "ZAYIN",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴食": 2,
+      "傲慢": 2,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "迅捷",
+        "破绽",
+        "罪孽碎片获取量提升"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ryoshu_c8d64c77b3",
+    "name": "赤瞳",
+    "sinner": "良秀",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "暴食": 2,
+      "嫉妒": 1
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "束缚",
+        "加算硬币弱化",
+        "斩击易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ryoshu_c76f2c76ee",
+    "name": "盲目",
+    "sinner": "良秀",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "忧郁": 2,
+      "傲慢": 2,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "充能",
+        "呼吸法"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ryoshu_c7ec8c672bhuoc67f4zhiguang",
+    "name": "终末火柴之光",
+    "sinner": "良秀",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 4,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ryoshu_c8d64c77b3cff08c5f00cff09",
+    "name": "赤瞳（开）",
+    "sinner": "良秀",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "色欲": 2,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "强壮",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 2,
+    "coinCount": 2
+  },
+  {
+    "id": "ryoshu_c80f8c75db",
+    "name": "胸痛",
+    "sinner": "良秀",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "色欲": 1,
+      "傲慢": 5
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "深呼吸",
+        "呼吸法",
+        "雾化吸入器β"
+      ],
+      "special": []
+    },
+    "attackCapacity": 2,
+    "coinCount": 2
+  },
+  {
+    "id": "ryoshu_c8f7bc8511cff0cc656cc754f",
+    "name": "轻蔑，敬畏",
+    "sinner": "良秀",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 3,
+      "色欲": 4,
+      "傲慢": 4,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "轻蔑的视线",
+        "流血"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ryoshu_sanc5343dashijie",
+    "name": "三千大世界",
+    "sinner": "良秀",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 4,
+      "色欲": 4,
+      "傲慢": 4
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "流血",
+        "烧伤",
+        "呼吸法",
+        "罗生",
+        "不可摧毁的硬币",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 7,
+    "coinCount": 1
+  },
+  {
+    "id": "meursault_c4ed6renzhic9501",
+    "name": "他人之锁",
+    "sinner": "默尔索",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "怠惰": 1,
+      "忧郁": 1,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "束缚",
+        "守护",
+        "虚弱"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "meursault_c8131c7ebfyic51fb",
+    "name": "脱线一击",
+    "sinner": "默尔索",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 2,
+      "傲慢": 1,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "强壮",
+        "手术",
+        "迅捷",
+        "忍耐",
+        "守护",
+        "麻痹"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "meursault_c6094c6068",
+    "name": "悔恨",
+    "sinner": "默尔索",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 3,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "震颤",
+        "震颤引爆",
+        "打击威力提升",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "meursault_c7535ziaic9e23",
+    "name": "电子哀鸣",
+    "sinner": "默尔索",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "嫉妒": 4
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "充能",
+        "攻击等级提升",
+        "破裂",
+        "嫉妒伤害强化",
+        "麻痹",
+        "防御等级提升"
+      ],
+      "special": []
+    },
+    "attackCapacity": 2,
+    "coinCount": 1
+  },
+  {
+    "id": "meursault_c6267c884c",
+    "name": "执行",
+    "sinner": "默尔索",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 4,
+      "忧郁": 1,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "强壮",
+        "震颤引爆",
+        "忍耐",
+        "易损",
+        "伤害强化",
+        "守护"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "meursault_c6597c725bc62abc98ce",
+    "name": "斗牛披风",
+    "sinner": "默尔索",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "色欲": 1,
+      "怠惰": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量",
+        "震颤引爆",
+        "迅捷",
+        "烧伤",
+        "打击威力提升",
+        "暴怒威力提升",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "meursault_c7740c5f71huic5200",
+    "name": "着影挥刀",
+    "sinner": "默尔索",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "傲慢": 4,
+      "嫉妒": 1
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "meursault_c6e34c671b_c871cc5361c62c9",
+    "name": "渴望-蜜卡拉",
+    "sinner": "默尔索",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 4,
+      "傲慢": 3,
+      "嫉妒": 4
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "无差别攻击",
+        "流血",
+        "玫瑰之楔",
+        "不可摧毁的硬币"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 2
+  },
+  {
+    "id": "meursault_c5c06c88abc7c89c788ec7684c8fc7c53bb",
+    "name": "将被粉碎的过去",
+    "sinner": "默尔索",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "色欲": 2,
+      "怠惰": 6,
+      "嫉妒": 1
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "震颤引爆",
+        "伤害强化",
+        "守护",
+        "振幅纠缠",
+        "累积的过去（我方）",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 6,
+    "coinCount": 1
+  },
+  {
+    "id": "hong_lu_c592ac865ac5e7bc5883",
+    "name": "太虚幻境",
+    "sinner": "鸿璐",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "色欲": 1,
+      "忧郁": 5
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "沉沦",
+        "理智值减少效率"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "hong_lu_c7c89hongc6b32c671b",
+    "name": "粉红欲望",
+    "sinner": "鸿璐",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 4,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "破绽",
+        "防御等级降低",
+        "束缚",
+        "色欲易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "hong_lu_c7f8ec5473c82cfc6253",
+    "name": "美味苏打",
+    "sinner": "鸿璐",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴食": 3,
+      "忧郁": 2,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "震颤",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "hong_lu_c4f4ec6ce3",
+    "name": "低泣",
+    "sinner": "鸿璐",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 3,
+      "忧郁": 3,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "防御等级降低",
+        "震颤引爆",
+        "震颤-回响",
+        "振幅转换",
+        "攻击等级降低",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "hong_lu_c5957suo",
+    "name": "套索",
+    "sinner": "鸿璐",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 1,
+      "暴食": 4,
+      "傲慢": 1
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "流血",
+        "迅捷",
+        "套索",
+        "体力恢复降低",
+        "破裂"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 3
+  },
+  {
+    "id": "hong_lu_c6b21c5143c6495c88c2c8005",
+    "name": "次元撕裂者",
+    "sinner": "鸿璐",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴食": 3,
+      "傲慢": 3
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "充能",
+        "迅捷",
+        "次元裂痕",
+        "易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "hong_lu_c6cb8c817ec8150c8680",
+    "name": "沸腾腐蚀",
+    "sinner": "鸿璐",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴食": 6,
+      "忧郁": 1
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "暴食易损",
+        "破裂",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 2,
+    "coinCount": 1
+  },
+  {
+    "id": "hong_lu_c5b81c4f5cc543e",
+    "name": "宁作吾",
+    "sinner": "鸿璐",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 1,
+      "忧郁": 2,
+      "傲慢": 4
+    },
+    "tags": {
+      "damageType": [
+        "突刺",
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "弦惊",
+        "沉沦",
+        "呼吸法",
+        "不可摧毁的硬币",
+        "大弦惊"
+      ],
+      "special": []
+    },
+    "attackCapacity": 4,
+    "coinCount": 2
+  },
+  {
+    "id": "hong_lu_c6c61xuec6ce3c6cea",
+    "name": "污血泣泪",
+    "sinner": "鸿璐",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴食": 5,
+      "忧郁": 1,
+      "嫉妒": 1
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "迅捷",
+        "虚弱",
+        "葬花楔",
+        "不可摧毁的硬币",
+        "暴食伤害强化",
+        "破裂",
+        "突刺伤害强化",
+        "污血"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 2
+  },
+  {
+    "id": "heathcliff_c88f9c5c38c888b",
+    "name": "裹尸袋",
+    "sinner": "希斯克利夫",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "色欲": 2,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "强壮",
+        "迅捷"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "heathcliff_c60b2c60e8c5047c65e5",
+    "name": "悲惨假日",
+    "sinner": "希斯克利夫",
+    "level": "ZAYIN",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴食": 3,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "流血",
+        "沉沦",
+        "迅捷",
+        "烧伤",
+        "充能",
+        "呼吸法",
+        "攻击等级提升",
+        "破裂",
+        "震颤",
+        "防御等级提升"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "heathcliff_aedd",
+    "name": "AEDD",
+    "sinner": "希斯克利夫",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "忧郁": 3,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "充能",
+        "麻痹",
+        "迅捷",
+        "忧郁易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "heathcliff_xiongdan",
+    "name": "凶弹",
+    "sinner": "希斯克利夫",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "傲慢": 3,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量",
+        "流血",
+        "沉沦",
+        "呼吸法",
+        "弹药",
+        "撕裂的回忆"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "heathcliff_c8fc1c5c45c7533c8bf7",
+    "name": "迁居申请",
+    "sinner": "希斯克利夫",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "暴食": 1,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "烧伤",
+        "充能",
+        "束缚",
+        "居民登记微芯片"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 2
+  },
+  {
+    "id": "heathcliff_c7535c7ebfc6746",
+    "name": "电线杆",
+    "sinner": "希斯克利夫",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 3,
+      "色欲": 2,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "充能",
+        "易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "heathcliff_c7a7ac5373c662fc8272",
+    "name": "空即是色",
+    "sinner": "希斯克利夫",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "色欲": 2,
+      "怠惰": 2,
+      "忧郁": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "防御等级降低",
+        "虚弱",
+        "易损",
+        "伤害强化",
+        "防御等级提升"
+      ],
+      "special": []
+    },
+    "attackCapacity": 2,
+    "coinCount": 1
+  },
+  {
+    "id": "heathcliff_c5931c8861c60efc6027",
+    "name": "失衡惯性",
+    "sinner": "希斯克利夫",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 2,
+      "忧郁": 1,
+      "傲慢": 2,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "震颤引爆",
+        "震颤-上弦",
+        "振幅转换",
+        "易损",
+        "怠惰易损",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "heathcliff_c62d8c675f",
+    "name": "拘束",
+    "sinner": "希斯克利夫",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "忧郁": 4,
+      "傲慢": 2,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "强壮",
+        "沉沦",
+        "震颤引爆",
+        "束缚",
+        "攻击等级提升",
+        "缚王御前",
+        "御前",
+        "震颤",
+        "防御等级提升",
+        "忧郁伤害强化"
+      ],
+      "special": []
+    },
+    "attackCapacity": 5,
+    "coinCount": 1
+  },
+  {
+    "id": "ishmael_c6355c9cb8cha",
+    "name": "捕鲸叉",
+    "sinner": "以实玛利",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "暴怒": 2,
+      "忧郁": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "震颤",
+        "震颤引爆",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ishmael_c874dc86c6sha",
+    "name": "蝍蛆杀",
+    "sinner": "以实玛利",
+    "level": "ZAYIN",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 2,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "破裂",
+        "百足剧毒",
+        "攻击等级提升"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "ishmael_c7c89hongc6b32c671b",
+    "name": "粉红欲望",
+    "sinner": "以实玛利",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "色欲": 4
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击等级降低",
+        "粉色丝带",
+        "束缚",
+        "麻痹"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ishmael_c6597c725bc62abc98ce",
+    "name": "斗牛披风",
+    "sinner": "以实玛利",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "色欲": 2,
+      "怠惰": 1
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "烧伤",
+        "暴怒易损",
+        "震颤引爆",
+        "暴怒伤害强化"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ishmael_c5f80c6614",
+    "name": "往昔",
+    "sinner": "以实玛利",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "怠惰": 1,
+      "忧郁": 3
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量",
+        "沉沦",
+        "诅咒",
+        "不速之客（我方）",
+        "山庄的回响",
+        "忧郁易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ishmael_hongc8273c715e",
+    "name": "红艳煞",
+    "sinner": "以实玛利",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 4,
+      "色欲": 2,
+      "嫉妒": 1
+    },
+    "tags": {
+      "damageType": [
+        "突刺",
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "烧伤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ishmael_c7fc5c632f",
+    "name": "翅振",
+    "sinner": "以实玛利",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 1,
+      "暴食": 3,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量",
+        "流血",
+        "强壮",
+        "迅捷",
+        "攻击等级提升",
+        "暴食易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "ishmael_c5723c8bdemengc9b47",
+    "name": "圣诞梦魇",
+    "sinner": "以实玛利",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 4,
+      "暴食": 1,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "震颤",
+        "震颤引爆"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "ishmael_c6d8cc6f6ec60b2c6b4c",
+    "name": "涌潮悲歌",
+    "sinner": "以实玛利",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "忧郁": 4,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "震颤引爆",
+        "忧郁伤害强化",
+        "不可摧毁的硬币",
+        "打击伤害强化",
+        "震颤",
+        "束缚",
+        "忧郁易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 2
+  },
+  {
+    "id": "ishmael_c76f2c76ee",
+    "name": "盲目",
+    "sinner": "以实玛利",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "忧郁": 3,
+      "傲慢": 3,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "突刺威力提升",
+        "沉沦",
+        "迅捷",
+        "充能",
+        "呼吸法",
+        "傲慢易损",
+        "伤害强化",
+        "攻击等级提升"
+      ],
+      "special": []
+    },
+    "attackCapacity": 5,
+    "coinCount": 1
+  },
+  {
+    "id": "rodion_c8986c6c34c96beshou",
+    "name": "覆水难收",
+    "sinner": "罗佳",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "忧郁": 1,
+      "傲慢": 3
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "流血",
+        "理智值减少效率",
+        "理智值恢复效率"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "rodion_c6b65c5165c665ac971e",
+    "name": "步入晚霞",
+    "sinner": "罗佳",
+    "level": "ZAYIN",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "色欲": 3
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "rodion_c51b0c7ed3zhic722a",
+    "name": "冰结之爪",
+    "sinner": "罗佳",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "忧郁": 5,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "震颤引爆",
+        "束缚",
+        "虚弱"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "rodion_c6cb8c817ec8150c8680",
+    "name": "沸腾腐蚀",
+    "sinner": "罗佳",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 2,
+      "忧郁": 2,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺",
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "防御等级降低",
+        "震颤引爆",
+        "束缚",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 2,
+    "coinCount": 1
+  },
+  {
+    "id": "rodion_c7ec8c672bhuoc67f4zhiguang",
+    "name": "终末火柴之光",
+    "sinner": "罗佳",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 3,
+      "傲慢": 2,
+      "嫉妒": 1
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "烧伤",
+        "暴怒易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "rodion_c6267c884c",
+    "name": "执行",
+    "sinner": "罗佳",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 4,
+      "傲慢": 3
+    },
+    "tags": {
+      "damageType": [
+        "打击",
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "怠惰易损",
+        "震颤引爆"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "rodion_c8bc5c5492zhiding",
+    "name": "诅咒之钉",
+    "sinner": "罗佳",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "傲慢": 1,
+      "嫉妒": 4
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "流血",
+        "防御等级降低",
+        "诅咒",
+        "攻击等级提升",
+        "尖钉（我方）"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "rodion_xuec6b32",
+    "name": "血欲",
+    "sinner": "罗佳",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "色欲": 3,
+      "傲慢": 3,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量",
+        "流血"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 2
+  },
+  {
+    "id": "rodion_zhic5b9ac5ba1c5224",
+    "name": "指定审判",
+    "sinner": "罗佳",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 7,
+      "傲慢": 3
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "炙热鸟笼",
+        "暴怒伤害强化",
+        "烧伤",
+        "不可摧毁的硬币",
+        "暴怒威力提升"
+      ],
+      "special": []
+    },
+    "attackCapacity": 4,
+    "coinCount": 1
+  },
+  {
+    "id": "sinclair_c667ac6167c7684c9752c679d",
+    "name": "智慧的青枝",
+    "sinner": "辛克莱",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "暴怒": 1,
+      "暴食": 3
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "强壮",
+        "伤害强化",
+        "破裂",
+        "守护"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "sinclair_c4f4ec6ce3",
+    "name": "低泣",
+    "sinner": "辛克莱",
+    "level": "ZAYIN",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 1,
+      "怠惰": 2,
+      "忧郁": 3
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "挑衅值",
+        "泪珠",
+        "守护",
+        "沉沦"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "sinclair_c8febc8fd1zhic65e5",
+    "name": "迫近之日",
+    "sinner": "辛克莱",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 3,
+      "色欲": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "流血",
+        "强壮"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "sinclair_yic751fc7096c83dc",
+    "name": "一生炖菜",
+    "sinner": "辛克莱",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 3,
+      "色欲": 2,
+      "暴食": 1
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量",
+        "烧伤",
+        "迅捷",
+        "罪孽碎片获取量提升"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "sinclair_c8bc5c5492zhiding",
+    "name": "诅咒之钉",
+    "sinner": "辛克莱",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "傲慢": 2,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量",
+        "流血",
+        "拼点威力提升",
+        "防御等级降低",
+        "诅咒",
+        "忍耐",
+        "守护",
+        "尖钉（我方）",
+        "拼点威力降低",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "sinclair_tideng",
+    "name": "提灯",
+    "sinner": "辛克莱",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 1,
+      "暴食": 4,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "防御等级降低",
+        "破裂"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "sinclair_9c7ae02jie",
+    "name": "9章2节",
+    "sinner": "辛克莱",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "色欲": 5,
+      "嫉妒": 1
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "烧伤",
+        "破绽",
+        "色欲易损",
+        "虚弱"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "sinclair_c548cc58f0",
+    "name": "和声",
+    "sinner": "辛克莱",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 3,
+      "色欲": 2,
+      "怠惰": 1,
+      "傲慢": 1,
+      "嫉妒": 1
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "sinclair_c6c61xuec6ce3c6cea",
+    "name": "污血泣泪",
+    "sinner": "辛克莱",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "暴食": 6,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "破裂",
+        "葬花针",
+        "不许",
+        "易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 5,
+    "coinCount": 2
+  },
+  {
+    "id": "outis_c81f4c667ac6167yuc82e6c96be",
+    "name": "致智慧与苦难",
+    "sinner": "奥提斯",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "怠惰": 2,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "伤害强化",
+        "破裂"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "outis_c6211c51fac526ac5200cff0cc4f60c5462cff1f",
+    "name": "我出剪刀，你呢？",
+    "sinner": "奥提斯",
+    "level": "ZAYIN",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 1,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "诅咒",
+        "不可摧毁的硬币",
+        "威力降低"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "outis_c7a7ac5373c662fc8272",
+    "name": "空即是色",
+    "sinner": "奥提斯",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "怠惰": 2,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "色欲伤害强化",
+        "强壮",
+        "色欲易损",
+        "易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "outis_c72d0yu",
+    "name": "狐雨",
+    "sinner": "奥提斯",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 2,
+      "暴食": 2,
+      "忧郁": 1
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "震颤引爆",
+        "呼吸法",
+        "守护",
+        "破裂",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "outis_heic6a80c679dc5e72",
+    "name": "黑檀枝干",
+    "sinner": "奥提斯",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "暴食": 3,
+      "忧郁": 1,
+      "傲慢": 4
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "流血",
+        "束缚",
+        "暴食易损",
+        "破裂",
+        "突刺伤害强化"
+      ],
+      "special": []
+    },
+    "attackCapacity": 5,
+    "coinCount": 1
+  },
+  {
+    "id": "outis_c60b2c60e8c5047c65e5",
+    "name": "悲惨假日",
+    "sinner": "奥提斯",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "怠惰": 1,
+      "傲慢": 3,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "流血",
+        "沉沦",
+        "震颤引爆",
+        "易损",
+        "烧伤",
+        "伤害强化",
+        "破裂",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "outis_c6b21c5143c6495c88c2c8005",
+    "name": "次元撕裂者",
+    "sinner": "奥提斯",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "忧郁": 3,
+      "傲慢": 1,
+      "嫉妒": 4
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "载荷",
+        "充能",
+        "次元裂痕",
+        "迅捷"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "outis_modan",
+    "name": "魔弹",
+    "sinner": "奥提斯",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "色欲": 2,
+      "傲慢": 4
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "无差别攻击",
+        "第一发魔弹",
+        "第三发魔弹",
+        "烧伤",
+        "第四发魔弹",
+        "魔弹",
+        "第七发魔弹",
+        "第五发魔弹",
+        "黑焰",
+        "第二发魔弹",
+        "第六发魔弹"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "outis_c62d8c675f",
+    "name": "拘束",
+    "sinner": "奥提斯",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "色欲": 1,
+      "怠惰": 4,
+      "傲慢": 4
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "震颤",
+        "震颤引爆",
+        "震颤-裂痕",
+        "振幅转换"
+      ],
+      "special": []
+    },
+    "attackCapacity": 5,
+    "coinCount": 1
+  },
+  {
+    "id": "gregor_c67d0yic65e5cff0cc7a81c7136",
+    "name": "某一日，突然",
+    "sinner": "格里高尔",
+    "level": "ZAYIN",
+    "isBaseEgo": true,
+    "sinCost": {
+      "色欲": 3,
+      "忧郁": 1
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "流血",
+        "沉沦",
+        "烧伤",
+        "守护",
+        "理智值减少效率",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "gregor_c969cc773cc628ac620f",
+    "name": "障眼把戏",
+    "sinner": "格里高尔",
+    "level": "ZAYIN",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 1,
+      "暴食": 3
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "流血",
+        "震颤引爆",
+        "蛆虫",
+        "麻痹",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "gregor_tideng",
+    "name": "提灯",
+    "sinner": "格里高尔",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 1,
+      "暴食": 4
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "破裂"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "gregor_c5f80c6614",
+    "name": "往昔",
+    "sinner": "格里高尔",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 2,
+      "忧郁": 4
+    },
+    "tags": {
+      "damageType": [
+        "突刺",
+        "打击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "沉沦",
+        "诅咒",
+        "忧郁易损"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "gregor_aedd",
+    "name": "AEDD",
+    "sinner": "格里高尔",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "忧郁": 3,
+      "嫉妒": 3
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "无差别攻击",
+        "攻击容量",
+        "充能",
+        "电流释放"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  },
+  {
+    "id": "gregor_zhuangyanaidao",
+    "name": "庄严哀悼",
+    "sinner": "格里高尔",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "色欲": 1,
+      "怠惰": 2,
+      "忧郁": 2,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "沉沦",
+        "强壮"
+      ],
+      "special": []
+    },
+    "attackCapacity": 3,
+    "coinCount": 1
+  },
+  {
+    "id": "gregor_c5723c8bdemengc9b47",
+    "name": "圣诞梦魇",
+    "sinner": "格里高尔",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "怠惰": 2,
+      "暴食": 2,
+      "忧郁": 2,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "强壮",
+        "防御等级降低",
+        "震颤引爆",
+        "沉沦",
+        "虚弱",
+        "攻击等级降低",
+        "震颤"
+      ],
+      "special": []
+    },
+    "attackCapacity": 5,
+    "coinCount": 1
+  },
+  {
+    "id": "gregor_c8346c68d8huayuan",
+    "name": "荆棘花园",
+    "sinner": "格里高尔",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "色欲": 2,
+      "怠惰": 2,
+      "暴食": 2,
+      "忧郁": 2,
+      "傲慢": 2,
+      "嫉妒": 2
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "虚弱",
+        "易损",
+        "伤害强化",
+        "威力降低",
+        "威力提升",
+        "破裂",
+        "伤害弱化",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 4,
+    "coinCount": 1
+  },
+  {
+    "id": "gregor_c672ac7167c8000c7684c8363guang",
+    "name": "未照耀的荣光",
+    "sinner": "格里高尔",
+    "level": "WAW",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 2,
+      "怠惰": 3,
+      "傲慢": 2
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "攻击容量",
+        "无差别攻击",
+        "震颤引爆",
+        "烧伤",
+        "伤害强化",
+        "攻击等级提升",
+        "不可摧毁的硬币",
+        "守护",
+        "挑衅值",
+        "震颤",
+        "防御等级提升",
+        "鞘中人"
+      ],
+      "special": []
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
+  }
+]

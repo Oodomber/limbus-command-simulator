@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  width:100vw;height:100vh;
+  background:rgba(20,0,0,0.92);
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;
+  animation: pulse 0.6s infinite alternate;
+  cursor:none;user-select:none;overflow:hidden;
+}
+@keyframes pulse{
+  from{background:rgba(25,0,0,0.9)}
+  to{background:rgba(40,0,0,0.95)}
+}
+.main{
+  font-size:80px;font-weight:bold;color:#f00;
+  font-family:'SimHei','Microsoft YaHei',sans-serif;
+  text-shadow:0 0 40px #f00,0 0 80px #900,0 0 120px #600;
+  animation: glow 0.3s infinite alternate;
+  margin-bottom:30px;z-index:10;
+}
+@keyframes glow{
+  from{text-shadow:0 0 40px #f00,0 0 80px #900}
+  to{text-shadow:0 0 80px #f00,0 0 160px #c00,0 0 240px #600}
+}
+.sub{
+  font-size:26px;color:#f66;
+  font-family:'SimHei','Microsoft YaHei',sans-serif;
+  text-shadow:0 0 10px #f00;z-index:10;
+}
+.warning{
+  position:absolute;color:#c00;
+  font-weight:bold;
+  font-family:'SimHei','Microsoft YaHei',sans-serif;
+  text-shadow:0 0 15px #900,0 0 30px #600;
+  white-space:nowrap;z-index:5;
+  animation: flicker 0.2s infinite alternate;
+}
+@keyframes flicker{from{opacity:0.6}to{opacity:1}}
+</style></head>
+<body>
+<div class="main"> 业</div>
+<div class="sub">指令已标记 · 不可违抗</div>
+<div id="container"></div>
+<script>
+const c=document.getElementById('container');
+const texts=[
+  '业已失控','指令反噬','食指注视着你','不可违抗','代价将至',
+  '契约破裂','你已被标记','业障累积','回头','服从或承受',
+  '罪孽深重','勿忘指令','业力缠绕','代价不可逆','警告','赎罪',
+  '你逃不掉的','食指无处不在','每一次违抗都被记录','代价终将到来',
+  '你以为你能躲开？','指令即是命运','无人能逃脱业的审判',
+  '你的选择早已注定','回头看看','你听见了吗','那是业的声音',
+  '每一道指令都是枷锁','业火焚身','不可饶恕','代价已至',
+  '服从是唯一的出路','食指在看着你的一举一动','你背叛了指令',
+];
+const scramble='日月金木水火土天地玄黄宇宙洪荒龍鳳鬼神乾坤陰陽風雲雷電山澤河海春秋冬夏仁義禮智忠孝廉恥文武劍刀十百千万';
+
+// Place 15 warnings spread across grid zones
+const zones=[];
+for(let row=0;row<4;row++){
+  for(let col=0;col<4;col++){
+    zones.push({x:col*24+Math.random()*18, y:row*24+Math.random()*18});
+  }
+}
+// Shuffle zones
+for(let i=zones.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[zones[i],zones[j]]=[zones[j],zones[i]];}
+
+const batchDefs=[
+  {count:5, minDur:4000, maxDur:5000},   // fast
+  {count:5, minDur:5000, maxDur:6000},   // medium
+  {count:5, minDur:6000, maxDur:8000},   // slow
+];
+
+// Shuffle texts and pick 15 unique
+for(let i=texts.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[texts[i],texts[j]]=[texts[j],texts[i]];}
+const chosen=texts.slice(0,15);
+
+const warnings=[];
+let batchOffset=0;
+batchDefs.forEach(def=>{
+  for(let i=0;i<def.count;i++){
+    const idx=batchOffset+i;
+    const zone=zones[idx];
+    const el=document.createElement('div');
+    el.className='warning';
+    el.style.left=zone.x+'%';
+    el.style.top=zone.y+'%';
+    el.style.fontSize=(10+Math.random()*90)+'px';
+    if(parseInt(el.style.fontSize)>60) el.style.letterSpacing='4px';
+    el.style.animationDelay=(Math.random()*0.3)+'s';
+    el.textContent='';
+    c.appendChild(el);
+    const text=chosen[idx];
+    const duration=def.minDur+Math.random()*(def.maxDur-def.minDur);
+    const charDelay=duration/text.length;
+    warnings.push({el,text,idx:0,chars:[],interval:charDelay});
+  }
+  batchOffset+=def.count;
+});
+
+// Prefill chars with empty slots
+warnings.forEach(w=>{ for(let i=0;i<w.text.length;i++) w.chars[i]=''; });
+
+// Slow advance + fast scramble flicker
+warnings.forEach(w=>{
+  w.advanceTimer=setInterval(()=>{
+    if(w.idx<w.text.length){
+      w.idx++;
+    }
+    if(w.idx>=w.text.length){
+      w.el.textContent=w.text;
+      clearInterval(w.advanceTimer);
+      clearInterval(w.flickerTimer);
+    }
+  },w.interval);
+  w.flickerTimer=setInterval(()=>{
+    if(w.idx>0&&w.idx<=w.text.length){
+      for(let i=0;i<w.idx;i++) w.chars[i]=scramble[Math.floor(Math.random()*scramble.length)];
+      w.el.textContent=w.chars.slice(0,w.idx).join('');
+    }
+  },50);
+});
+
+// ── Audio ──
+const base=location.href.replace(/scare\.html.*$/,'')+'../resources/sounds/';
+const sounds=['bibi_long.mp3','bibi_long.mp3','bibi_long.mp3','bibi_short.mp3','bibi_long.mp3','bibi_long.mp3','bibi_short.mp3'];
+function playSound(){
+  try{
+    const a=new Audio(base+sounds[Math.floor(Math.random()*sounds.length)]);
+    a.volume=0.5+Math.random()*0.5;
+    a.play().catch(()=>{});
+  }catch(e){}
+}
+for(let i=0;i<8;i++) setTimeout(playSound,i*80);
+const soundTimer=setInterval(playSound,200+Math.random()*400);
+setTimeout(()=>clearInterval(soundTimer),9800);
+</script>
+</body>
+</html>

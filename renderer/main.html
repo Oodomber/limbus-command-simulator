@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; img-src 'self' file:; media-src 'self' file:">
+  <title>谨遵指令 - 控制面板</title>
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <audio id="sfx-bibi-long" src="../resources/sounds/bibi_long.mp3" preload="auto"></audio>
+  <audio id="sfx-bibi-short" src="../resources/sounds/bibi_short.mp3" preload="auto"></audio>
+  <audio id="sfx-stage-change" src="../resources/sounds/stage_change.mp3" preload="auto"></audio>
+  <div id="app">
+    <!-- Sidebar -->
+    <nav id="sidebar">
+      <div class="nav-header">
+        <span class="nav-title">谨遵指令</span>
+        <span class="nav-subtitle">The Index</span>
+      </div>
+      <ul class="nav-items">
+        <li data-tab="identities" class="active">人格管理</li>
+        <li data-tab="egos">EGO管理</li>
+        <li data-tab="phases">环节启用</li>
+        <li data-tab="achievements">成就一览</li>
+        <li data-tab="settings">设置</li>
+      </ul>
+      <div class="nav-global-stats">
+        <div class="global-stat-item"><img src="../resources/images/指令加护.png" class="stat-icon"> 累计加护: <strong id="global-blessing">0</strong></div>
+        <div class="global-stat-item"><img src="../resources/images/业.png" class="stat-icon"> 累计业: <strong id="global-karma">0</strong></div>
+      </div>
+      <div id="finger-logo" class="finger-logo" title="连点三次进入开发者页面">
+        <img class="logo-img" src="../resources/images/index.png" alt="logo" onerror="this.style.display='none';this.nextElementSibling.style.display='block';">
+        <div class="logo-icon" style="display:none;">☝</div>
+        <div class="logo-label">食指</div>
+      </div>
+    </nav>
+
+    <!-- Main content area -->
+    <main id="content">
+      <!-- Run Controls -->
+      <div id="run-bar">
+        <button id="btn-start-run" class="btn-run">谨遵指令</button>
+        <span id="run-stats" class="run-stats hidden">
+          <span class="stat-blessing"><img src="../resources/images/指令加护.png" class="stat-icon"> 指令加护: <strong id="stat-blessing">0</strong></span>
+          <span class="stat-karma"><img src="../resources/images/业.png" class="stat-icon"> 业: <strong id="stat-karma">0</strong></span>
+        </span>
+        <button id="btn-manual-instruct" class="btn-manual" style="display:none;" title="请使用传呼机📟按钮">
+          📟 请求指令
+        </button>
+        <div class="run-actions hidden" id="run-actions">
+          <button id="btn-milestone-clear" class="btn-small" title="镜牢通关">✅ 通关</button>
+          <button id="btn-history" class="btn-small">📋 历史</button>
+        </div>
+      </div>
+
+      <!-- Tab: Identities -->
+      <div id="panel-identities" class="tab-panel active">
+        <div class="panel-header">
+          <h2>人格管理</h2>
+          <div class="panel-toolbar">
+            <label>罪人筛选:
+              <select id="filter-sinner">
+                <option value="all">全部</option>
+              </select>
+            </label>
+            <label>稀有度:
+              <select id="filter-rarity">
+                <option value="all">全部</option>
+                <option value="一灯">一灯</option>
+                <option value="二灯">二灯</option>
+                <option value="三灯">三灯</option>
+              </select>
+            </label>
+            <label>效果:
+              <select id="filter-effect">
+                <option value="all">全部</option>
+                <option value="烧伤">烧伤</option>
+                <option value="流血">流血</option>
+                <option value="震颤">震颤</option>
+                <option value="破裂">破裂</option>
+                <option value="沉沦">沉沦</option>
+                <option value="呼吸法">呼吸</option>
+                <option value="充能">充能</option>
+              </select>
+            </label>
+            <span class="pool-selector">
+              <label>活动人格池:
+                <select id="active-pool">
+                  <option value="">无</option>
+                </select>
+              </label>
+              <button id="btn-new-pool" class="btn-small">新建池</button>
+              <button id="btn-edit-pool" class="btn-small">编辑池</button>
+              <button id="btn-identity-sel-all" class="btn-tiny">全选</button>
+              <button id="btn-identity-sel-none" class="btn-tiny">全不选</button>
+              <button id="btn-identity-sel-invert" class="btn-tiny">反选</button>
+            </span>
+            <span id="identity-count" class="count-badge">0条</span>
+          </div>
+        </div>
+        <!-- Pool edit bar (hidden until editing a pool) -->
+        <div id="pool-edit-bar" class="pool-edit-bar hidden">
+          <span id="pool-edit-label" style="color:#ffd700;">编辑池</span>
+          <button id="btn-pool-save" class="btn-small" style="background:#4caf50;color:#fff;border-color:#4caf50;">💾 保存</button>
+          <button id="btn-pool-cancel" class="btn-small">取消</button>
+        </div>
+        <!-- Pool quick-load row -->
+        <div id="pool-list-row" style="padding:6px 0;border-bottom:1px solid #222;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;">
+          <span style="color:#666;font-size:0.75em;white-space:nowrap;padding-top:4px;">池:</span>
+          <div id="pool-list" style="display:flex;flex-wrap:wrap;gap:5px;flex:1;min-width:0;"></div>
+        </div>
+        <div id="identity-table-container" class="table-container" style="margin-top:0;">
+          <table id="identity-table">
+            <thead>
+              <tr>
+                <th class="col-owned">拥有</th>
+                <th class="col-name">名称</th>
+                <th class="col-sinner">罪人</th>
+                <th class="col-rarity">稀有度</th>
+                <th class="col-tags">标签</th>
+              </tr>
+            </thead>
+            <tbody id="identity-tbody">
+              <tr><td colspan="5" class="loading">正在加载数据...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: EGOs -->
+      <div id="panel-egos" class="tab-panel">
+        <div class="panel-header">
+          <h2>EGO管理</h2>
+          <div class="panel-toolbar">
+            <label>罪人筛选:
+              <select id="filter-ego-sinner">
+                <option value="all">全部</option>
+              </select>
+            </label>
+            <label>等级:
+              <select id="filter-ego-level">
+                <option value="all">全部</option>
+                <option value="ZAYIN">ZAYIN</option>
+                <option value="TETH">TETH</option>
+                <option value="HE">HE</option>
+                <option value="WAW">WAW</option>
+                <option value="ALEPH">ALEPH</option>
+              </select>
+            </label>
+            <span class="pool-selector">
+              <label>活动EGO池:
+                <select id="active-ego-pool">
+                  <option value="">无</option>
+                </select>
+              </label>
+              <button id="btn-new-ego-pool" class="btn-small">新建池</button>
+              <button id="btn-edit-ego-pool" class="btn-small">编辑池</button>
+              <button id="btn-ego-sel-all" class="btn-tiny">全选</button>
+              <button id="btn-ego-sel-none" class="btn-tiny">全不选</button>
+              <button id="btn-ego-sel-invert" class="btn-tiny">反选</button>
+            </span>
+            <span id="ego-count" class="count-badge">0条</span>
+          </div>
+        </div>
+        <!-- EGO Pool edit bar -->
+        <div id="ego-pool-edit-bar" class="pool-edit-bar hidden">
+          <span id="ego-pool-edit-label" style="color:#ffd700;">编辑池</span>
+          <button id="btn-ego-pool-save" class="btn-small" style="background:#4caf50;color:#fff;border-color:#4caf50;">💾 保存</button>
+          <button id="btn-ego-pool-cancel" class="btn-small">取消</button>
+        </div>
+        <!-- EGO Pool quick-load row -->
+        <div id="ego-pool-list-row" style="padding:6px 0;border-bottom:1px solid #222;display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;">
+          <span style="color:#666;font-size:0.75em;white-space:nowrap;padding-top:4px;">池:</span>
+          <div id="ego-pool-list" style="display:flex;flex-wrap:wrap;gap:5px;flex:1;min-width:0;"></div>
+        </div>
+        <div class="table-container">
+          <table id="ego-table">
+            <thead>
+              <tr>
+                <th class="col-owned">拥有</th>
+                <th class="col-name">名称</th>
+                <th class="col-sinner">罪人</th>
+                <th class="col-rarity">等级</th>
+                <th class="col-tags">伤害类型</th>
+              </tr>
+            </thead>
+            <tbody id="ego-tbody">
+              <tr><td colspan="5" class="loading">正在加载数据...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab: Phases -->
+      <div id="panel-phases" class="tab-panel">
+        <div class="panel-header">
+          <h2>环节启用</h2>
+        </div>
+        <div class="phase-list" id="phase-checkboxes">
+          <p class="loading">正在加载...</p>
+        </div>
+      </div>
+
+      <!-- Tab: Achievements -->
+      <div id="panel-achievements" class="tab-panel">
+        <div class="panel-header">
+          <h2>成就一览</h2>
+        </div>
+        <div class="achievement-list" id="achievement-list">
+          <p class="loading">正在加载...</p>
+        </div>
+      </div>
+
+      <!-- Tab: Settings -->
+      <div id="panel-settings" class="tab-panel">
+        <div class="panel-header">
+          <h2>设置</h2>
+        </div>
+        <div class="settings-form">
+          <div class="setting-group">
+            <h3>游戏模式</h3>
+            <label>
+              当前模式:
+              <select id="setting-game-mode">
+                <option value="normal">普通</option>
+                <option value="hard" selected>困难</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="setting-group">
+            <h3>快捷键</h3>
+            <p>F9: 手动请求指令</p>
+            <p>F10: 显示/隐藏传呼机</p>
+            <p>F11: 否决弹幕投票（暂未实装）</p>
+          </div>
+
+          <div class="setting-group">
+            <h3>传呼机</h3>
+            <label>
+              透明度:
+              <input type="range" id="setting-opacity" min="50" max="100" value="90" step="1">
+              <span id="opacity-value">90%</span>
+            </label>
+            <label>
+              缩放:
+              <input type="range" id="setting-scale" min="50" max="150" value="100" step="5">
+              <span id="scale-value">100%</span>
+            </label>
+          </div>
+
+          <div class="setting-group">
+            <h3>音效</h3>
+            <label>
+              <input type="checkbox" id="setting-sound" checked>
+              启用音效
+            </label>
+          </div>
+
+          <div class="setting-group">
+            <h3>成就通知</h3>
+            <label>
+              <input type="checkbox" id="setting-notify" checked>
+              成就解锁时弹窗通知
+            </label>
+          </div>
+
+          <div class="setting-group">
+            <h3>历史记录上限</h3>
+            <label>
+              缓存条数:
+              <input type="number" id="setting-history-limit" min="50" max="1000" step="50" value="200">
+            </label>
+          </div>
+
+          <div class="setting-group">
+            <h3>数据管理</h3>
+            <button id="btn-export-data" class="btn-small">导出数据</button>
+            <button id="btn-import-data" class="btn-small">导入数据</button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Achievement toast -->
+  <div id="toast-container"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

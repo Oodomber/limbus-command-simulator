@@ -1,0 +1,113 @@
+[
+  {
+    "id": "first_step",
+    "name": "迈出第一步",
+    "description": "完成第一次指令",
+    "condition": { "type": "completeInstruction", "count": 1 },
+    "unlockText": "你已踏上遵循指令之路。"
+  },
+  {
+    "id": "obedient",
+    "name": "顺从者",
+    "description": "累计完成10条指令",
+    "condition": { "type": "completeInstruction", "count": 10 },
+    "unlockText": "你对指令的忠诚正在增长。"
+  },
+  {
+    "id": "faithful",
+    "name": "忠诚信徒",
+    "description": "累计完成50条指令",
+    "condition": { "type": "completeInstruction", "count": 50 },
+    "unlockText": "指令已成为你的一部分。"
+  },
+  {
+    "id": "god_instruction",
+    "name": "指令神了",
+    "description": "累计完成100条指令",
+    "condition": { "type": "completeInstruction", "count": 100 },
+    "unlockText": "你已深得指令之精髓。"
+  },
+  {
+    "id": "rebel_start",
+    "name": "微小的反抗",
+    "description": "首次违抗指令",
+    "condition": { "type": "failInstruction", "count": 1 },
+    "unlockText": "偶尔的反抗是人性的一部分。"
+  },
+  {
+    "id": "karma_collector",
+    "name": "业力缠身",
+    "description": "累计失败20条指令",
+    "condition": { "type": "failInstruction", "count": 20 },
+    "unlockText": "你的业已深重。"
+  },
+  {
+    "id": "first_clear",
+    "name": "初次通关",
+    "description": "通关1次镜牢",
+    "condition": { "type": "clearMirror", "count": 1 },
+    "unlockText": "第一次总是最难忘的。"
+  },
+  {
+    "id": "veteran",
+    "name": "镜牢老兵",
+    "description": "通关5次镜牢",
+    "condition": { "type": "clearMirror", "count": 5 },
+    "unlockText": "你已是镜牢的常客。"
+  },
+  {
+    "id": "blessed_run",
+    "name": "加护之局",
+    "description": "单次镜牢中获得10点指令加护",
+    "condition": { "type": "blessingRun", "count": 10 },
+    "unlockText": "食指的加护庇佑着你。"
+  },
+  {
+    "id": "cursed_run",
+    "name": "业火之局",
+    "description": "单次镜牢中积累20点业",
+    "condition": { "type": "karmaRun", "count": 20 },
+    "unlockText": "火的洗礼。"
+  },
+  {
+    "id": "coward",
+    "name": "谨慎为上",
+    "description": "累计拒绝3次隐藏BOSS",
+    "condition": { "type": "refuseHiddenBoss", "count": 3 },
+    "unlockText": "有时候，撤退也是一种智慧。"
+  },
+  {
+    "id": "reckless",
+    "name": "无畏者",
+    "description": "在第一层倒下3次",
+    "condition": { "type": "dieFirstFloor", "count": 3 },
+    "unlockText": "勇气可嘉，但准备不足。"
+  },
+  {
+    "id": "devoted",
+    "name": "虔诚者",
+    "description": "累计获得50点全局指令加护",
+    "condition": { "type": "blessingGlobal", "count": 50 },
+    "unlockText": "你的虔诚已得到证明。"
+  },
+  {
+    "id": "sinner_mark",
+    "name": "罪人之印",
+    "description": "累计积累30点全局业",
+    "condition": { "type": "karmaGlobal", "count": 30 },
+    "unlockText": "你的业已经无法忽视。"
+  },
+  {
+    "id": "soldier",
+    "name": "指令的士兵",
+    "description": "累计完成200条指令，且通关10次镜牢",
+    "condition": {
+      "type": "and",
+      "conditions": [
+        { "type": "completeInstruction", "count": 200 },
+        { "type": "clearMirror", "count": 10 }
+      ]
+    },
+    "unlockText": "你是食指最忠诚的士兵。"
+  }
+]

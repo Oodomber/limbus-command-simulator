@@ -1,0 +1,39 @@
+{
+  "name": "limbus-command-simulator",
+  "version": "1.0.0",
+  "description": "边狱巴士 指令模拟器 — The Index Command Simulator for Limbus Company",
+  "author": "Unknown",
+  "license": "MIT",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "fix-data": "node tools/fix-data.js"
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0"
+  },
+  "devDependencies": {
+    "electron": "^33.4.11",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.limbus.command-simulator",
+    "productName": "谨遵指令",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "src/**",
+      "renderer/**",
+      "data/**",
+      "resources/**"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "resources/icon.png"
+    }
+  }
+}

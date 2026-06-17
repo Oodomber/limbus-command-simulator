@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self' data:; img-src 'self' file:">
+  <title>传呼机</title>
+  <link rel="stylesheet" href="css/overlay.css">
+</head>
+<body>
+  <!-- Preloaded sound effects -->
+  <audio id="sfx-bibi-long" src="../resources/sounds/bibi_long.mp3" preload="auto"
+    onerror="console.error('bibi_long load failed')" onloadeddata="console.log('bibi_long loaded')"></audio>
+  <audio id="sfx-bibi-short" src="../resources/sounds/bibi_short.mp3" preload="auto"
+    onerror="console.error('bibi_short load failed')" onloadeddata="console.log('bibi_short loaded')"></audio>
+  <audio id="sfx-stage-change" src="../resources/sounds/stage_change.mp3" preload="auto"
+    onerror="console.error('stage_change load failed')" onloadeddata="console.log('stage_change loaded')"></audio>
+  <div id="pager">
+    <!-- Top bar: logo + stats -->
+    <div id="pager-topbar" style="-webkit-app-region: drag;">
+      <div id="pager-logo"><img src="../resources/images/index.png" style="width:20px;height:20px;object-fit:contain;" onerror="this.style.display='none';this.parentElement.textContent='☝';"></div>
+      <span id="pager-stats">
+        <span class="pager-stat"><img src="../resources/images/指令加护.png" class="pager-stat-icon"><span id="pager-blessing">0</span></span>
+        <span class="pager-stat"><img src="../resources/images/业.png" class="pager-stat-icon"><span id="pager-karma">0</span></span>
+      </span>
+      <div id="pager-window-controls" style="-webkit-app-region: no-drag; display:flex; gap:4px; align-items:center;">
+        <button id="pager-formation" title="编队排序" style="margin-right:8px;">📋</button>
+        <button id="pager-request" title="请求指令 (F9)">📟</button>
+        <button id="pager-close" title="关闭（可通过F10重新打开）" style="margin-left:8px;">✕</button>
+      </div>
+    </div>
+
+    <!-- Display area -->
+    <div id="pager-display">
+      <span id="pager-text" class="waiting">********</span>
+      <span id="pager-cursor" class="cursor-blink">█</span>
+    </div>
+
+    <!-- Guidance nav (for batch guidance instructions) -->
+    <div id="pager-guidance-nav" class="hidden">
+      <span id="guidance-info" style="color:#888;font-size:12px;"></span>
+      <button id="btn-guidance-prev" class="pager-btn nav">◀ 上一条</button>
+      <button id="btn-guidance-next" class="pager-btn nav">下一条 ▶</button>
+      <button id="btn-guidance-dismiss" class="pager-btn nav dismiss">完成阅读</button>
+    </div>
+
+    <!-- Action buttons (for non-guidance instructions) -->
+    <div id="pager-buttons" class="hidden">
+      <button id="btn-complete" class="pager-btn complete">✓ 完成</button>
+      <button id="btn-fail" class="pager-btn fail">✗ 失败</button>
+    </div>
+
+    <!-- Phase picker overlay (in-pager modal) -->
+    <div id="pager-phase-picker" class="hidden">
+      <div id="pager-phase-picker-bg"></div>
+      <div id="pager-phase-picker-box">
+        <h3 id="pager-phase-title">选择环节</h3>
+        <div id="pager-phase-list"></div>
+        <div id="pager-phase-actions">
+          <button id="pager-phase-cancel" class="pager-btn nav">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/overlay.js"></script>
+</body>
+</html>

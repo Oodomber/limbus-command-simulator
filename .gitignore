@@ -1,0 +1,7 @@
+node_modules/
+dist/
+out/
+.cache/
+*.log
+tools/relics_api.json
+tools/relics_page1.html

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "starlight_01",
+    "name": "力量星光",
+    "maxLevel": 2
+  },
+  {
+    "id": "starlight_02",
+    "name": "耐力星光",
+    "maxLevel": 2
+  },
+  {
+    "id": "starlight_03",
+    "name": "敏捷星光",
+    "maxLevel": 2
+  },
+  {
+    "id": "starlight_04",
+    "name": "生命星光",
+    "maxLevel": 2
+  },
+  {
+    "id": "starlight_05",
+    "name": "守护星光",
+    "maxLevel": 2
+  },
+  {
+    "id": "starlight_06",
+    "name": "攻击星光",
+    "maxLevel": 2
+  },
+  {
+    "id": "starlight_07",
+    "name": "防御星光",
+    "maxLevel": 2
+  },
+  {
+    "id": "starlight_08",
+    "name": "速度星光",
+    "maxLevel": 2
+  },
+  {
+    "id": "starlight_09",
+    "name": "恢复星光",
+    "maxLevel": 2
+  },
+  {
+    "id": "starlight_10",
+    "name": "幸运星光",
+    "maxLevel": 2
+  }
+]
