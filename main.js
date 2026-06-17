@@ -20,6 +20,7 @@ let overlayWindow = null;
 let historyWindow = null;
 let formationWindow = null;
 let weaverWindow = null;
+let isQuitting = false;
 let hideOverlayTimeout = null;
 let freeInstructionTimer = null;
 let karmaScareTriggered = false;  // one-time karma scare flag
@@ -294,6 +295,7 @@ function createOverlayWindow() {
 
   // Prevent close — minimize instead
   overlayWindow.on('close', (e) => {
+    if (isQuitting) return; // allow actual close on quit
     e.preventDefault();
     overlayWindow?.minimize();
   });
@@ -1295,33 +1297,40 @@ app.whenReady().then(async () => {
     }
   };
 
-  // Create windows (pager starts hidden, shown only when run starts)
-  createMainWindow();
-  createOverlayWindow();
-  // Hide pager at startup — it only appears when 谨遵指令 is clicked
-  overlayWindow.hide();
+  // ── Splash screen ──
+  const splashWin = new BrowserWindow({
+    width: 400, height: 300,
+    frame: false, transparent: true, resizable: false,
+    alwaysOnTop: true, skipTaskbar: true,
+    backgroundColor: '#00000000',
+    webPreferences: { contextIsolation: true, nodeIntegration: false },
+  });
+  splashWin.loadFile(path.join(__dirname, 'renderer', 'splash.html'));
+  splashWin.center();
 
-  // Register IPC handlers and shortcuts
-  registerIpcHandlers();
-  registerShortcuts();
+  // Create windows after a short delay for splash to show
+  setTimeout(() => {
+    createMainWindow();
+    createOverlayWindow();
+    overlayWindow.hide();
+    registerIpcHandlers();
+    registerShortcuts();
+    console.log('[main] 谨遵指令 started');
 
-  console.log('[main] 谨遵指令 started');
+    // Close splash when main window finishes loading
+    setTimeout(() => {
+      if (!splashWin.isDestroyed()) splashWin.close();
+    }, 500);
+  }, 800);
 });
 
 app.on('window-all-closed', () => {
-  // Force destroy overlay (its close event is intercepted to minimize)
-  if (overlayWindow && !overlayWindow.isDestroyed()) {
-    overlayWindow.destroy();
-    overlayWindow = null;
-  }
-  if (formationWindow && !formationWindow.isDestroyed()) {
-    formationWindow.close();
-  }
-  if (weaverWindow && !weaverWindow.isDestroyed()) {
-    weaverWindow.close();
-  }
   globalShortcut.unregisterAll();
   if (process.platform !== 'darwin') app.quit();
+});
+
+app.on('before-quit', () => {
+  isQuitting = true;
 });
 
 app.on('will-quit', () => {

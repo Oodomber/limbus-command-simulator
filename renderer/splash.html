@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="UTF-8"><style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  width:100vw;height:100vh;
+  background:#0a0a1a;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  color:#c9a54e;font-family:'SimHei','Microsoft YaHei',sans-serif;
+  user-select:none;overflow:hidden;
+}
+.logo{font-size:64px;margin-bottom:16px;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.title{font-size:28px;letter-spacing:8px;margin-bottom:24px;}
+.loader{width:200px;height:3px;background:#1a1a3a;border-radius:2px;overflow:hidden;}
+.loader-bar{height:100%;width:0%;background:linear-gradient(90deg,#7d5a1e,#c9a54e);animation:load 1.5s ease-in-out infinite;}
+@keyframes load{0%{width:0%}50%{width:70%}100%{width:100%}}
+</style></head>
+<body>
+<div class="logo">☝</div>
+<div class="title">谨 遵 指 令</div>
+<div class="loader"><div class="loader-bar"></div></div>
+</body>
+</html>
