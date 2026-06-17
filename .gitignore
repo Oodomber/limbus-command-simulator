@@ -3,5 +3,6 @@ dist/
 out/
 .cache/
 *.log
+DEVLOG.md
 tools/relics_api.json
 tools/relics_page1.html

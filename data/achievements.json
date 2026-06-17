@@ -42,20 +42,6 @@
     "unlockText": "你的业已深重。"
   },
   {
-    "id": "first_clear",
-    "name": "初次通关",
-    "description": "通关1次镜牢",
-    "condition": { "type": "clearMirror", "count": 1 },
-    "unlockText": "第一次总是最难忘的。"
-  },
-  {
-    "id": "veteran",
-    "name": "镜牢老兵",
-    "description": "通关5次镜牢",
-    "condition": { "type": "clearMirror", "count": 5 },
-    "unlockText": "你已是镜牢的常客。"
-  },
-  {
     "id": "blessed_run",
     "name": "加护之局",
     "description": "单次镜牢中获得10点指令加护",
@@ -75,13 +61,6 @@
     "description": "累计拒绝3次隐藏BOSS",
     "condition": { "type": "refuseHiddenBoss", "count": 3 },
     "unlockText": "有时候，撤退也是一种智慧。"
-  },
-  {
-    "id": "reckless",
-    "name": "无畏者",
-    "description": "在第一层倒下3次",
-    "condition": { "type": "dieFirstFloor", "count": 3 },
-    "unlockText": "勇气可嘉，但准备不足。"
   },
   {
     "id": "devoted",

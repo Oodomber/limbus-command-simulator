@@ -61,191 +61,220 @@ const SHOP_EFFECT_TAGS = ['烧伤', '流血', '震颤', '破裂', '沉沦', '呼
 // ── Default templates ──
 const DEFAULT_TEMPLATES = {
   deploy_identity: [
-    '指令：{sinner}必须装备人格【{identity}】。',
+    '致：{sinner}必须装备人格【{identity}】。',
     '{sinner}，你被指定使用{identity}。',
     '指令下达：{sinner}的人格应为{identity}。',
   ],
   deploy_identity_vague: [
-    '指令：{sinner}需使用具有{tags}特质的人格。',
+    '致：{sinner}需使用具有{tags}特质的人格。',
     '{sinner}，寻找具备{tags}特质的人格。',
     '这一局，{sinner}应使用具有{tags}特质的人格。',
   ],
   deploy_ego: [
-    '指令：{sinner}必须装备EGO【{ego}】。',
+    '致：{sinner}必须装备EGO【{ego}】。',
     '{sinner}，{ego}将是你唯一被允许的EGO。',
   ],
   deploy_ego_level: [
-    '指令：{sinner}需装备{level}级的{tags}EGO。',
+    '致：{sinner}需装备{level}级的{tags}EGO。',
     '{sinner}，选取{level}级的{tags}EGO。',
   ],
   deploy_ego_vague: [
-    '指令：{sinner}需装备{tags}类型的EGO。',
+    '致：{sinner}需装备{tags}类型的EGO。',
   ],
   deploy_ego_force_base: [
-    '指令：{sinner}必须仅使用初始EGO。',
+    '致：{sinner}必须仅使用初始EGO。',
   ],
   deploy_ego_overclock: [
-    '指令：{sinner}在本次战斗中，{ego}必须超频。',
+    '致：{sinner}在本次战斗中，{ego}必须超频。',
   ],
   starlight: [
-    '指令：选择星光【{name}】至{level}级。',
+    '致：选择星光【{name}】至{level}级。',
     '本次星光强化指定：{name}，强化{level}级。',
   ],
   starlight_none: [
     '本轮不选择任何星光。',
-    '指令：不进行星光选择。',
+    '致：不进行星光选择。',
   ],
   starting_relic: [
-    '指令：选择{effect}饰品作为开局饰品。',
+    '致：选择{effect}饰品作为开局饰品。',
     '开局饰品指定：{effect}类饰品。',
-    '指令：以{effect}饰品起始本局。',
+    '致：以{effect}饰品起始本局。',
   ],
   cardpack_pick: [
-    '指令：选择卡包【{pack}】。',
+    '致：选择卡包【{pack}】。',
     '指定卡包：{pack}。',
-    '指令：本层选择{pack}卡包。',
+    '致：本层选择{pack}卡包。',
   ],
   cardpack_position: [
-    '指令：选择第{position}个卡包。',
+    '致：选择第{position}个卡包。',
     '指定第{position}个卡包。',
   ],
   cardpack_reroll: [
-    '指令：刷新卡包选择。',
+    '致：刷新卡包选择。',
     '刷新当前卡包选项。',
   ],
   route: [
-    '指令：走向{dir}路。',
+    '致：走向{dir}路。',
     '路线指定：{dir}路。',
   ],
   combat_defend_all: [
-    '指令：全体守备一回合。',
+    '致：全体守备一回合。',
     '本回合全员进入守备状态。',
   ],
   combat_no_ego: [
-    '指令：本回合禁止使用EGO。',
+    '致：本回合禁止使用EGO。',
   ],
   combat_win_rate: [
-    '指令：按下P，按照胜率最高的模式自动战斗。',
-    '指令：按一次P，遵循胜率指引。',
+    '致：按下P，按照胜率最高的模式自动战斗。',
+    '致：按一次P，遵循胜率指引。',
   ],
   combat_damage: [
-    '指令：按下PP，按照伤害最高的模式自动战斗。',
-    '指令：按两次P，遵循伤害指引。',
+    '致：按下PP，按照伤害最高的模式自动战斗。',
+    '致：按两次P，遵循伤害指引。',
   ],
   combat_all_upper: [
-    '指令：本回合全员使用上方技能。',
-    '指令：所有人使用上方技能攻击。',
+    '致：本回合全员使用上方技能。',
+    '致：所有人使用上方技能攻击。',
   ],
   combat_all_lower: [
-    '指令：本回合全员使用下方技能。',
-    '指令：所有人使用下方技能攻击。',
+    '致：本回合全员使用下方技能。',
+    '致：所有人使用下方技能攻击。',
   ],
   combat_upper_skill: [
-    '指令：{sinner}使用上方技能。',
+    '致：{sinner}使用上方技能。',
     '{sinner}，本回合使用上方技能。',
   ],
   combat_lower_skill: [
-    '指令：{sinner}使用下方技能。',
+    '致：{sinner}使用下方技能。',
     '{sinner}，本回合使用下方技能。',
   ],
   combat_use_ego: [
-    '指令：{sinner}必须使用EGO【{ego}】。',
+    '致：{sinner}必须使用EGO【{ego}】。',
     '{sinner}，释放{ego}！',
   ],
   combat_overclock_ego: [
-    '指令：{sinner}必须超频EGO【{ego}】。',
+    '致：{sinner}必须超频EGO【{ego}】。',
     '{sinner}，将{ego}超频释放！',
   ],
   combat_guard: [
-    '指令：{sinner}必须使用守备技能。',
+    '致：{sinner}必须使用守备技能。',
     '{sinner}，本回合只可守备。',
   ],
   combat_speed_attack: [
-    '指令：让目前速度第{rank}位的罪人进行攻击。',
+    '致：让目前速度第{rank}位的罪人进行攻击。',
     '速度第{rank}的罪人，本回合攻击。',
   ],
   combat_speed_guard: [
-    '指令：让目前速度第{rank}位的罪人进行守备。',
+    '致：让目前速度第{rank}位的罪人进行守备。',
   ],
   combat_speed_ego: [
-    '指令：让目前速度第{rank}位的罪人使用EGO。',
+    '致：让目前速度第{rank}位的罪人使用EGO。',
   ],
   combat_speed_overclock: [
-    '指令：让目前速度第{rank}位的罪人超频EGO。',
+    '致：让目前速度第{rank}位的罪人超频EGO。',
   ],
   combat_golden_bough: [
-    '指令：使用金枝——{type}。',
+    '致：使用金枝——{type}。',
     '触动金枝的力量——{type}。',
   ],
   event_option: [
-    '指令：选择{option}。',
+    '致：选择{option}。',
     '事件选择：{option}。',
   ],
   event_vague: [
-    '指令：选你觉得最赚的选项。',
-    '指令：选择对你最有利的选项。',
+    '致：选你觉得最赚的选项。',
+    '致：选择对你最有利的选项。',
   ],
   event_reward: [
-    '指令：选择{position}的奖励卡。',
+    '致：选择{position}的奖励卡。',
     '领取{position}的奖励卡。',
   ],
   shop_buy: [
-    '指令：购买一件{tags}饰品。',
+    '致：购买一件{tags}饰品。',
   ],
   shop_sell: [
-    '指令：出售一件{tier}级饰品。',
+    '致：出售一件{tier}级饰品。',
   ],
   shop_sell_ash: [
-    '指令：出售骨灰瓶。',
+    '致：出售骨灰瓶。',
   ],
   shop_fuse: [
-    '指令：合成{tier}级{tags}饰品。',
+    '致：合成{tier}级{tags}饰品。',
   ],
   shop_no_heal: [
-    '指令：禁止恢复全体体力。',
+    '致：禁止恢复全体体力。',
   ],
   shop_reroll: [
-    '指令：刷新商店。',
+    '致：刷新商店。',
   ],
   shop_upgrade: [
-    '指令：强化一件已获取的饰品。',
+    '致：强化一件已获取的饰品。',
   ],
   shop_keyword_reroll: [
-    '指令：按【{keyword}】关键词刷新商店。',
+    '致：按【{keyword}】关键词刷新商店。',
   ],
   shop_replace_skill: [
-    '指令：替换{sinner}的技能。',
+    '致：替换{sinner}的技能。',
   ],
   shop_change_identity: [
-    '指令：更换{sinner}的人格与EGO。',
+    '致：更换{sinner}的人格与EGO。',
   ],
   shop_change_identity_multi: [
-    '指令：更换{sinner1}、{sinner2}的人格与EGO。',
+    '致：更换{sinner1}、{sinner2}的人格与EGO。',
   ],
   shop_change_identity_triple: [
-    '指令：更换{sinner1}、{sinner2}、{sinner3}的人格与EGO。',
+    '致：更换{sinner1}、{sinner2}、{sinner3}的人格与EGO。',
   ],
   shop_special_probability: [
-    '指令：将特殊概率提升至100%。',
+    '致：将特殊概率提升至100%。',
   ],
   shop_heal: [
-    '指令：治疗全体罪人。',
+    '致：治疗全体罪人。',
   ],
   hidden_boss_fight: [
-    '指令：挑战隐藏BOSS。',
+    '致：挑战隐藏BOSS。',
   ],
   hidden_boss_leave: [
-    '指令：离开此处，不要挑战隐藏BOSS。',
+    '致：离开此处，不要挑战隐藏BOSS。',
   ],
   judgment: [
-    '指令：由{sinner}进行判定。',
+    '致：由{sinner}进行判定。',
     '指定：由{sinner}负责判定此事件。',
   ],
   boss_reward: [
-    '指令：从关底奖励中选择第{option}个。',
+    '致：从关底奖励中选择第{option}个。',
   ],
   boss_reward_two: [
-    '指令：从关底奖励中选择第{first}个和第{second}个。',
+    '致：从关底奖励中选择第{first}个和第{second}个。',
+  ],
+  free_instruction: [
+    '致：将左手放在胸前，朗诵『指令神了』三遍。',
+    '致：做三个俄式挺身俯卧撑。',
+    '致：向后看。',
+    '致：下一场战斗时将编队中第{pos1}位罪人和第{pos2}位罪人互换位置。',
+    '致：看向你的左腿。',
+    '致：闭上眼睛。',
+    '致：用手指在桌面上敲出当前楼层的数字。',
+    '致：心中默数三个质数。',
+    '致：将头转向左边再转向右边。',
+    '致：下一场战斗前禁止抖腿。',
+    '致：学一声猫叫。',
+    '致：以当前楼层数做相应次数的深呼吸。',
+    '致：接下来的三十秒内不得说话。',
+    '致：将双手摊开，掌心向上。',
+    '致：感化你的敌人。',
+    '致：单手放在额头上直到下一条指令出现。',
+    '致：用手边的任何东西敲两下桌面。',
+    '致：站起来再坐下去。',
+    '致：遮住世界。',
+    '致：将目光投向窗外五秒。',
+    '致：你的呼吸频率放缓。',
+    '致：用鼻子吸气，用嘴呼气。',
+    '致：触碰你右边的任何东西。',
+    '致：活下去。',
+    '致：保持静止直到第五个深呼吸结束。',
+    '致：尊崇本心。',
+    '致：你很棒。',
   ],
 };
 
@@ -685,7 +714,7 @@ class InstructionEngine {
     const coreMechanics = context.coreMechanics || [];
     if (coreMechanics.length === 0) {
       return {
-        instructions: [this._makeInstruction(PHASES.STARTING_RELIC, '指令：本轮无可用开局饰品。', false)],
+        instructions: [this._makeInstruction(PHASES.STARTING_RELIC, '致：本轮无可用开局饰品。', false)],
         phase: PHASES.STARTING_RELIC, isGuidance: false,
       };
     }
@@ -802,7 +831,7 @@ class InstructionEngine {
     // No formation — prompt to set it first
     if (fieldSinners.length === 0) {
       return {
-        instructions: [this._makeInstruction(PHASES.COMBAT, '指令：尚未编队，请先在编队窗口中指定出击顺序。', false, {
+        instructions: [this._makeInstruction(PHASES.COMBAT, '致：尚未编队，请先在编队窗口中指定出击顺序。', false, {
           category: 'combat_no_formation',
         })],
         phase: PHASES.COMBAT, isGuidance: false,
@@ -1212,7 +1241,7 @@ class InstructionEngine {
 
   async _genFreeInstruction(context) {
     const templates = await this._getTemplates();
-    const pool = templates.free_instruction || DEFAULT_TEMPLATES.free_instruction || ['指令：等待。'];
+    const pool = templates.free_instruction || DEFAULT_TEMPLATES.free_instruction || ['致：等待。'];
     const tpl = this._pickRandom(pool);
     const text = this._fillTemplate(tpl, {
       pos1: String(Math.floor(Math.random() * 7) + 1),

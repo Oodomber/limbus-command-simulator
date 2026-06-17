@@ -1486,7 +1486,7 @@ function showDevAuthModal() {
   const box = document.createElement('div');
   box.style.cssText = 'background:#1a1a2e;border:2px solid #ffd700;border-radius:12px;padding:24px;min-width:320px;text-align:center;';
   box.innerHTML = `
-    <img src="../resources/images/index.png" style="width:56px;height:56px;object-fit:contain;margin-bottom:8px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div style="font-size:48px;margin-bottom:8px;display:none;">☝</div>
+    <img src="../resources/images/Index.png" style="width:56px;height:56px;object-fit:contain;margin-bottom:8px;" onerror="this.style.display='none';this.nextElementSibling.style.display='block';"><div style="font-size:48px;margin-bottom:8px;display:none;">☝</div>
     <h3 style="color:#ffd700;margin:0 0 16px;">开发者验证</h3>
     <input id="dev-pwd-input" type="password" placeholder="请输入密码"
       style="width:100%;padding:10px;background:#0f0f23;color:#e0e0e0;border:1px solid #3a3a5a;border-radius:6px;font-size:14px;margin-bottom:12px;text-align:center;" autofocus>
