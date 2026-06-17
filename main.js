@@ -245,6 +245,7 @@ function createMainWindow() {
     minWidth: 900,
     minHeight: 600,
     title: '谨遵指令 - 控制面板',
+    show: false,
     icon: path.join(__dirname, 'resources', 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -1297,7 +1298,7 @@ app.whenReady().then(async () => {
     }
   };
 
-  // ── Splash screen ──
+  // ── Splash screen (shown immediately) ──
   const splashWin = new BrowserWindow({
     width: 400, height: 300,
     frame: false, transparent: true, resizable: false,
@@ -1308,29 +1309,30 @@ app.whenReady().then(async () => {
   splashWin.loadFile(path.join(__dirname, 'renderer', 'splash.html'));
   splashWin.center();
 
-  // Create windows after a short delay for splash to show
-  setTimeout(() => {
-    createMainWindow();
-    createOverlayWindow();
-    overlayWindow.hide();
-    registerIpcHandlers();
-    registerShortcuts();
-    console.log('[main] 谨遵指令 started');
+  // Create main window immediately (hidden), show when loaded
+  createMainWindow();
 
-    // Close splash when main window finishes loading
+  mainWindow.webContents.on('did-finish-load', () => {
     setTimeout(() => {
+      mainWindow.show();
       if (!splashWin.isDestroyed()) splashWin.close();
-    }, 500);
-  }, 800);
+      createOverlayWindow();
+      overlayWindow.hide();
+      registerIpcHandlers();
+      registerShortcuts();
+      console.log('[main] 谨遵指令 started');
+    }, 300);
+  });
 });
 
 app.on('window-all-closed', () => {
   globalShortcut.unregisterAll();
-  if (process.platform !== 'darwin') app.quit();
+  app.exit(0);
 });
 
 app.on('before-quit', () => {
   isQuitting = true;
+  globalShortcut.unregisterAll();
 });
 
 app.on('will-quit', () => {
