@@ -1309,6 +1309,17 @@ app.whenReady().then(async () => {
 });
 
 app.on('window-all-closed', () => {
+  // Force destroy overlay (its close event is intercepted to minimize)
+  if (overlayWindow && !overlayWindow.isDestroyed()) {
+    overlayWindow.destroy();
+    overlayWindow = null;
+  }
+  if (formationWindow && !formationWindow.isDestroyed()) {
+    formationWindow.close();
+  }
+  if (weaverWindow && !weaverWindow.isDestroyed()) {
+    weaverWindow.close();
+  }
   globalShortcut.unregisterAll();
   if (process.platform !== 'darwin') app.quit();
 });
