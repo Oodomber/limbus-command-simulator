@@ -143,6 +143,9 @@ if (isFormation || isWeaver) {
       return () => ipcRenderer.removeListener('achievement:unlocked', handler);
     },
 
+    // ── Reset stats ──
+    resetStats: () => ipcRenderer.invoke('data:reset-stats'),
+
     // ── Developer ──
     devAuth: (password) => ipcRenderer.invoke('dev:authenticate', password),
 
@@ -185,5 +188,8 @@ if (isFormation || isWeaver) {
 
     // ── Team mechanic ──
     getTeamMechanic: () => ipcRenderer.invoke('run:get-team-mechanic'),
+
+    // ── Window focus ──
+    focusWindow: () => ipcRenderer.invoke('window:focus-main'),
   });
 }

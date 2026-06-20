@@ -9,7 +9,7 @@ const {
 const path = require('path');
 const Store = require('electron-store');
 const { DataLoader, DATA_TYPES } = require('./src/dataLoader');
-const { InstructionEngine, PHASES, GUIDANCE_PHASES, STARLIGHT_IDS } = require('./src/engine');
+const { InstructionEngine, PHASES, GUIDANCE_PHASES } = require('./src/engine');
 const { AchievementSystem } = require('./src/achievements');
 const { QueueManager } = require('./src/queueManager');
 const { SoundManager } = require('./src/soundManager');
@@ -20,10 +20,10 @@ let overlayWindow = null;
 let historyWindow = null;
 let formationWindow = null;
 let weaverWindow = null;
-let isQuitting = false;
 let hideOverlayTimeout = null;
 let freeInstructionTimer = null;
 let karmaScareTriggered = false;  // one-time karma scare flag
+let isQuitting = false;           // true when app is shutting down
 
 // ── Core services ──
 let store = null;
@@ -83,6 +83,41 @@ function sendPhaseChanged() {
   soundManager.play('stage_change');
 }
 
+/**
+ * Reliably return OS focus to the main window.
+ * On Windows, alwaysOnTop child windows (overlay/formation) can "trap" focus
+ * even after being hidden. The setAlwaysOnTop(true)→focus→setAlwaysOnTop(false)
+ * dance is a known Electron workaround to force Windows to acknowledge the
+ * main window as the foreground window.
+ */
+function focusMainWindow() {
+  if (!mainWindow || mainWindow.isDestroyed()) return;
+  if (mainWindow.isMinimized()) mainWindow.restore();
+  mainWindow.show();
+  // Temporarily elevate to alwaysOnTop to force OS foreground focus
+  mainWindow.setAlwaysOnTop(true);
+  mainWindow.moveTop();
+  mainWindow.focus();
+  // Remove alwaysOnTop after focus is established
+  setTimeout(() => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.setAlwaysOnTop(false);
+    }
+  }, 100);
+}
+
+/**
+ * Hide an alwaysOnTop overlay window and restore focus to main window.
+ * Blurs the overlay first so Windows doesn't keep sending keystrokes to it.
+ */
+function hideOverlayAndRefocus(win) {
+  if (!win || win.isDestroyed()) return;
+  win.blur();
+  win.setAlwaysOnTop(false);
+  win.hide();
+  focusMainWindow();
+}
+
 let pagerRequestLocked = false;
 
 function lockPagerRequest() {
@@ -102,8 +137,8 @@ function unlockPagerRequest() {
 // ── Free instruction timer ──
 function scheduleFreeInstruction() {
   if (freeInstructionTimer) clearTimeout(freeInstructionTimer);
-  const minSec = (store.get('settings.freeInstructionIntervalMin') ?? 60) * 1000;
-  const maxSec = (store.get('settings.freeInstructionIntervalMax') ?? 180) * 1000;
+  const minSec = (store.get('settings.freeInstructionIntervalMin') ?? 180) * 1000;
+  const maxSec = (store.get('settings.freeInstructionIntervalMax') ?? 300) * 1000;
   const delay = minSec + Math.random() * (maxSec - minSec);
   freeInstructionTimer = setTimeout(async () => {
     if (!runState.active || pagerRequestLocked) {
@@ -179,9 +214,9 @@ const runState = {
   currentRunKarma: 0,
   currentTeam: null,         // Map<string, {identityId, egoIds}>
   pendingInstructions: [],
-  danmakuVoteActive: false,
+  danmakuVoteActive: false,  // Phase 11 弹幕投票预留，待实现
   danmakuVoteCandidates: [],
-  activePool: null,          // Currently selected identity pool name
+  activePool: null,          // Currently selected pool name (for achievement tracking)
   currentPhase: 'deploy_identity',  // Current run phase
   pendingBatchRemaining: 0,  // Non-guidance batch counter for phase advancement
   formation: [],             // Array of 12 sinner names in order (position 1-12)
@@ -190,6 +225,9 @@ const runState = {
   karmaScareThreshold: 100,  // Configurable via dev panel
   activeIdentityPool: null,  // Selected identity pool name
   activeEgoPool: null,       // Selected EGO pool name
+  currentFloor: 1,           // Current mirror dungeon floor (incremented on boss_reward)
+  coreMechanics: [],         // Dominant core mechanics from deployed team
+  usedCardpackRerolls: 0,    // Consecutive rerolls used (reset on pick)
 };
 
 // ── Default config ──
@@ -217,8 +255,8 @@ function getConfigDefaults() {
       danmakuRoomId: '',
       danmakuVoteWindow: 15,
       historyLimit: 200,
-      freeInstructionIntervalMin: 60,
-      freeInstructionIntervalMax: 180,
+      freeInstructionIntervalMin: 180,
+      freeInstructionIntervalMax: 300,
       karmaScareThreshold: 100,
     },
     achievements: {},
@@ -245,7 +283,6 @@ function createMainWindow() {
     minWidth: 900,
     minHeight: 600,
     title: '谨遵指令 - 控制面板',
-    show: false,
     icon: path.join(__dirname, 'resources', 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -255,6 +292,18 @@ function createMainWindow() {
   });
 
   mainWindow.loadFile(path.join(__dirname, 'renderer', 'main.html'));
+
+  // When main window is closed, force-close all child windows
+  // so the app can fully exit (overlay prevents close → minimize)
+  mainWindow.on('close', () => {
+    isQuitting = true;
+    stopFreeInstructionTimer();
+    if (hideOverlayTimeout) { clearTimeout(hideOverlayTimeout); hideOverlayTimeout = null; }
+    if (overlayWindow && !overlayWindow.isDestroyed()) overlayWindow.destroy();
+    if (formationWindow && !formationWindow.isDestroyed()) formationWindow.destroy();
+    if (weaverWindow && !weaverWindow.isDestroyed()) weaverWindow.destroy();
+    if (historyWindow && !historyWindow.isDestroyed()) historyWindow.destroy();
+  });
 
   mainWindow.on('closed', () => {
     mainWindow = null;
@@ -294,9 +343,9 @@ function createOverlayWindow() {
   overlayWindow.setAlwaysOnTop(true, 'screen-saver');
   overlayWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
-  // Prevent close — minimize instead
+  // Prevent close — minimize instead (unless app is quitting)
   overlayWindow.on('close', (e) => {
-    if (isQuitting) return; // allow actual close on quit
+    if (isQuitting) return;  // Allow force-close during shutdown
     e.preventDefault();
     overlayWindow?.minimize();
   });
@@ -340,6 +389,7 @@ function createFormationWindow() {
 
   formationWindow.on('closed', () => {
     formationWindow = null;
+    if (!isQuitting) focusMainWindow();
   });
 }
 
@@ -535,6 +585,7 @@ function registerIpcHandlers() {
     runState.currentRunKarma = 0;
     runState.currentTeam = new Map();
     runState.pendingInstructions = [];
+    runState.activePool = identityPoolName || null;
     runState.activeIdentityPool = identityPoolName || null;
     runState.activeEgoPool = egoPoolName || null;
     runState.formation = [];
@@ -572,9 +623,7 @@ function registerIpcHandlers() {
       overlayWindow.webContents.send('pager:shutdown');
       hideOverlayTimeout = setTimeout(() => {
         hideOverlayTimeout = null;
-        if (overlayWindow && !overlayWindow.isDestroyed()) {
-          overlayWindow.hide();
-        }
+        hideOverlayAndRefocus(overlayWindow);
       }, 700);
     }
 
@@ -721,8 +770,13 @@ function registerIpcHandlers() {
       if (phase === 'starlight' && result.starlightEffects) {
         runState.starlightEffects = result.starlightEffects;
       }
-      if (!result.isGuidance && phase !== 'deploy_identity') {
+      if (!result.isGuidance) {
         runState.pendingBatchRemaining = Array.isArray(result.instructions) ? result.instructions.length : 1;
+      }
+
+      // Advance floor when boss_reward is requested (not on each instruction completion)
+      if (phase === 'boss_reward') {
+        runState.currentFloor = (runState.currentFloor || 1) + 1;
       }
 
       const enqueued = queueManager.enqueue(result.instructions);
@@ -878,12 +932,17 @@ function registerIpcHandlers() {
   });
 
   ipcMain.handle('achievement:get-all', async () => {
-    const definitions = await dataLoader.load('achievements');
-    const progressMap = store.get('achievements') || {};
-    return (definitions || []).map(def => ({
-      ...def,
-      ...(progressMap[def.id] || { completed: false, progress: 0 }),
-    }));
+    try {
+      const definitions = await dataLoader.load('achievements');
+      const progressMap = store.get('achievements') || {};
+      return (definitions || []).map(def => ({
+        ...def,
+        ...(progressMap[def.id] || { completed: false, progress: 0 }),
+      }));
+    } catch (e) {
+      console.error('[achievement:get-all] error:', e);
+      return [];
+    }
   });
 
   // ── Milestones ──
@@ -913,6 +972,18 @@ function registerIpcHandlers() {
     return { success: true };
   });
 
+  // ── Reset accumulated stats ──
+  ipcMain.handle('data:reset-stats', async () => {
+    const defaults = getConfigDefaults();
+    store.set('globalStats', defaults.globalStats);
+    store.set('instructionHistory', []);
+    store.set('achievements', {});
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('config:updated', { key: 'globalStats', value: defaults.globalStats });
+    }
+    return { success: true };
+  });
+
   // ── Developer ──
   ipcMain.handle('dev:authenticate', (_event, password) => {
     return password === 'dongxiongxianiao';
@@ -921,6 +992,10 @@ function registerIpcHandlers() {
   // ── Windows ──
   ipcMain.handle('window:create-history', () => {
     createHistoryWindow();
+  });
+
+  ipcMain.handle('window:focus-main', () => {
+    focusMainWindow();
   });
 
   // ── Sound ──
@@ -940,6 +1015,7 @@ function registerIpcHandlers() {
   ipcMain.on('pager:request-instruction', () => {
     // Show phase picker directly on overlay (no need to switch windows)
     if (!runState.active) return;
+    if (pagerRequestLocked) return;
     if (overlayWindow && !overlayWindow.isDestroyed()) {
       const isDungeon = runState.currentPhase === 'dungeon';
       const enabledPhases = store.get('enabledPhases') || [];
@@ -967,6 +1043,7 @@ function registerIpcHandlers() {
 
   ipcMain.on('pager:generate-instruction', async (_event, phaseId) => {
     if (!runState.active) return;
+    if (pagerRequestLocked) return;
     try {
       const result = await generateInstructionPhase(phaseId, {});
 
@@ -986,6 +1063,10 @@ function registerIpcHandlers() {
         }
         if (phaseId === 'starlight' && result.starlightEffects) {
           runState.starlightEffects = result.starlightEffects;
+        }
+        // Advance floor on boss_reward (same as instruction:generate path)
+        if (phaseId === 'boss_reward') {
+          runState.currentFloor = (runState.currentFloor || 1) + 1;
         }
         if (!result.isGuidance && phaseId !== 'deploy_identity') {
           runState.pendingBatchRemaining = Array.isArray(result.instructions) ? result.instructions.length : 1;
@@ -1022,6 +1103,7 @@ function registerIpcHandlers() {
 
   ipcMain.on('pager:minimize', () => {
     if (overlayWindow) overlayWindow.minimize();
+    focusMainWindow();
   });
 
   // Guidance batch navigation
@@ -1068,10 +1150,8 @@ function registerIpcHandlers() {
     broadcastRunState();
     await recordInstructionHistory(inst, 'completed');
 
-    // Advance floor on boss_reward completion
-    if (inst.phase === 'boss_reward') {
-      runState.currentFloor = (runState.currentFloor || 1) + 1;
-    }
+    // Floor is now advanced when boss_reward is requested (instruction:generate),
+    // not on each instruction completion, to handle hard mode's 2-pick correctly.
 
     // Play completion sound
     // Decrement batch counter and advance phase when all done
@@ -1131,6 +1211,9 @@ function registerIpcHandlers() {
           const cardpackResult = await generateInstructionPhase('cardpack', {});
           if (cardpackResult) {
             queueManager.enqueue(cardpackResult.instructions);
+            // Re-lock to protect the regenerated instruction
+            runState.pendingBatchRemaining = Array.isArray(cardpackResult.instructions) ? cardpackResult.instructions.length : 1;
+            lockPagerRequest();
             if (overlayWindow && !overlayWindow.isDestroyed()) {
               overlayWindow.webContents.send('instruction:new', {
                 phase: 'cardpack',
@@ -1212,8 +1295,9 @@ function registerShortcuts() {
     }
   });
 
-  // F10: Toggle overlay visibility (robust: works from any state)
+  // F10: Toggle overlay visibility (only during active run)
   globalShortcut.register('F10', () => {
+    if (!runState.active) return; // Pager only exists during a run
     if (!overlayWindow || overlayWindow.isDestroyed()) {
       // Recreate if destroyed
       createOverlayWindow();
@@ -1223,7 +1307,7 @@ function registerShortcuts() {
       const vis = overlayWindow.isVisible();
       const min = overlayWindow.isMinimized();
       if (vis && !min) {
-        overlayWindow.hide();
+        hideOverlayAndRefocus(overlayWindow);
       } else {
         if (min) overlayWindow.restore();
         overlayWindow.show();
@@ -1244,6 +1328,20 @@ function registerShortcuts() {
 }
 
 // ── App lifecycle ──
+
+// ── Single-instance lock (prevents F10 shortcut conflicts) ──
+const gotSingleInstanceLock = app.requestSingleInstanceLock();
+if (!gotSingleInstanceLock) {
+  app.quit();
+} else {
+  app.on('second-instance', (_event, _cmdLine, _workingDir) => {
+    // Focus existing main window instead of opening a second one
+    if (mainWindow) {
+      if (mainWindow.isMinimized()) mainWindow.restore();
+      mainWindow.focus();
+    }
+  });
+}
 
 // Fix GPU disk cache error on Windows (access denied to cache dir)
 app.commandLine.appendSwitch('disable-gpu-shader-disk-cache');
@@ -1298,42 +1396,31 @@ app.whenReady().then(async () => {
     }
   };
 
-  // ── Splash screen (shown immediately) ──
-  const splashWin = new BrowserWindow({
-    width: 400, height: 300,
-    frame: false, transparent: true, resizable: false,
-    alwaysOnTop: true, skipTaskbar: true,
-    backgroundColor: '#00000000',
-    webPreferences: { contextIsolation: true, nodeIntegration: false },
-  });
-  splashWin.loadFile(path.join(__dirname, 'renderer', 'splash.html'));
-  splashWin.center();
+  // Create windows (pager starts hidden, shown only when run starts)
+  createMainWindow();
+  createOverlayWindow();
+  // Hide pager at startup — it only appears when 谨遵指令 is clicked
+  overlayWindow.hide();
 
-  // Register IPC handlers and shortcuts BEFORE loading renderer
+  // Register IPC handlers and shortcuts
   registerIpcHandlers();
   registerShortcuts();
 
-  // Create main window (hidden), show when loaded
-  createMainWindow();
-  mainWindow.webContents.on('did-finish-load', () => {
-    setTimeout(() => {
-      mainWindow.show();
-      if (!splashWin.isDestroyed()) splashWin.close();
-      createOverlayWindow();
-      overlayWindow.hide();
-      console.log('[main] 谨遵指令 started');
-    }, 300);
-  });
-});
-
-app.on('window-all-closed', () => {
-  globalShortcut.unregisterAll();
-  app.exit(0);
+  console.log('[main] 谨遵指令 started');
 });
 
 app.on('before-quit', () => {
   isQuitting = true;
+  stopFreeInstructionTimer();
+  if (hideOverlayTimeout) {
+    clearTimeout(hideOverlayTimeout);
+    hideOverlayTimeout = null;
+  }
+});
+
+app.on('window-all-closed', () => {
   globalShortcut.unregisterAll();
+  if (process.platform !== 'darwin') app.quit();
 });
 
 app.on('will-quit', () => {

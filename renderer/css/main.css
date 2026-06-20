@@ -154,6 +154,27 @@ body {
   color: #999;
 }
 
+/* ── Nav Footer ── */
+.nav-footer {
+  margin-top: auto;
+  padding: 10px 12px 12px;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+.nav-author {
+  display: block;
+  font-size: 10px;
+  color: #ffd700;
+  letter-spacing: 1px;
+  opacity: 0.5;
+}
+.nav-version {
+  display: block;
+  font-size: 9px;
+  color: #555;
+  margin-top: 2px;
+}
+
 /* ── Main Content ── */
 #content {
   flex: 1;

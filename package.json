@@ -1,8 +1,8 @@
 {
   "name": "limbus-command-simulator",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "description": "边狱巴士 指令模拟器 — The Index Command Simulator for Limbus Company",
-  "author": "Unknown",
+  "author": "冬熊夏鸟",
   "license": "MIT",
   "main": "main.js",
   "scripts": {
@@ -36,10 +36,6 @@
       "icon": "resources/icon.png",
       "sign": null,
       "signAndEditExecutable": false
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
     }
   }
 }

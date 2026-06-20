@@ -2,7 +2,7 @@
  * InstructionEngine — Generates instructions for each game phase.
  *
  * Phase order (pre-dungeon):
- *   deploy_identity → deploy_ego → starlight → starting_relic → cardpack → dungeon(free)
+ *   deploy_identity → deploy_ego → starlight → starting_relic → dungeon(free)
  *
  * Dungeon free phases:
  *   cardpack, route, combat, event, event_reward, shop, hidden_boss, judgment, boss_reward
@@ -31,6 +31,7 @@ const PHASES = {
   SHOP:             'shop',
   HIDDEN_BOSS:      'hidden_boss',
   BOSS_REWARD:      'boss_reward',
+  FREE:             'free',
 };
 
 const GUIDANCE_PHASES = new Set([
@@ -48,10 +49,10 @@ const EGO_LEVELS = ['ZAYIN', 'TETH', 'HE', 'WAW'];
 const ROUTE_OPTIONS = ['上', '中', '下'];
 
 const STARLIGHT_IDS = {
-  INTERSTELLAR_TRAVEL: 'starlight_02',
-  METEOR_RAIN:         'starlight_04',
-  DOUBLE_STAR_SHOP:    'starlight_07',
-  FULL_POSSIBILITY:    'starlight_09',
+  INTERSTELLAR_TRAVEL: 'star_agility',    // 星际旅行 — +1 cardpack shown
+  METEOR_RAIN:         'star_life',       // 倾落的流星雨 — +1 starting relic
+  DOUBLE_STAR_SHOP:    'star_protection', // 双星商店 — double shop items
+  FULL_POSSIBILITY:    'star_fortune',    // 全面的可能性 — +1 cardpack & relic
 };
 
 const GOLDEN_BOUGH_TYPES = ['PIGRITIA', 'SUPERBIA', 'MOROSITAS', 'IRA'];
@@ -72,21 +73,13 @@ const DEFAULT_TEMPLATES = {
   ],
   deploy_ego: [
     '致：{sinner}必须装备EGO【{ego}】。',
-    '{sinner}，{ego}将是你唯一被允许的EGO。',
-  ],
-  deploy_ego_level: [
-    '致：{sinner}需装备{level}级的{tags}EGO。',
-    '{sinner}，选取{level}级的{tags}EGO。',
-  ],
-  deploy_ego_vague: [
-    '致：{sinner}需装备{tags}类型的EGO。',
+    '{sinner}，本次携带EGO——{ego}。',
+    '指令下达：{sinner}应装备{ego}。',
   ],
   deploy_ego_force_base: [
     '致：{sinner}必须仅使用初始EGO。',
   ],
-  deploy_ego_overclock: [
-    '致：{sinner}在本次战斗中，{ego}必须超频。',
-  ],
+
   starlight: [
     '致：选择星光【{name}】至{level}级。',
     '本次星光强化指定：{name}，强化{level}级。',
@@ -99,6 +92,9 @@ const DEFAULT_TEMPLATES = {
     '致：选择{effect}饰品作为开局饰品。',
     '开局饰品指定：{effect}类饰品。',
     '致：以{effect}饰品起始本局。',
+  ],
+  starting_relic_none: [
+    '致：本轮无可用开局饰品。',
   ],
   cardpack_pick: [
     '致：选择卡包【{pack}】。',
@@ -116,6 +112,9 @@ const DEFAULT_TEMPLATES = {
   route: [
     '致：走向{dir}路。',
     '路线指定：{dir}路。',
+  ],
+  combat_no_formation: [
+    '致：尚未编队，请先在编队窗口中指定出击顺序。',
   ],
   combat_defend_all: [
     '致：全体守备一回合。',
@@ -149,12 +148,15 @@ const DEFAULT_TEMPLATES = {
     '{sinner}，本回合使用下方技能。',
   ],
   combat_use_ego: [
-    '致：{sinner}必须使用EGO【{ego}】。',
-    '{sinner}，释放{ego}！',
+    '致：{sinner}必须使用{level}级EGO。',
+    '致：{sinner}必须使用具有{tags}效果的EGO。',
+    '{sinner}，释放{tags}属性的EGO！',
+    '{sinner}，本回合使用{level}级EGO出击。',
   ],
   combat_overclock_ego: [
-    '致：{sinner}必须超频EGO【{ego}】。',
-    '{sinner}，将{ego}超频释放！',
+    '致：{sinner}必须超频{level}级EGO。',
+    '{sinner}，将{tags}EGO超频释放！',
+    '致：{sinner}，超频你的{tags}EGO。',
   ],
   combat_guard: [
     '致：{sinner}必须使用守备技能。',
@@ -244,9 +246,7 @@ const DEFAULT_TEMPLATES = {
   boss_reward: [
     '致：从关底奖励中选择第{option}个。',
   ],
-  boss_reward_two: [
-    '致：从关底奖励中选择第{first}个和第{second}个。',
-  ],
+
   free_instruction: [
     '致：将左手放在胸前，朗诵『指令神了』三遍。',
     '致：做三个俄式挺身俯卧撑。',
@@ -450,7 +450,11 @@ class InstructionEngine {
     if (!poolIds || poolIds.length === 0) return items;
     const set = new Set(poolIds);
     const filtered = items.filter(i => set.has(i.id));
-    return filtered.length > 0 ? filtered : items;
+    if (filtered.length === 0) {
+      this._trace('⚠ 池过滤为空', `poolIds=${poolIds.length}个, items=${items.length}条 → 回退全部`);
+      return items;
+    }
+    return filtered;
   }
 
   _getFieldSinners(context) {
@@ -466,7 +470,7 @@ class InstructionEngine {
     let fullPossibilitySelected = false;
     for (const s of selectedStarlights) {
       const id = s.starlightId || s.id || '';
-      const level = s.level || 1;
+      const level = s.level ?? 1;
       if (id === STARLIGHT_IDS.INTERSTELLAR_TRAVEL) interstellarTravelLevel = level;
       else if (id === STARLIGHT_IDS.METEOR_RAIN) meteorRainSelected = true;
       else if (id === STARLIGHT_IDS.DOUBLE_STAR_SHOP) doubleStarShopSelected = true;
@@ -572,7 +576,7 @@ class InstructionEngine {
   //  Phase 2: Deploy EGO (Guidance)
   // ═══════════════════════════════════════════
 
-  async _deployEgo(infoCompleteness, context) {
+  async _deployEgo(_infoCompleteness, context) {
     const egos = await this.dataLoader.load('egos');
     const templates = await this._getTemplates();
     const poolIds = context.poolEgoIds || null;
@@ -585,66 +589,50 @@ class InstructionEngine {
 
     const uniqueSinners = [...new Set(pool.map(e => e.sinner))];
     const instructions = [];
-    const usedTemplates = new Set(); // track template keys per sinner to avoid repeats
 
     for (const sinner of uniqueSinners) {
       const sinnerEgos = pool.filter(e => e.sinner === sinner);
       if (sinnerEgos.length === 0) continue;
 
-      const egoCount = Math.min(
+      // Group EGOs by level — a sinner can equip at most one per level
+      const byLevel = {};
+      for (const ego of sinnerEgos) {
+        const lvl = ego.level || 'ZAYIN';
+        if (!byLevel[lvl]) byLevel[lvl] = [];
+        byLevel[lvl].push(ego);
+      }
+      const availableLevels = Object.keys(byLevel);
+
+      // Pick 1~3 levels, capped by how many levels actually have EGOs
+      const pickCount = Math.min(
         Math.floor(Math.random() * 3) + 1,
-        sinnerEgos.length
+        availableLevels.length
       );
-      this._trace(`${sinner} EGO数`, `${egoCount}条 (池中${sinnerEgos.length}个)`);
+      this._trace(`${sinner} EGO数`, `${pickCount}条 (${availableLevels.length}个等级: ${availableLevels.join(',')})`);
 
-      const shuffled = [...sinnerEgos].sort(() => Math.random() - 0.5);
-      const selected = shuffled.slice(0, egoCount);
+      // Randomly select which levels to pick from, then pick one random EGO per level
+      const shuffledLevels = [...availableLevels].sort(() => Math.random() - 0.5);
+      const selectedLevels = shuffledLevels.slice(0, pickCount);
 
-      for (const ego of selected) {
-        let text;
-
-        // Build tag pool: merge damageType + effect + sinAffinity
-        const allTags = [
-          ...(ego.tags?.damageType || []),
-          ...(ego.tags?.effect || []),
-          ...(ego.tags?.sinAffinity || []),
-        ];
-        const tag = allTags.length > 0
-          ? this._pickRandom(allTags)
-          : '通用';
-
-        if (egoCount === 1) {
-          // Single EGO: always vague, avoid "唯一被允许" wording
-          const tplKey = 'deploy_ego_vague';
-          const tpl = this._pickRandom(templates[tplKey] || DEFAULT_TEMPLATES[tplKey]);
-          text = this._fillTemplate(tpl, { sinner, tags: tag });
-
-        } else {
-          // Multiple EGOs: infoCompleteness matters
-          if (infoCompleteness > 0.7) {
-            // Precise: name the EGO (template no longer says "唯一")
-            const tplKey = 'deploy_ego';
-            const tpl = this._pickRandom(templates[tplKey] || DEFAULT_TEMPLATES[tplKey]);
-            text = this._fillTemplate(tpl, { sinner, ego: ego.name });
-          } else {
-            // Include EGO level to avoid confusion between same-type EGOs
-            const tplKey = 'deploy_ego_level';
-            const tpl = this._pickRandom(templates[tplKey] || DEFAULT_TEMPLATES[tplKey]);
-            const level = ego.tags?.level || ego.level || 'ZAYIN';
-            text = this._fillTemplate(tpl, { sinner, level, tags: tag });
-          }
-        }
+      for (const lvl of selectedLevels) {
+        const ego = this._pickRandom(byLevel[lvl]);
+        const tplKey = 'deploy_ego';
+        const tpl = this._pickRandom(templates[tplKey] || DEFAULT_TEMPLATES[tplKey]);
+        const text = this._fillTemplate(tpl, { sinner, ego: ego.name });
 
         instructions.push(this._makeInstruction(PHASES.DEPLOY_EGO, text, true, {
           sinner, egoId: ego.id,
-          infoCompleteness: egoCount > 1 ? infoCompleteness : undefined,
         }));
       }
     }
 
-    // Throw in occasional force-base (rare)
-    if (uniqueSinners.length > 0 && Math.random() < 0.15) {
-      const sinner = this._pickRandom(uniqueSinners);
+    // Throw in occasional force-base (rare).
+    // Must NOT conflict with EGO selection instructions for the same sinner.
+    // Only pick from sinners who have no EGO instructions in this batch.
+    const sinnersWithEgoInstructions = new Set(instructions.map(i => i.meta?.sinner).filter(Boolean));
+    const forceBaseCandidates = uniqueSinners.filter(s => !sinnersWithEgoInstructions.has(s));
+    if (forceBaseCandidates.length > 0 && Math.random() < 0.15) {
+      const sinner = this._pickRandom(forceBaseCandidates);
       const tplKey = 'deploy_ego_force_base';
       const tpl = this._pickRandom(templates[tplKey] || DEFAULT_TEMPLATES[tplKey]);
       const text = this._fillTemplate(tpl, { sinner });
@@ -685,7 +673,7 @@ class InstructionEngine {
     const shuffled = [...starlights].sort(() => Math.random() - 0.5);
     const selected = shuffled.slice(0, count);
     const instructions = selected.map(star => {
-      // Level: 0 (not upgraded), 1, or 2
+      // Level: 0 (not upgraded), 1 (basic), or 2 (enhanced)
       const level = Math.floor(Math.random() * 3); // 0, 1, 2
       const tpl = this._pickRandom(templates.starlight || DEFAULT_TEMPLATES.starlight);
       const text = this._fillTemplate(tpl, { name: star.name, level: String(level) });
@@ -713,8 +701,9 @@ class InstructionEngine {
     // Use team core mechanics from deploy_identity (already stored in context)
     const coreMechanics = context.coreMechanics || [];
     if (coreMechanics.length === 0) {
+      const tpl = this._pickRandom(templates.starting_relic_none || DEFAULT_TEMPLATES.starting_relic_none);
       return {
-        instructions: [this._makeInstruction(PHASES.STARTING_RELIC, '致：本轮无可用开局饰品。', false)],
+        instructions: [this._makeInstruction(PHASES.STARTING_RELIC, tpl, false)],
         phase: PHASES.STARTING_RELIC, isGuidance: false,
       };
     }
@@ -827,11 +816,13 @@ class InstructionEngine {
     const templates = await this._getTemplates();
     const egos = await this.dataLoader.load('egos');
     const fieldSinners = this._getFieldSinners(context);
+    const poolEgoIds = context.poolEgoIds || null;
 
     // No formation — prompt to set it first
     if (fieldSinners.length === 0) {
+      const tpl = this._pickRandom(templates.combat_no_formation || DEFAULT_TEMPLATES.combat_no_formation);
       return {
-        instructions: [this._makeInstruction(PHASES.COMBAT, '致：尚未编队，请先在编队窗口中指定出击顺序。', false, {
+        instructions: [this._makeInstruction(PHASES.COMBAT, tpl, false, {
           category: 'combat_no_formation',
         })],
         phase: PHASES.COMBAT, isGuidance: false,
@@ -887,37 +878,77 @@ class InstructionEngine {
       const selected = shuffled.slice(0, Math.min(count, shuffled.length));
 
       for (const sinner of selected) {
+        // Build per-sinner EGO pool (strict: only from selected EGO pool)
+        let sinnerEgosInPool = egos.filter(e => e.sinner === sinner);
+        if (poolEgoIds && poolEgoIds.length > 0) {
+          const poolSet = new Set(poolEgoIds);
+          sinnerEgosInPool = sinnerEgosInPool.filter(e => poolSet.has(e.id));
+        }
+        const hasNonBaseEgo = sinnerEgosInPool.some(e => !e.isBaseEgo);
+        const hasAnyEgoInPool = sinnerEgosInPool.length > 0;
+
         // Rational → more attack (upper/lower), less ego/guard
-        const individualOptions = isRational
-          ? ['combat_upper_skill','combat_upper_skill','combat_upper_skill',
+        // If sinner has no non-base EGO in pool, reduce ego-related options
+        // (base EGO can't be overclocked, and "use base EGO" is a trivial instruction)
+        let individualOptions;
+        if (isRational) {
+          individualOptions = ['combat_upper_skill','combat_upper_skill','combat_upper_skill',
              'combat_lower_skill','combat_lower_skill','combat_lower_skill',
-             'combat_use_ego','combat_guard']
-          : ['combat_upper_skill','combat_upper_skill',
+             'combat_use_ego','combat_guard'];
+        } else {
+          individualOptions = ['combat_upper_skill','combat_upper_skill',
              'combat_lower_skill','combat_lower_skill',
              'combat_use_ego','combat_use_ego','combat_use_ego',
              'combat_guard','combat_guard','combat_guard'];
+        }
+        // If sinner only has base EGOs in pool, remove overclock-prone weight
+        // (keep at most 1 "combat_use_ego" entry since base EGO is always available)
+        if (!hasNonBaseEgo && hasAnyEgoInPool) {
+          // All EGOs in pool are base — reduce weight to 1 entry
+          individualOptions = individualOptions.filter(k => k !== 'combat_use_ego');
+          individualOptions.push('combat_use_ego');
+        }
+
         const key = this._pickRandom(individualOptions);
 
         let tplVars = { sinner };
 
         if (key === 'combat_use_ego') {
-          const sinnerEgos = egos.filter(e => e.sinner === sinner);
-          if (sinnerEgos.length > 0) {
-            const ego = this._pickRandom(sinnerEgos);
-            tplVars.ego = ego.name;
+          if (sinnerEgosInPool.length > 0) {
+            const ego = this._pickRandom(sinnerEgosInPool);
+            const level = ego.level || 'ZAYIN';
+            // Build tag pool for vague description to avoid mismatch
+            // with deploy phase (player may have picked a different EGO)
+            const allTags = [
+              ...(ego.tags?.damageType || []),
+              ...(ego.tags?.effect || []),
+              ...(ego.tags?.sinAffinity || []),
+            ];
+            const tag = allTags.length > 0
+              ? this._pickRandom(allTags)
+              : '通用';
+            Object.assign(tplVars, { level, tags: tag });
 
-            // Overclock: less likely when rational
+            // Overclock: less likely when rational; only for non-base EGO
+            // (base EGO cannot be overclocked in the game)
             const overclockChance = isRational ? 0.1 : 0.35;
             if (Math.random() < overclockChance && !ego.isBaseEgo) {
               const ocTpl = this._pickRandom(templates.combat_overclock_ego || DEFAULT_TEMPLATES.combat_overclock_ego);
               const text = this._fillTemplate(ocTpl, tplVars);
               instructions.push(this._makeInstruction(PHASES.COMBAT, text, false, {
-                sinner, category: 'combat_overclock_ego',
+                sinner, category: 'combat_overclock_ego', egoId: ego.id,
               }));
               continue;
             }
+            // If the picked EGO is base EGO, still generate a normal "use EGO" instruction
           } else {
-            tplVars.ego = '默认EGO';
+            // No EGO in pool for this sinner — skip ego instruction entirely
+            // Fall back to upper/lower skill instead
+            const fallbackKey = this._pickRandom(['combat_upper_skill', 'combat_lower_skill', 'combat_guard']);
+            const tpl = this._pickRandom(templates[fallbackKey] || DEFAULT_TEMPLATES[fallbackKey]);
+            const text = this._fillTemplate(tpl, { sinner });
+            instructions.push(this._makeInstruction(PHASES.COMBAT, text, false, { sinner, category: fallbackKey, rationality: rawRationality, isRational }));
+            continue;
           }
         }
 
@@ -1025,7 +1056,6 @@ class InstructionEngine {
     const tags = SHOP_EFFECT_TAGS;
     const coreMechanics = context.coreMechanics || [];
 
-    const usedKeys = new Set();
     let hasHealOrNoHeal = false;
     let hasChangeIdentity = false;
     const instructions = [];
@@ -1042,7 +1072,6 @@ class InstructionEngine {
       if (candidates.length === 0) break;
 
       const key = this._pickRandom(candidates);
-      usedKeys.add(key);
       if (key === 'shop_heal' || key === 'shop_no_heal') hasHealOrNoHeal = true;
       if (key === 'shop_change_identity') hasChangeIdentity = true;
 
@@ -1098,7 +1127,6 @@ class InstructionEngine {
         case 'shop_change_identity': {
           // Rational: replace non-core sinners → core, or upgrade rarity within core
           // Irrational: replace core sinners → non-core, or downgrade rarity
-          const coreMechanics = context.coreMechanics || [];
           const teamSinners = context.currentTeam ? [...context.currentTeam.keys()] : SINNERS;
 
           // Classify each sinner: has core mechanic identity?
@@ -1243,15 +1271,18 @@ class InstructionEngine {
     const templates = await this._getTemplates();
     const pool = templates.free_instruction || DEFAULT_TEMPLATES.free_instruction || ['致：等待。'];
     const tpl = this._pickRandom(pool);
+    const p1 = Math.floor(Math.random() * 7) + 1;
+    let p2 = Math.floor(Math.random() * 7) + 1;
+    while (p2 === p1) p2 = Math.floor(Math.random() * 7) + 1;
     const text = this._fillTemplate(tpl, {
-      pos1: String(Math.floor(Math.random() * 7) + 1),
-      pos2: String(Math.floor(Math.random() * 7) + 1),
+      pos1: String(p1),
+      pos2: String(p2),
     });
 
     this._trace('自由指令', `随机模板 → "${text}"`);
     return {
-      instructions: [this._makeInstruction('free', text, false, { category: 'free' })],
-      phase: 'free', isGuidance: false,
+      instructions: [this._makeInstruction(PHASES.FREE, text, false, { category: 'free' })],
+      phase: PHASES.FREE, isGuidance: false,
     };
   }
 

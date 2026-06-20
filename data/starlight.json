@@ -1,52 +1,52 @@
 [
   {
-    "id": "starlight_01",
-    "name": "力量星光",
-    "maxLevel": 2
+    "id": "star_strength",
+    "name": "起始之星",
+    "maxLevel": "2"
   },
   {
-    "id": "starlight_02",
-    "name": "耐力星光",
-    "maxLevel": 2
+    "id": "star_endurance",
+    "name": "层积星云",
+    "maxLevel": "2"
   },
   {
-    "id": "starlight_03",
-    "name": "敏捷星光",
-    "maxLevel": 2
+    "id": "star_agility",
+    "name": "星际旅行",
+    "maxLevel": "2"
   },
   {
-    "id": "starlight_04",
-    "name": "生命星光",
-    "maxLevel": 2
+    "id": "star_life",
+    "name": "倾落的流星雨",
+    "maxLevel": "2"
   },
   {
-    "id": "starlight_05",
-    "name": "守护星光",
-    "maxLevel": 2
+    "id": "star_protection",
+    "name": "双星商店",
+    "maxLevel": "2"
   },
   {
-    "id": "starlight_06",
-    "name": "攻击星光",
-    "maxLevel": 2
+    "id": "star_offense",
+    "name": "卫星商店",
+    "maxLevel": "2"
   },
   {
-    "id": "starlight_07",
-    "name": "防御星光",
-    "maxLevel": 2
+    "id": "star_defense",
+    "name": "星云的宠爱",
+    "maxLevel": "2"
   },
   {
-    "id": "starlight_08",
-    "name": "速度星光",
-    "maxLevel": 2
+    "id": "star_speed",
+    "name": "星芒的引导",
+    "maxLevel": "2"
   },
   {
-    "id": "starlight_09",
-    "name": "恢复星光",
-    "maxLevel": 2
+    "id": "star_recovery",
+    "name": "偶然的彗星",
+    "maxLevel": "2"
   },
   {
-    "id": "starlight_10",
-    "name": "幸运星光",
-    "maxLevel": 2
+    "id": "star_fortune",
+    "name": "全面的可能性",
+    "maxLevel": "2"
   }
 ]

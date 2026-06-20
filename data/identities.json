@@ -5,7 +5,6 @@
     "rarity": "一灯",
     "tags": {
       "faction": [
-        "LCB罪人",
         "LCB",
         "边狱公司"
       ],
@@ -14,8 +13,7 @@
         "易损"
       ],
       "damageType": [
-        "斩击",
-        "突刺"
+        "斩击"
       ],
       "sinAffinity": [
         "忧郁",
@@ -27,10 +25,11 @@
       ]
     },
     "coreMechanic": [
-      "斩击",
       "沉沦"
     ],
-    "id": "yi_sang_lcbzuiren"
+    "id": "yi_sang_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": "体弱"
   },
   {
     "name": "Seven协会南部6科",
@@ -47,7 +46,6 @@
         "麻痹"
       ],
       "damageType": [
-        "突刺",
         "打击"
       ],
       "sinAffinity": [
@@ -58,10 +56,11 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "破裂"
     ],
-    "id": "yi_sang_sevenxiehuinanbu6x79d1"
+    "id": "yi_sang_sevenxiehuinanbu6x79d1",
+    "faction": "Seven协会、收尾人",
+    "special": ""
   },
   {
     "name": "臼齿事务所收尾人",
@@ -78,7 +77,6 @@
         "防御等级降低"
       ],
       "damageType": [
-        "突刺",
         "打击"
       ],
       "sinAffinity": [
@@ -89,10 +87,11 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "yi_sang_jiuchishiwusuoshouweiren"
+    "id": "yi_sang_jiuchishiwusuoshouweiren",
+    "faction": "臼齿事务所、收尾人",
+    "special": ""
   },
   {
     "name": "裴廓德号大副",
@@ -105,9 +104,7 @@
       "effect": [
         "流血",
         "呼吸法",
-        "束缚",
-        "暴击",
-        "闪避"
+        "束缚"
       ],
       "damageType": [
         "突刺"
@@ -117,13 +114,17 @@
         "嫉妒",
         "暴食"
       ],
-      "special": []
+      "special": [
+        "五币二技能"
+      ]
     },
     "coreMechanic": [
-      "突刺",
-      "流血"
+      "流血",
+      "呼吸法"
     ],
-    "id": "yi_sang_x88f4x5ed3dex53f7x5927x526f"
+    "id": "yi_sang_x88f4x5ed3dex53f7x5927x526f",
+    "faction": "裴廓德号",
+    "special": ""
   },
   {
     "name": "Dieci协会南部4科",
@@ -142,7 +143,6 @@
         "挑衅值"
       ],
       "damageType": [
-        "突刺",
         "打击"
       ],
       "sinAffinity": [
@@ -153,10 +153,11 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "护盾"
+      "沉沦"
     ],
-    "id": "yi_sang_diecixiehuinanbu4x79d1"
+    "id": "yi_sang_diecixiehuinanbu4x79d1",
+    "faction": "Dieci协会、收尾人",
+    "special": ""
   },
   {
     "name": "LCE_E.G.O:提灯",
@@ -164,24 +165,33 @@
     "rarity": "二灯",
     "tags": {
       "faction": [
-        "LCE"
+        "E.G.O装备",
+        "LCE",
+        "边狱公司"
       ],
-      "effect": [],
+      "effect": [
+        "破裂",
+        "挑衅值",
+        "束缚"
+      ],
       "damageType": [
-        "打击",
-        "突刺"
+        "打击"
       ],
       "sinAffinity": [
         "怠惰",
         "嫉妒",
         "暴食"
       ],
-      "special": []
+      "special": [
+        "环指大师诱捕器"
+      ]
     },
     "coreMechanic": [
-      "打击"
+      "破裂"
     ],
-    "id": "yi_sang_lcex5fex2egx2eox3atix706f"
+    "id": "yi_sang_lcex5fex2egx2eox3atix706f",
+    "faction": "LCE",
+    "special": ""
   },
   {
     "name": "剑契组杀手",
@@ -193,9 +203,7 @@
         "帮派"
       ],
       "effect": [
-        "呼吸法",
-        "暴击",
-        "反击"
+        "呼吸法"
       ],
       "damageType": [
         "斩击"
@@ -208,10 +216,11 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "呼吸法"
     ],
-    "id": "yi_sang_jianqizux6740x624b"
+    "id": "yi_sang_jianqizux6740x624b",
+    "faction": "剑契组、帮派",
+    "special": ""
   },
   {
     "name": "绽放E.G.O:山茶花",
@@ -221,10 +230,12 @@
       "faction": [
         "技术解放联盟"
       ],
-      "effect": [],
+      "effect": [
+        "震颤",
+        "沉沦"
+      ],
       "damageType": [
-        "突刺",
-        "打击"
+        "突刺"
       ],
       "sinAffinity": [
         "暴食",
@@ -234,9 +245,12 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺"
+      "震颤",
+      "沉沦"
     ],
-    "id": "yi_sang_x7efdx653eex2egx2eox3ax5c71x8336x82b1"
+    "id": "yi_sang_x7efdx653eex2egx2eox3ax5c71x8336x82b1",
+    "faction": "技术解放联盟",
+    "special": ""
   },
   {
     "name": "W公司3级清扫人员",
@@ -249,11 +263,9 @@
       "effect": [
         "充能",
         "破裂",
-        "束缚",
-        "闪避"
+        "束缚"
       ],
       "damageType": [
-        "斩击",
         "突刺"
       ],
       "sinAffinity": [
@@ -264,28 +276,24 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "充能"
+      "充能",
+      "破裂"
     ],
-    "id": "yi_sang_wgongsi3x7ea7x6e05x626brenx5458"
+    "id": "yi_sang_wgongsi3x7ea7x6e05x626brenx5458",
+    "faction": "W公司",
+    "special": ""
   },
   {
     "name": "环指点彩派学徒",
     "sinner": "李箱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "环指点彩派",
         "手指",
         "环指"
       ],
       "effect": [
-        "烧伤",
-        "破裂",
-        "流血",
-        "震颤",
-        "沉沦",
-        "恢复"
+        "流血"
       ],
       "damageType": [
         "突刺"
@@ -298,20 +306,25 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "烧伤"
+      "流血"
     ],
-    "id": "yi_sang_huanzhix70b9x5f69x6d3ex5b66x5f92"
+    "id": "yi_sang_huanzhix70b9x5f69x6d3ex5b66x5f92",
+    "faction": "环指点彩派、手指、环指",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:庄严哀悼",
     "sinner": "李箱",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "脑叶公司本部"
+        "脑叶公司本部",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "沉沦",
+        "子弹"
+      ],
       "damageType": [
         "突刺"
       ],
@@ -323,23 +336,24 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺"
+      "沉沦",
+      "子弹"
     ],
-    "id": "yi_sang_naoyegongsiex2egx2eox3azhuangyanaidao"
+    "id": "yi_sang_naoyegongsiex2egx2eox3azhuangyanaidao",
+    "faction": "脑叶公司本部",
+    "special": ""
   },
   {
     "name": "六协会南部3科",
     "sinner": "李箱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "六协会",
         "收尾人"
       ],
       "effect": [
-        "烧伤",
-        "恢复",
-        "护盾"
+        "烧伤"
       ],
       "damageType": [
         "斩击"
@@ -352,22 +366,26 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "烧伤"
     ],
-    "id": "yi_sang_x516dxiehuinanbu3x79d1"
+    "id": "yi_sang_x516dxiehuinanbu3x79d1",
+    "faction": "六协会、收尾人",
+    "special": ""
   },
   {
     "name": "N公司E.G.O:凶弹",
     "sinner": "李箱",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "N公司"
+        "N公司",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "流血",
+        "呼吸法"
+      ],
       "damageType": [
-        "打击",
         "突刺"
       ],
       "sinAffinity": [
@@ -375,17 +393,22 @@
         "色欲",
         "傲慢"
       ],
-      "special": []
+      "special": [
+        "'子弹'"
+      ]
     },
     "coreMechanic": [
-      "打击"
+      "流血",
+      "呼吸法"
     ],
-    "id": "yi_sang_ngongsiex2egx2eox3ax51f6x5f39"
+    "id": "yi_sang_ngongsiex2egx2eox3ax51f6x5f39",
+    "faction": "N公司",
+    "special": ""
   },
   {
     "name": "黑兽-午魁首",
     "sinner": "李箱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑兽",
@@ -400,7 +423,6 @@
         "破裂",
         "迅捷",
         "护盾",
-        "呼吸法",
         "强壮"
       ],
       "damageType": [
@@ -414,15 +436,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "束缚"
+      "震颤",
+      "破裂"
     ],
-    "id": "yi_sang_heix517dx2dx5348x9b41x9996"
+    "id": "yi_sang_heix517dx2dx5348x9b41x9996",
+    "faction": "黑兽、H公司、黑兽-午、黑兽-魁首、贾家",
+    "special": ""
   },
   {
     "name": "蜘蛛巢食指父辈",
     "sinner": "李箱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "食指",
@@ -431,8 +455,8 @@
         "神谕代行者"
       ],
       "effect": [
-        "暴击",
-        "闪避"
+        "呼吸法",
+        "沉沦"
       ],
       "damageType": [
         "打击",
@@ -444,13 +468,19 @@
         "傲慢",
         "忧郁"
       ],
-      "special": []
+      "special": [
+        "無我夢中",
+        "阿鼻叫喚",
+        "支離滅裂"
+      ]
     },
     "coreMechanic": [
-      "打击",
-      "暴击"
+      "沉沦",
+      "呼吸法"
     ],
-    "id": "yi_sang_x8718x86dbx5de2x98dfzhix7236x8f88"
+    "id": "yi_sang_x8718x86dbx5de2x98dfzhix7236x8f88",
+    "faction": "食指、手指、蜘蛛巢、神谕代行者",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -458,17 +488,14 @@
     "rarity": "一灯",
     "tags": {
       "faction": [
-        "LCB罪人",
         "LCB",
         "边狱公司"
       ],
       "effect": [
         "麻痹",
-        "虚弱",
-        "闪避"
+        "虚弱"
       ],
       "damageType": [
-        "打击",
         "突刺"
       ],
       "sinAffinity": [
@@ -476,18 +503,21 @@
         "怠惰",
         "暴食"
       ],
-      "special": []
+      "special": [
+        "无体系者"
+      ]
     },
     "coreMechanic": [
-      "打击",
-      "麻痹"
+      "无"
     ],
-    "id": "faust_lcbzuiren"
+    "id": "faust_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "脑叶公司幸存者",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "脑叶公司支部",
@@ -496,12 +526,10 @@
       "effect": [
         "呼吸法",
         "破裂",
-        "迅捷",
-        "闪避"
+        "迅捷"
       ],
       "damageType": [
-        "斩击",
-        "突刺"
+        "斩击"
       ],
       "sinAffinity": [
         "色欲",
@@ -511,15 +539,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "呼吸法"
+      "呼吸法",
+      "破裂"
     ],
-    "id": "faust_naoyegongsix5e78x5b58zhe"
+    "id": "faust_naoyegongsix5e78x5b58zhe",
+    "faction": "脑叶公司支部、收尾人",
+    "special": ""
   },
   {
     "name": "W公司2级清扫人员",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "W公司"
@@ -541,15 +571,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "充能"
     ],
-    "id": "faust_wgongsi2x7ea7x6e05x626brenx5458"
+    "id": "faust_wgongsi2x7ea7x6e05x626brenx5458",
+    "faction": "W公司",
+    "special": ""
   },
   {
     "name": "Zwei协会南部4科",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "Zwei协会",
@@ -557,9 +588,7 @@
       ],
       "effect": [
         "挑衅值",
-        "保护",
-        "迅捷",
-        "恢复"
+        "迅捷"
       ],
       "damageType": [
         "突刺",
@@ -570,18 +599,21 @@
         "忧郁",
         "色欲"
       ],
-      "special": []
+      "special": [
+        "无体系者"
+      ]
     },
     "coreMechanic": [
-      "突刺",
-      "挑衅值"
+      "无"
     ],
-    "id": "faust_zweixiehuinanbu4x79d1"
+    "id": "faust_zweixiehuinanbu4x79d1",
+    "faction": "Zwei协会、收尾人",
+    "special": ""
   },
   {
     "name": "呼啸山庄管家",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "呼啸山庄",
@@ -591,8 +623,7 @@
         "沉沦"
       ],
       "damageType": [
-        "斩击",
-        "打击"
+        "斩击"
       ],
       "sinAffinity": [
         "忧郁",
@@ -602,15 +633,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "沉沦"
     ],
-    "id": "faust_x547cx5578x5c71zhuangx7ba1x5bb6"
+    "id": "faust_x547cx5578x5c71zhuangx7ba1x5bb6",
+    "faction": "呼啸山庄、收尾人",
+    "special": ""
   },
   {
     "name": "执柄者",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "N公司",
@@ -619,9 +651,7 @@
       "effect": [
         "流血",
         "麻痹",
-        "伤害强化",
-        "恢复",
-        "闪避"
+        "伤害强化"
       ],
       "damageType": [
         "突刺",
@@ -635,15 +665,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "流血"
     ],
-    "id": "faust_x6267x67c4zhe"
+    "id": "faust_x6267x67c4zhe",
+    "faction": "N公司、N公司狂信徒",
+    "special": ""
   },
   {
     "name": "Seven协会南部4科",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Seven协会",
@@ -651,7 +682,9 @@
       ],
       "effect": [
         "破裂",
-        "迅捷"
+        "迅捷",
+        "弱点分析",
+        "斩击威力提升"
       ],
       "damageType": [
         "斩击"
@@ -664,20 +697,26 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "破裂"
     ],
-    "id": "faust_sevenxiehuinanbu4x79d1"
+    "id": "faust_sevenxiehuinanbu4x79d1",
+    "faction": "Seven协会、收尾人",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:悔恨",
     "sinner": "浮士德",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "脑叶公司本部"
+        "脑叶公司本部",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "震颤",
+        "攻击等级降低",
+        "加算硬币弱化"
+      ],
       "damageType": [
         "打击"
       ],
@@ -689,14 +728,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击"
+      "震颤"
     ],
-    "id": "faust_naoyegongsiex2egx2eox3ax6094x6068"
+    "id": "faust_naoyegongsiex2egx2eox3ax6094x6068",
+    "faction": "脑叶公司本部",
+    "special": ""
   },
   {
     "name": "剑契组杀手",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "剑契组",
@@ -704,13 +745,12 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
         "束缚",
-        "易损"
+        "斩击易损",
+        "流血"
       ],
       "damageType": [
-        "斩击",
-        "突刺"
+        "斩击"
       ],
       "sinAffinity": [
         "怠惰",
@@ -720,15 +760,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "呼吸法"
+      "呼吸法",
+      "流血"
     ],
-    "id": "faust_jianqizux6740x624b"
+    "id": "faust_jianqizux6740x624b",
+    "faction": "剑契组、帮派",
+    "special": ""
   },
   {
     "name": "多裂纹事务所代表",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "多裂纹事务所",
@@ -737,11 +779,10 @@
       ],
       "effect": [
         "充能",
-        "易损"
+        "嫉妒易损"
       ],
       "damageType": [
-        "斩击",
-        "打击"
+        "斩击"
       ],
       "sinAffinity": [
         "色欲",
@@ -751,20 +792,25 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "充能"
     ],
-    "id": "faust_x591ax88c2x7eb9shiwusuox4ee3x8868"
+    "id": "faust_x591ax88c2x7eb9shiwusuox4ee3x8868",
+    "faction": "多裂纹事务所、收尾人、机械融合生命体",
+    "special": ""
   },
   {
     "name": "LCE_E.G.O:红艳煞",
     "sinner": "浮士德",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "LCE"
+        "LCE",
+        "E.G.O装备",
+        "边狱公司"
       ],
-      "effect": [],
+      "effect": [
+        "烧伤"
+      ],
       "damageType": [
         "打击"
       ],
@@ -776,14 +822,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击"
+      "烧伤"
     ],
-    "id": "faust_lcex5fex2egx2eox3ax7ea2x8273x715e"
+    "id": "faust_lcex5fex2egx2eox3ax7ea2x8273x715e",
+    "faction": "LCE",
+    "special": ""
   },
   {
     "name": "黑兽-卯魁首",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑兽",
@@ -794,9 +842,9 @@
       "effect": [
         "破裂",
         "迅捷",
-        "呼吸法",
-        "守护",
-        "反击"
+        "咒杀",
+        "援护防御",
+        "脚力"
       ],
       "damageType": [
         "斩击"
@@ -809,15 +857,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "破裂"
     ],
-    "id": "faust_heix517dx2dx536fx9b41x9996"
+    "id": "faust_heix517dx2dx536fx9b41x9996",
+    "faction": "黑兽、H公司、黑兽-卯、黑兽-魁首",
+    "special": ""
   },
   {
     "name": "し协会东部3科",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "し协会",
@@ -826,13 +875,12 @@
       "effect": [
         "流血",
         "呼吸法",
-        "暴击",
         "防御等级降低",
-        "护盾",
-        "闪避"
+        "箭矢"
       ],
       "damageType": [
-        "斩击"
+        "斩击",
+        "突刺"
       ],
       "sinAffinity": [
         "暴怒",
@@ -842,15 +890,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "流血"
+      "流血",
+      "呼吸法"
     ],
-    "id": "faust_x3057xiehuix4e1cbu3x79d1"
+    "id": "faust_x3057xiehuix4e1cbu3x79d1",
+    "faction": "し协会、收尾人",
+    "special": ""
   },
   {
     "name": "食指苦行者：【纸条】",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "食指",
@@ -858,9 +908,7 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
-        "沉沦",
-        "护盾"
+        "沉沦"
       ],
       "damageType": [
         "斩击"
@@ -873,15 +921,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "呼吸法"
+      "呼吸法",
+      "沉沦"
     ],
-    "id": "faust_x98dfzhix82e6x884czhexff1ax3010x7eb8x6761x3011"
+    "id": "faust_x98dfzhix82e6x884czhexff1ax3010x7eb8x6761x3011",
+    "faction": "食指、手指",
+    "special": ""
   },
   {
     "name": "蜘蛛巢环指子辈",
     "sinner": "浮士德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "环指",
@@ -891,9 +941,8 @@
         "机械融合生命体"
       ],
       "effect": [
-        "反击",
-        "闪避",
-        "恢复"
+        "充能",
+        "流血"
       ],
       "damageType": [
         "斩击"
@@ -903,13 +952,17 @@
         "嫉妒",
         "色欲"
       ],
-      "special": []
+      "special": [
+        "铁处女"
+      ]
     },
     "coreMechanic": [
-      "斩击",
-      "反击"
+      "充能",
+      "流血"
     ],
-    "id": "faust_x8718x86dbx5de2huanzhix5b50x8f88"
+    "id": "faust_x8718x86dbx5de2huanzhix5b50x8f88",
+    "faction": "环指、手指、蜘蛛巢、人体派、机械融合生命体",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -917,15 +970,13 @@
     "rarity": "一灯",
     "tags": {
       "faction": [
-        "LCB罪人",
         "LCB",
         "边狱公司"
       ],
       "effect": [
         "迅捷",
         "流血",
-        "强壮",
-        "闪避"
+        "强壮"
       ],
       "damageType": [
         "突刺"
@@ -938,15 +989,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "迅捷"
+      "流血"
     ],
-    "id": "don_quixote_lcbzuiren"
+    "id": "don_quixote_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "し协会南部5科科长",
     "sinner": "堂吉诃德",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "し协会",
@@ -954,8 +1006,7 @@
       ],
       "effect": [
         "呼吸法",
-        "迅捷",
-        "闪避"
+        "迅捷"
       ],
       "damageType": [
         "斩击"
@@ -968,15 +1019,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "呼吸法"
     ],
-    "id": "don_quixote_x3057xiehuinanbu5x79d1x79d1x957f"
+    "id": "don_quixote_x3057xiehuinanbu5x79d1x79d1x957f",
+    "faction": "し协会、收尾人",
+    "special": ""
   },
   {
     "name": "N公司中锤",
     "sinner": "堂吉诃德",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "N公司",
@@ -984,11 +1036,11 @@
       ],
       "effect": [
         "震颤",
+        "流血",
         "虚弱",
         "麻痹"
       ],
       "damageType": [
-        "突刺",
         "打击"
       ],
       "sinAffinity": [
@@ -999,10 +1051,12 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "震颤"
+      "震颤",
+      "流血"
     ],
-    "id": "don_quixote_ngongsix4e2dx9524"
+    "id": "don_quixote_ngongsix4e2dx9524",
+    "faction": "N公司、N公司狂信徒",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:提灯",
@@ -1010,11 +1064,14 @@
     "rarity": "二灯",
     "tags": {
       "faction": [
-        "脑叶公司本部"
+        "脑叶公司本部",
+        "EE.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "破裂",
+        "挑衅值"
+      ],
       "damageType": [
-        "斩击",
         "突刺"
       ],
       "sinAffinity": [
@@ -1025,14 +1082,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击"
+      "破裂"
     ],
-    "id": "don_quixote_naoyegongsiex2egx2eox3atix706f"
+    "id": "don_quixote_naoyegongsiex2egx2eox3atix706f",
+    "faction": "脑叶公司本部",
+    "special": ""
   },
   {
     "name": "剑契组杀手",
     "sinner": "堂吉诃德",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "剑契组",
@@ -1040,9 +1099,7 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
-        "伤害强化",
-        "闪避"
+        "斩击伤害强化"
       ],
       "damageType": [
         "突刺",
@@ -1056,15 +1113,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "呼吸法"
     ],
-    "id": "don_quixote_jianqizux6740x624b"
+    "id": "don_quixote_jianqizux6740x624b",
+    "faction": "剑契组、帮派",
+    "special": ""
   },
   {
     "name": "W公司3级清扫人员",
     "sinner": "堂吉诃德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "W公司"
@@ -1072,8 +1130,7 @@
       "effect": [
         "充能",
         "破裂",
-        "易损",
-        "闪避"
+        "易损"
       ],
       "damageType": [
         "斩击",
@@ -1087,15 +1144,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "充能"
+      "充能",
+      "破裂"
     ],
-    "id": "don_quixote_wgongsi3x7ea7x6e05x626brenx5458"
+    "id": "don_quixote_wgongsi3x7ea7x6e05x626brenx5458",
+    "faction": "W公司",
+    "special": ""
   },
   {
     "name": "Cinq协会南部5科科长",
     "sinner": "堂吉诃德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Cinq协会",
@@ -1104,8 +1163,7 @@
       "effect": [
         "迅捷",
         "束缚",
-        "恢复",
-        "闪避"
+        "决斗宣言"
       ],
       "damageType": [
         "突刺"
@@ -1115,18 +1173,21 @@
         "忧郁",
         "傲慢"
       ],
-      "special": []
+      "special": [
+        "无体系者"
+      ]
     },
     "coreMechanic": [
-      "突刺",
-      "迅捷"
+      "无"
     ],
-    "id": "don_quixote_cinqxiehuinanbu5x79d1x79d1x957f"
+    "id": "don_quixote_cinqxiehuinanbu5x79d1x79d1x957f",
+    "faction": "Cinq协会、收尾人",
+    "special": ""
   },
   {
     "name": "中指幼妹",
     "sinner": "堂吉诃德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "中指",
@@ -1134,10 +1195,8 @@
       ],
       "effect": [
         "流血",
-        "恢复",
-        "反击",
         "混乱阈值后移",
-        "伤害强化"
+        "伤害弱化"
       ],
       "damageType": [
         "打击"
@@ -1150,15 +1209,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "流血"
     ],
-    "id": "don_quixote_x4e2dzhix5e7cx59b9"
+    "id": "don_quixote_x4e2dzhix5e7cx59b9",
+    "faction": "中指、手指",
+    "special": ""
   },
   {
     "name": "T公司3级征收人员",
     "sinner": "堂吉诃德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "T公司"
@@ -1169,7 +1229,6 @@
         "束缚"
       ],
       "damageType": [
-        "打击",
         "斩击"
       ],
       "sinAffinity": [
@@ -1180,15 +1239,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "don_quixote_tgongsi3x7ea7x5f81shourenx5458"
+    "id": "don_quixote_tgongsi3x7ea7x5f81shourenx5458",
+    "faction": "T公司",
+    "special": ""
   },
   {
     "name": "拉·曼却领总督",
     "sinner": "堂吉诃德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "拉·曼却领",
@@ -1197,8 +1257,7 @@
       ],
       "effect": [
         "流血",
-        "恢复",
-        "反击"
+        "血宴"
       ],
       "damageType": [
         "突刺"
@@ -1211,15 +1270,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "流血"
     ],
-    "id": "don_quixote_x62c9xb7x66fcx5374x9886x603bx7763"
+    "id": "don_quixote_x62c9xb7x66fcx5374x9886x603bx7763",
+    "faction": "拉·曼却领、二代眷属、血魔",
+    "special": ""
   },
   {
     "name": "Cinq协会东部3科",
     "sinner": "堂吉诃德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Cinq协会",
@@ -1229,7 +1289,8 @@
         "烧伤",
         "呼吸法",
         "暴击",
-        "防御等级降低"
+        "防御等级降低",
+        "点穴"
       ],
       "damageType": [
         "突刺"
@@ -1242,20 +1303,27 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "烧伤"
+      "烧伤",
+      "呼吸法"
     ],
-    "id": "don_quixote_cinqxiehuix4e1cbu3x79d1"
+    "id": "don_quixote_cinqxiehuix4e1cbu3x79d1",
+    "faction": "Cinq协会、收尾人",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:以爱与憎之名",
     "sinner": "堂吉诃德",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "脑叶公司本部"
+        "脑叶公司本部",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "充能",
+        "破裂",
+        "沉沦"
+      ],
       "damageType": [
         "打击"
       ],
@@ -1266,14 +1334,18 @@
       "special": []
     },
     "coreMechanic": [
-      "打击"
+      "破裂",
+      "沉沦",
+      "充能"
     ],
-    "id": "don_quixote_naoyegongsiex2egx2eox3ayix7231x4e0ex618ex4e4bx540d"
+    "id": "don_quixote_naoyegongsiex2egx2eox3ayix7231x4e0ex618ex4e4bx540d",
+    "faction": "脑叶公司本部",
+    "special": ""
   },
   {
     "name": "黑兽-未",
     "sinner": "堂吉诃德",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑兽",
@@ -1283,7 +1355,6 @@
       "effect": [
         "破裂",
         "沉沦",
-        "反击",
         "防御等级降低"
       ],
       "damageType": [
@@ -1297,34 +1368,46 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "破裂"
+      "破裂",
+      "沉沦"
     ],
-    "id": "don_quixote_heix517dx2dx672a"
+    "id": "don_quixote_heix517dx2dx672a",
+    "faction": "黑兽、H公司、黑兽-未",
+    "special": ""
   },
   {
     "name": "食指代行者-绽放E.G.O:代行",
     "sinner": "堂吉诃德",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "食指"
+        "食指",
+        "手指",
+        "蜘蛛巢"
       ],
-      "effect": [],
+      "effect": [
+        "沉沦",
+        "呼吸法"
+      ],
       "damageType": [
-        "打击"
+        "斩击"
       ],
       "sinAffinity": [
         "色欲",
         "傲慢",
         "忧郁"
       ],
-      "special": []
+      "special": [
+        "JK"
+      ]
     },
     "coreMechanic": [
-      "打击"
+      "沉沦",
+      "呼吸法"
     ],
-    "id": "don_quixote_x98dfzhix4ee3x884czhex2dx7efdx653eex2egx2eox3ax4ee3x884c"
+    "id": "don_quixote_x98dfzhix4ee3x884czhex2dx7efdx653eex2egx2eox3ax4ee3x884c",
+    "faction": "食指",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -1332,15 +1415,13 @@
     "rarity": "一灯",
     "tags": {
       "faction": [
-        "LCB罪人",
         "天杀星",
         "LCB",
         "边狱公司"
       ],
       "effect": [
         "呼吸法",
-        "伤害强化",
-        "闪避"
+        "斩击伤害强化"
       ],
       "damageType": [
         "斩击"
@@ -1353,15 +1434,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "呼吸法"
     ],
-    "id": "ryoshu_lcbzuiren"
+    "id": "ryoshu_lcbzuiren",
+    "faction": "LCB罪人、天杀星、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "Seven协会南部6科",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "Seven协会",
@@ -1370,12 +1452,10 @@
       "effect": [
         "破裂",
         "防御等级降低",
-        "易损",
         "强壮",
-        "反击"
+        "斩击易损"
       ],
       "damageType": [
-        "打击",
         "斩击"
       ],
       "sinAffinity": [
@@ -1386,15 +1466,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "破裂"
     ],
-    "id": "ryoshu_sevenxiehuinanbu6x79d1"
+    "id": "ryoshu_sevenxiehuinanbu6x79d1",
+    "faction": "Seven协会、收尾人",
+    "special": ""
   },
   {
     "name": "LCCB系长",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "LCCB",
@@ -1403,12 +1484,11 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
         "震颤",
-        "破裂"
+        "破裂",
+        "攻击等级降低"
       ],
       "damageType": [
-        "打击",
         "突刺"
       ],
       "sinAffinity": [
@@ -1419,15 +1499,18 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "呼吸法"
+      "呼吸法",
+      "震颤",
+      "破裂"
     ],
-    "id": "ryoshu_lccbx7cfbx957f"
+    "id": "ryoshu_lccbx7cfbx957f",
+    "faction": "LCCB、边狱公司、LCC",
+    "special": ""
   },
   {
     "name": "六协会南部4科",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "六协会",
@@ -1437,8 +1520,7 @@
         "烧伤"
       ],
       "damageType": [
-        "斩击",
-        "突刺"
+        "斩击"
       ],
       "sinAffinity": [
         "暴食",
@@ -1448,15 +1530,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "烧伤"
     ],
-    "id": "ryoshu_x516dxiehuinanbu4x79d1"
+    "id": "ryoshu_x516dxiehuinanbu4x79d1",
+    "faction": "六协会、收尾人",
+    "special": ""
   },
   {
     "name": "20区圣愚",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "圣愚",
@@ -1467,7 +1550,6 @@
         "护盾"
       ],
       "damageType": [
-        "打击",
         "突刺"
       ],
       "sinAffinity": [
@@ -1478,15 +1560,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "ryoshu_20x533ax5723x611a"
+    "id": "ryoshu_20x533ax5723x611a",
+    "faction": "圣愚、帮派",
+    "special": ""
   },
   {
     "name": "黑云会若众",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑云会",
@@ -1494,7 +1577,9 @@
       ],
       "effect": [
         "流血",
-        "麻痹"
+        "麻痹",
+        "伤害弱化",
+        "攻击等级降低"
       ],
       "damageType": [
         "突刺"
@@ -1507,15 +1592,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "流血"
     ],
-    "id": "ryoshu_heiyunhuiruox4f17"
+    "id": "ryoshu_heiyunhuiruox4f17",
+    "faction": "黑云会、帮派",
+    "special": ""
   },
   {
     "name": "良·派厨师长",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "良·派",
@@ -1524,15 +1610,14 @@
       ],
       "effect": [
         "流血",
-        "恢复",
         "束缚",
         "麻痹",
         "迅捷",
-        "闪避"
+        "饥渴",
+        "体力恢复降低"
       ],
       "damageType": [
-        "斩击",
-        "突刺"
+        "斩击"
       ],
       "sinAffinity": [
         "暴怒",
@@ -1542,15 +1627,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "流血"
     ],
-    "id": "ryoshu_liangxb7x6d3echux5e08x957f"
+    "id": "ryoshu_liangxb7x6d3echux5e08x957f",
+    "faction": "良·派、后巷、帮派",
+    "special": ""
   },
   {
     "name": "W公司3级清扫人员",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "W公司"
@@ -1558,8 +1644,7 @@
       "effect": [
         "充能",
         "迅捷",
-        "易损",
-        "闪避"
+        "斩击易损"
       ],
       "damageType": [
         "斩击"
@@ -1572,15 +1657,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "充能"
     ],
-    "id": "ryoshu_wgongsi3x7ea7x6e05x626brenx5458"
+    "id": "ryoshu_wgongsi3x7ea7x6e05x626brenx5458",
+    "faction": "W公司",
+    "special": ""
   },
   {
     "name": "埃德加家族首席管家",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "埃德加家族",
@@ -1588,10 +1674,8 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
         "束缚",
-        "恢复",
-        "闪避"
+        "迅捷"
       ],
       "damageType": [
         "斩击"
@@ -1604,20 +1688,27 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "呼吸法"
     ],
-    "id": "ryoshu_x57c3dex52a0x5bb6x65cfx9996x5e2dx7ba1x5bb6"
+    "id": "ryoshu_x57c3dex52a0x5bb6x65cfx9996x5e2dx7ba1x5bb6",
+    "faction": "埃德加家族、收尾人",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:赤瞳·忏悔",
     "sinner": "良秀",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "脑叶公司本部"
+        "脑叶公司本部",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "流血",
+        "迅捷",
+        "充能",
+        "忏悔"
+      ],
       "damageType": [
         "打击"
       ],
@@ -1629,14 +1720,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击"
+      "流血",
+      "充能"
     ],
-    "id": "ryoshu_naoyegongsiex2egx2eox3ax8d64x77b3xb7x5fcfx6094"
+    "id": "ryoshu_naoyegongsiex2egx2eox3ax8d64x77b3xb7x5fcfx6094",
+    "faction": "脑叶公司本部",
+    "special": ""
   },
   {
     "name": "黑兽-卯",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑兽",
@@ -1646,7 +1740,8 @@
       "effect": [
         "破裂",
         "迅捷",
-        "反击"
+        "脚力",
+        "咒杀"
       ],
       "damageType": [
         "斩击"
@@ -1659,20 +1754,26 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "破裂"
     ],
-    "id": "ryoshu_heix517dx2dx536f"
+    "id": "ryoshu_heix517dx2dx536f",
+    "faction": "黑兽、H公司、黑兽-卯",
+    "special": ""
   },
   {
     "name": "N公司E.G.O:轻蔑，敬畏",
     "sinner": "良秀",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "N公司"
+        "N公司",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "流血",
+        "震颤",
+        "视线"
+      ],
       "damageType": [
         "突刺"
       ],
@@ -1684,22 +1785,26 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺"
+      "流血",
+      "震颤"
     ],
-    "id": "ryoshu_ngongsiex2egx2eox3ax8f7bx8511xff0cx656cx754f"
+    "id": "ryoshu_ngongsiex2egx2eox3ax8f7bx8511xff0cx656cx754f",
+    "faction": "N公司",
+    "special": ""
   },
   {
     "name": "鸿园的流浪武者",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "H公司"
       ],
       "effect": [
         "呼吸法",
-        "暴击",
-        "破裂"
+        "破裂",
+        "追击",
+        "护盾"
       ],
       "damageType": [
         "突刺"
@@ -1712,20 +1817,30 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "呼吸法"
+      "呼吸法",
+      "破裂"
     ],
-    "id": "ryoshu_hongx56edx7684liux6d6ax6b66zhe"
+    "id": "ryoshu_hongx56edx7684liux6d6ax6b66zhe",
+    "faction": "H公司",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:余香·孤独",
     "sinner": "良秀",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "脑叶公司"
+        "脑叶公司",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "震颤",
+        "沉沦",
+        "子弹",
+        "易损",
+        "强壮",
+        "追击"
+      ],
       "damageType": [
         "突刺"
       ],
@@ -1737,14 +1852,18 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺"
+      "沉沦",
+      "震颤",
+      "子弹"
     ],
-    "id": "ryoshu_naoyegongsiex2egx2eox3ax4f59x9999xb7x5b64x72ec"
+    "id": "ryoshu_naoyegongsiex2egx2eox3ax4f59x9999xb7x5b64x72ec",
+    "faction": "脑叶公司",
+    "special": ""
   },
   {
     "name": "蜘蛛巢之刃",
     "sinner": "良秀",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "小指",
@@ -1753,9 +1872,11 @@
         "地慧星"
       ],
       "effect": [
-        "恢复",
-        "暴击",
-        "闪避"
+        "呼吸法",
+        "烧伤",
+        "流血",
+        "斩击易损",
+        "追击"
       ],
       "damageType": [
         "斩击"
@@ -1768,10 +1889,13 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "恢复"
+      "烧伤",
+      "流血",
+      "呼吸法"
     ],
-    "id": "ryoshu_x8718x86dbx5de2x4e4bx5203"
+    "id": "ryoshu_x8718x86dbx5de2x4e4bx5203",
+    "faction": "小指、手指、蜘蛛巢、地慧星",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -1779,13 +1903,13 @@
     "rarity": "一灯",
     "tags": {
       "faction": [
-        "LCB罪人",
         "LCB",
         "边狱公司"
       ],
       "effect": [
         "震颤",
-        "守护"
+        "守护",
+        "忍耐"
       ],
       "damageType": [
         "打击"
@@ -1798,15 +1922,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "meursault_lcbzuiren"
+    "id": "meursault_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "六协会南部6科",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "六协会",
@@ -1827,15 +1952,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "烧伤"
     ],
-    "id": "meursault_x516dxiehuinanbu6x79d1"
+    "id": "meursault_x516dxiehuinanbu6x79d1",
+    "faction": "六协会、收尾人",
+    "special": ""
   },
   {
     "name": "玫瑰扳手工坊收尾人",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "玫瑰扳手工坊",
@@ -1857,15 +1983,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "震颤"
+      "震颤",
+      "充能"
     ],
-    "id": "meursault_x73abx7470x6273x624bgongx574ashouweiren"
+    "id": "meursault_x73abx7470x6273x624bgongx574ashouweiren",
+    "faction": "玫瑰扳手工坊、收尾人",
+    "special": ""
   },
   {
     "name": "中指幼弟",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "中指",
@@ -1873,8 +2001,11 @@
       ],
       "effect": [
         "流血",
-        "伤害强化",
-        "易损"
+        "嫉妒威力提升",
+        "嫉妒伤害强化",
+        "加算硬币弱化",
+        "嫉妒易损",
+        "报复对象"
       ],
       "damageType": [
         "打击"
@@ -1887,15 +2018,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "流血"
     ],
-    "id": "meursault_x4e2dzhix5e7cx5f1f"
+    "id": "meursault_x4e2dzhix5e7cx5f1f",
+    "faction": "中指、手指",
+    "special": ""
   },
   {
     "name": "死兔帮老大",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "死兔帮",
@@ -1903,11 +2035,10 @@
       ],
       "effect": [
         "破裂",
-        "反击"
+        "攻击等级降低"
       ],
       "damageType": [
-        "打击",
-        "突刺"
+        "打击"
       ],
       "sinAffinity": [
         "色欲",
@@ -1917,25 +2048,26 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "破裂"
     ],
-    "id": "meursault_x6b7bx5154x5e2ex8001x5927"
+    "id": "meursault_x6b7bx5154x5e2ex8001x5927",
+    "faction": "死兔帮、帮派",
+    "special": ""
   },
   {
     "name": "W公司2级清扫人员",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "W公司"
       ],
       "effect": [
         "充能",
-        "守护",
-        "易损",
         "破裂",
-        "防御等级降低"
+        "防御等级降低",
+        "斩击守护",
+        "斩击易损"
       ],
       "damageType": [
         "斩击"
@@ -1948,15 +2080,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "充能"
+      "充能",
+      "破裂"
     ],
-    "id": "meursault_wgongsi2x7ea7x6e05x626brenx5458"
+    "id": "meursault_wgongsi2x7ea7x6e05x626brenx5458",
+    "faction": "W公司",
+    "special": ""
   },
   {
     "name": "N公司大锤",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "N公司",
@@ -1967,12 +2101,12 @@
         "挑衅值",
         "虚弱",
         "束缚",
-        "恢复",
-        "守护"
+        "守护",
+        "流血",
+        "负币"
       ],
       "damageType": [
-        "突刺",
-        "打击"
+        "突刺"
       ],
       "sinAffinity": [
         "怠惰",
@@ -1982,26 +2116,25 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "混乱阈值后移"
+      "流血"
     ],
-    "id": "meursault_ngongsix5927x9524"
+    "id": "meursault_ngongsix5927x9524",
+    "faction": "N公司、N公司狂信徒",
+    "special": ""
   },
   {
     "name": "R公司第四集团军犀牛队",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "R公司"
       ],
       "effect": [
         "充能",
-        "流血",
-        "护盾"
+        "流血"
       ],
       "damageType": [
-        "打击",
         "斩击"
       ],
       "sinAffinity": [
@@ -2012,15 +2145,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "充能"
+      "充能",
+      "流血"
     ],
-    "id": "meursault_rgongsix7b2csix96c6x56e2x519bx7280niux961f"
+    "id": "meursault_rgongsix7b2csix96c6x56e2x519bx7280niux961f",
+    "faction": "R公司",
+    "special": ""
   },
   {
     "name": "剑契组头领",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "剑契组",
@@ -2028,10 +2163,11 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
         "麻痹",
         "流血",
-        "挑衅值"
+        "挑衅值",
+        "斩击威力提升",
+        "故土剑术"
       ],
       "damageType": [
         "斩击"
@@ -2043,29 +2179,29 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "呼吸法"
+      "呼吸法",
+      "流血"
     ],
-    "id": "meursault_jianqizux5934x9886"
+    "id": "meursault_jianqizux5934x9886",
+    "faction": "剑契组、帮派",
+    "special": ""
   },
   {
     "name": "Dieci协会南部4科科长",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Dieci协会",
         "收尾人"
       ],
       "effect": [
-        "护盾",
         "丢弃",
         "沉沦",
         "挑衅值"
       ],
       "damageType": [
-        "打击",
-        "突刺"
+        "打击"
       ],
       "sinAffinity": [
         "暴食",
@@ -2075,15 +2211,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "护盾"
+      "沉沦"
     ],
-    "id": "meursault_diecixiehuinanbu4x79d1x79d1x957f"
+    "id": "meursault_diecixiehuinanbu4x79d1x79d1x957f",
+    "faction": "Dieci协会、收尾人",
+    "special": ""
   },
   {
     "name": "Cinq协会西部3科",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Cinq协会",
@@ -2092,9 +2229,6 @@
       "effect": [
         "呼吸法",
         "破裂",
-        "暴击",
-        "闪避",
-        "恢复",
         "迅捷"
       ],
       "damageType": [
@@ -2108,15 +2242,17 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "呼吸法"
+      "呼吸法",
+      "破裂"
     ],
-    "id": "meursault_cinqxiehuix897fbu3x79d1"
+    "id": "meursault_cinqxiehuix897fbu3x79d1",
+    "faction": "Cinq协会、收尾人",
+    "special": ""
   },
   {
     "name": "拇指东部指挥官IIII",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "拇指",
@@ -2126,10 +2262,9 @@
       "effect": [
         "烧伤",
         "震颤",
-        "反击"
+        "子弹"
       ],
       "damageType": [
-        "斩击",
         "打击"
       ],
       "sinAffinity": [
@@ -2140,15 +2275,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "烧伤"
+      "烧伤",
+      "震颤"
     ],
-    "id": "meursault_x62c7zhix4e1cbuzhihuix5b98iiii"
+    "id": "meursault_x62c7zhix4e1cbuzhihuix5b98iiii",
+    "faction": "拇指、指挥官IIII、手指",
+    "special": ""
   },
   {
     "name": "拉·曼却领王子",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "拉·曼却领",
@@ -2158,9 +2295,8 @@
       "effect": [
         "流血",
         "破裂",
-        "易损",
-        "恢复",
-        "反击"
+        "色欲易损",
+        "血宴"
       ],
       "damageType": [
         "斩击"
@@ -2173,20 +2309,27 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "流血"
+      "流血",
+      "破裂"
     ],
-    "id": "meursault_x62c9xb7x66fcx5374x9886x738bx5b50"
+    "id": "meursault_x62c9xb7x66fcx5374x9886x738bx5b50",
+    "faction": "拉·曼却领、三代眷属、血魔",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:黄蜂【变调】",
     "sinner": "默尔索",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "脑叶公司"
+        "脑叶公司",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "烧伤",
+        "流血",
+        "子弹"
+      ],
       "damageType": [
         "突刺"
       ],
@@ -2197,14 +2340,17 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺"
+      "烧伤",
+      "流血"
     ],
-    "id": "meursault_naoyegongsiex2egx2eox3ax9ec4x8702x3010x53d8x8c03x3011"
+    "id": "meursault_naoyegongsiex2egx2eox3ax9ec4x8702x3010x53d8x8c03x3011",
+    "faction": "脑叶公司",
+    "special": ""
   },
   {
     "name": "环指野兽派学徒",
     "sinner": "默尔索",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "环指",
@@ -2213,7 +2359,8 @@
         "野兽派"
       ],
       "effect": [
-        "反击"
+        "流血",
+        "沉沦"
       ],
       "damageType": [
         "打击"
@@ -2226,10 +2373,12 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "反击"
+      "流血",
+      "沉沦"
     ],
-    "id": "meursault_huanzhix91cex517dx6d3ex5b66x5f92"
+    "id": "meursault_huanzhix91cex517dx6d3ex5b66x5f92",
+    "faction": "环指、手指、学徒、野兽派",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -2237,19 +2386,16 @@
     "rarity": "一灯",
     "tags": {
       "faction": [
-        "LCB罪人",
         "LCB",
         "边狱公司"
       ],
       "effect": [
         "沉沦",
         "破裂",
-        "虚弱",
-        "闪避"
+        "虚弱"
       ],
       "damageType": [
-        "打击",
-        "斩击"
+        "打击"
       ],
       "sinAffinity": [
         "傲慢",
@@ -2259,15 +2405,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "沉沦"
+      "沉沦",
+      "破裂"
     ],
-    "id": "hong_lu_lcbzuiren"
+    "id": "hong_lu_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "黑云会若众",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "黑云会",
@@ -2288,23 +2436,23 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "流血"
     ],
-    "id": "hong_lu_heiyunhuiruox4f17"
+    "id": "hong_lu_heiyunhuiruox4f17",
+    "faction": "黑云会、帮派",
+    "special": ""
   },
   {
     "name": "六协会南部5科",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "六协会",
         "收尾人"
       ],
       "effect": [
-        "烧伤",
-        "恢复"
+        "烧伤"
       ],
       "damageType": [
         "打击"
@@ -2317,26 +2465,26 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "烧伤"
     ],
-    "id": "hong_lu_x516dxiehuinanbu5x79d1"
+    "id": "hong_lu_x516dxiehuinanbu5x79d1",
+    "faction": "六协会、收尾人",
+    "special": ""
   },
   {
     "name": "W公司2级清扫人员",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "W公司"
       ],
       "effect": [
         "充能",
-        "护盾",
-        "破裂"
+        "破裂",
+        "充能立场"
       ],
       "damageType": [
-        "突刺",
         "斩击"
       ],
       "sinAffinity": [
@@ -2347,15 +2495,17 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "充能"
+      "充能",
+      "破裂"
     ],
-    "id": "hong_lu_wgongsi2x7ea7x6e05x626brenx5458"
+    "id": "hong_lu_wgongsi2x7ea7x6e05x626brenx5458",
+    "faction": "W公司",
+    "special": ""
   },
   {
     "name": "吊钩事务所收尾人",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "吊钩事务所",
@@ -2364,9 +2514,7 @@
       ],
       "effect": [
         "流血",
-        "迅捷",
-        "恢复",
-        "闪避"
+        "迅捷"
       ],
       "damageType": [
         "突刺"
@@ -2379,15 +2527,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "流血"
     ],
-    "id": "hong_lu_x540ax94a9shiwusuoshouweiren"
+    "id": "hong_lu_x540ax94a9shiwusuoshouweiren",
+    "faction": "吊钩事务所、后巷、收尾人",
+    "special": ""
   },
   {
     "name": "猎牙事务所收尾人",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "猎牙事务所",
@@ -2395,8 +2544,7 @@
       ],
       "effect": [
         "破裂",
-        "恢复",
-        "流血"
+        "体力恢复降低"
       ],
       "damageType": [
         "打击"
@@ -2409,15 +2557,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "破裂"
     ],
-    "id": "hong_lu_x730ex7259shiwusuoshouweiren"
+    "id": "hong_lu_x730ex7259shiwusuoshouweiren",
+    "faction": "猎牙事务所、收尾人",
+    "special": ""
   },
   {
     "name": "豆豆帮帮主",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "豆豆帮",
@@ -2425,13 +2574,10 @@
         "帮派"
       ],
       "effect": [
-        "流血",
-        "恢复",
-        "闪避"
+        "流血"
       ],
       "damageType": [
-        "斩击",
-        "突刺"
+        "斩击"
       ],
       "sinAffinity": [
         "嫉妒",
@@ -2441,15 +2587,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "流血"
     ],
-    "id": "hong_lu_x8c46x8c46x5e2ex5e2ex4e3b"
+    "id": "hong_lu_x8c46x8c46x5e2ex5e2ex4e3b",
+    "faction": "豆豆帮、后巷、帮派",
+    "special": ""
   },
   {
     "name": "K公司3级摘除人员",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "K公司"
@@ -2457,11 +2604,10 @@
       "effect": [
         "破裂",
         "挑衅值",
-        "恢复"
+        "K公司的安瓿"
       ],
       "damageType": [
-        "斩击",
-        "打击"
+        "斩击"
       ],
       "sinAffinity": [
         "傲慢",
@@ -2471,15 +2617,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "破裂"
     ],
-    "id": "hong_lu_kgongsi3x7ea7x6458x9664renx5458"
+    "id": "hong_lu_kgongsi3x7ea7x6458x9664renx5458",
+    "faction": "K公司",
+    "special": ""
   },
   {
     "name": "Dieci协会南部4科",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Dieci协会",
@@ -2487,12 +2634,10 @@
       ],
       "effect": [
         "丢弃",
-        "沉沦",
-        "恢复"
+        "沉沦"
       ],
       "damageType": [
-        "斩击",
-        "打击"
+        "斩击"
       ],
       "sinAffinity": [
         "暴怒",
@@ -2502,26 +2647,25 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "丢弃"
+      "沉沦"
     ],
-    "id": "hong_lu_diecixiehuinanbu4x79d1"
+    "id": "hong_lu_diecixiehuinanbu4x79d1",
+    "faction": "Dieci协会、收尾人",
+    "special": ""
   },
   {
     "name": "20区圣愚",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "圣愚",
         "帮派"
       ],
       "effect": [
-        "震颤",
-        "护盾"
+        "震颤"
       ],
       "damageType": [
-        "打击",
         "突刺"
       ],
       "sinAffinity": [
@@ -2532,15 +2676,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "hong_lu_20x533ax5723x611a"
+    "id": "hong_lu_20x533ax5723x611a",
+    "faction": "圣愚、帮派",
+    "special": ""
   },
   {
     "name": "句点事务所代表",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "句点事务所",
@@ -2548,12 +2693,10 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
         "束缚",
         "虚弱",
-        "易损",
-        "反击",
-        "闪避"
+        "突刺易损",
+        "子弹"
       ],
       "damageType": [
         "突刺"
@@ -2566,15 +2709,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "呼吸法"
     ],
-    "id": "hong_lu_x53e5x70b9shiwusuox4ee3x8868"
+    "id": "hong_lu_x53e5x70b9shiwusuox4ee3x8868",
+    "faction": "句点事务所、收尾人",
+    "special": ""
   },
   {
     "name": "R公司第四集团军驯鹿队",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "R公司"
@@ -2594,15 +2738,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "充能"
+      "充能",
+      "沉沦"
     ],
-    "id": "hong_lu_rgongsix7b2csix96c6x56e2x519bx9a6fx9e7fx961f"
+    "id": "hong_lu_rgongsix7b2csix96c6x56e2x519bx9a6fx9e7fx961f",
+    "faction": "R公司",
+    "special": ""
   },
   {
     "name": "鸿园的君主",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "H公司",
@@ -2611,12 +2757,10 @@
       "effect": [
         "呼吸法",
         "破裂",
-        "伤害强化",
-        "暴击",
         "强壮",
-        "恢复",
-        "防御等级降低",
-        "反击"
+        "忍耐",
+        "黑兽丸染",
+        "斩击抗性弱化"
       ],
       "damageType": [
         "斩击"
@@ -2629,15 +2773,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "呼吸法"
+      "呼吸法",
+      "破裂"
     ],
-    "id": "hong_lu_hongx56edx7684x541bx4e3b"
+    "id": "hong_lu_hongx56edx7684x541bx4e3b",
+    "faction": "H公司、贾‌家",
+    "special": ""
   },
   {
     "name": "蜘蛛巢环指父辈",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "环指",
@@ -2648,9 +2794,14 @@
         "大‌师"
       ],
       "effect": [
-        "恢复",
-        "反击",
-        "闪避"
+        "流血",
+        "充能",
+        "束缚",
+        "迅捷",
+        "斩击伤害强化",
+        "人体观剧",
+        "防御等级降低",
+        "防御等级提升"
       ],
       "damageType": [
         "斩击"
@@ -2663,21 +2814,29 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "恢复"
+      "流血",
+      "充能"
     ],
-    "id": "hong_lu_x8718x86dbx5de2huanzhix7236x8f88"
+    "id": "hong_lu_x8718x86dbx5de2huanzhix7236x8f88",
+    "faction": "环指、手指、蜘蛛巢、人体派、机械融合生命体、大‌师",
+    "special": ""
   },
   {
     "name": "S公司推奴人",
     "sinner": "鸿璐",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "S公司",
         "收尾人"
       ],
-      "effect": [],
+      "effect": [
+        "流血",
+        "呼吸法",
+        "束缚",
+        "捕缚",
+        "迅捷"
+      ],
       "damageType": [
         "斩击"
       ],
@@ -2689,9 +2848,12 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击"
+      "流血",
+      "呼吸法"
     ],
-    "id": "hong_lu_sgongsix63a8x5974ren"
+    "id": "hong_lu_sgongsix63a8x5974ren",
+    "faction": "S公司、收尾人",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -2699,15 +2861,13 @@
     "rarity": "一灯",
     "tags": {
       "faction": [
-        "LCB罪人",
         "LCB",
         "边狱公司"
       ],
       "effect": [
         "震颤",
         "伤害强化",
-        "强壮",
-        "反击"
+        "强壮"
       ],
       "damageType": [
         "打击"
@@ -2720,27 +2880,26 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "heathcliff_lcbzuiren"
+    "id": "heathcliff_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "し协会南部5科",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "し协会",
         "收尾人"
       ],
       "effect": [
-        "呼吸法",
-        "反击"
+        "呼吸法"
       ],
       "damageType": [
-        "斩击",
-        "突刺"
+        "斩击"
       ],
       "sinAffinity": [
         "色欲",
@@ -2750,15 +2909,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "呼吸法"
     ],
-    "id": "heathcliff_x3057xiehuinanbu5x79d1"
+    "id": "heathcliff_x3057xiehuinanbu5x79d1",
+    "faction": "し协会、收尾人",
+    "special": ""
   },
   {
     "name": "N公司小锤",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "N公司",
@@ -2766,10 +2926,9 @@
       ],
       "effect": [
         "流血",
-        "恢复"
+        "加算硬币弱化"
       ],
       "damageType": [
-        "突刺",
         "打击"
       ],
       "sinAffinity": [
@@ -2780,15 +2939,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "流血"
     ],
-    "id": "heathcliff_ngongsix5c0fx9524"
+    "id": "heathcliff_ngongsix5c0fx9524",
+    "faction": "N公司、N公司狂信徒",
+    "special": ""
   },
   {
     "name": "Seven协会南部4科",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "Seven协会",
@@ -2799,8 +2959,7 @@
         "防御等级降低"
       ],
       "damageType": [
-        "斩击",
-        "突刺"
+        "斩击"
       ],
       "sinAffinity": [
         "暴怒",
@@ -2810,15 +2969,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "破裂"
     ],
-    "id": "heathcliff_sevenxiehuinanbu4x79d1"
+    "id": "heathcliff_sevenxiehuinanbu4x79d1",
+    "faction": "Seven协会、收尾人",
+    "special": ""
   },
   {
     "name": "多裂纹事务所收尾人",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "多裂纹事务所",
@@ -2827,9 +2987,10 @@
       ],
       "effect": [
         "充能",
-        "恢复",
         "防御等级降低",
-        "易损"
+        "体力恢复降低",
+        "光电",
+        "打击易损"
       ],
       "damageType": [
         "斩击",
@@ -2843,15 +3004,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "充能"
     ],
-    "id": "heathcliff_x591ax88c2x7eb9shiwusuoshouweiren"
+    "id": "heathcliff_x591ax88c2x7eb9shiwusuoshouweiren",
+    "faction": "多裂纹事务所、收尾人、机械融合生命体",
+    "special": ""
   },
   {
     "name": "R公司第四集团军兔子队",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "R公司"
@@ -2861,7 +3023,7 @@
         "流血",
         "易损",
         "破裂",
-        "闪避"
+        "子弹"
       ],
       "damageType": [
         "突刺"
@@ -2874,22 +3036,32 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "充能"
+      "充能",
+      "流血",
+      "破裂"
     ],
-    "id": "heathcliff_rgongsix7b2csix96c6x56e2x519bx5154x5b50x961f"
+    "id": "heathcliff_rgongsix7b2csix96c6x56e2x519bx5154x5b50x961f",
+    "faction": "R公司",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:狐雨",
     "sinner": "希斯克利夫",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "技术解放联盟"
+        "技术解放联盟",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "沉沦",
+        "破裂",
+        "震颤",
+        "麻痹",
+        "易损",
+        "负币"
+      ],
       "damageType": [
-        "打击",
         "突刺"
       ],
       "sinAffinity": [
@@ -2900,14 +3072,18 @@
       "special": []
     },
     "coreMechanic": [
-      "打击"
+      "沉沦",
+      "震颤",
+      "破裂"
     ],
-    "id": "heathcliff_naoyegongsiex2egx2eox3ahux96e8"
+    "id": "heathcliff_naoyegongsiex2egx2eox3ahux96e8",
+    "faction": "技术解放联盟",
+    "special": ""
   },
   {
     "name": "裴廓德号鱼叉手",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "裴廓德号"
@@ -2915,8 +3091,7 @@
       "effect": [
         "流血",
         "呼吸法",
-        "挑衅值",
-        "暴击"
+        "挑衅值"
       ],
       "damageType": [
         "突刺"
@@ -2928,26 +3103,26 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "流血"
+      "流血",
+      "呼吸法"
     ],
-    "id": "heathcliff_x88f4x5ed3dex53f7x9c7cx53c9x624b"
+    "id": "heathcliff_x88f4x5ed3dex53f7x9c7cx53c9x624b",
+    "faction": "裴廓德号",
+    "special": ""
   },
   {
     "name": "Öufi协会南部3科",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Öufi协会",
         "收尾人"
       ],
       "effect": [
-        "震颤",
-        "护盾"
+        "震颤"
       ],
       "damageType": [
-        "斩击",
         "突刺"
       ],
       "sinAffinity": [
@@ -2958,28 +3133,28 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "震颤"
     ],
-    "id": "heathcliff_xd6ufixiehuinanbu3x79d1"
+    "id": "heathcliff_xd6ufixiehuinanbu3x79d1",
+    "faction": "Öufi协会、收尾人",
+    "special": ""
   },
   {
     "name": "狂猎",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "呼啸山庄，狂猎",
-        "呼啸山庄",
-        "狂猎"
+        "狂猎",
+        "呼啸山庄"
       ],
       "effect": [
         "沉沦",
-        "恢复",
-        "反击"
+        "棺",
+        "杜拉罕",
+        "破灭将至"
       ],
       "damageType": [
-        "斩击",
         "打击"
       ],
       "sinAffinity": [
@@ -2990,15 +3165,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "沉沦"
     ],
-    "id": "heathcliff_kuangx730e"
+    "id": "heathcliff_kuangx730e",
+    "faction": "呼啸山庄，狂猎、呼啸山庄、狂猎",
+    "special": ""
   },
   {
     "name": "句点事务所收尾人",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "句点事务所",
@@ -3006,11 +3182,10 @@
       ],
       "effect": [
         "呼吸法",
-        "反击",
         "迅捷",
         "暴击",
-        "易损",
-        "闪避"
+        "子弹",
+        "突刺易损"
       ],
       "damageType": [
         "突刺"
@@ -3023,15 +3198,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "呼吸法"
     ],
-    "id": "heathcliff_x53e5x70b9shiwusuoshouweiren"
+    "id": "heathcliff_x53e5x70b9shiwusuoshouweiren",
+    "faction": "句点事务所、收尾人",
+    "special": ""
   },
   {
     "name": "黑云会若众",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑云会",
@@ -3040,9 +3216,9 @@
       "effect": [
         "流血",
         "虚弱",
-        "易损",
         "伤害强化",
-        "反击"
+        "忍耐",
+        "攻击等级降低"
       ],
       "damageType": [
         "斩击"
@@ -3055,22 +3231,24 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "流血"
     ],
-    "id": "heathcliff_heiyunhuiruox4f17"
+    "id": "heathcliff_heiyunhuiruox4f17",
+    "faction": "黑云会、帮派",
+    "special": ""
   },
   {
     "name": "W公司4级清扫人员-CCA",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "W公司"
       ],
       "effect": [
         "充能",
-        "破裂"
+        "破裂",
+        "过度充能"
       ],
       "damageType": [
         "打击"
@@ -3083,15 +3261,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "充能"
+      "充能",
+      "破裂"
     ],
-    "id": "heathcliff_wgongsi4x7ea7x6e05x626brenx5458x2dcca"
+    "id": "heathcliff_wgongsi4x7ea7x6e05x626brenx5458x2dcca",
+    "faction": "W公司",
+    "special": ""
   },
   {
     "name": "黑兽-酉魁首",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑兽",
@@ -3102,8 +3282,8 @@
       "effect": [
         "烧伤",
         "破裂",
-        "恢复",
-        "反击"
+        "血炎",
+        "广域乱射"
       ],
       "damageType": [
         "斩击"
@@ -3116,25 +3296,32 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "烧伤"
+      "烧伤",
+      "破裂"
     ],
-    "id": "heathcliff_heix517dx2dx9149x9b41x9996"
+    "id": "heathcliff_heix517dx2dx9149x9b41x9996",
+    "faction": "黑兽、H公司、黑兽-酉、黑兽-魁首",
+    "special": ""
   },
   {
     "name": "中指幼兄",
     "sinner": "希斯克利夫",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "中指",
         "手指"
       ],
       "effect": [
-        "恢复",
         "混乱阈值后移",
         "护盾",
-        "反击"
+        "烧伤",
+        "流血",
+        "挑衅值",
+        "报复对象",
+        "攻击等级提升",
+        "麻痹",
+        "仇怨纹身"
       ],
       "damageType": [
         "打击"
@@ -3146,10 +3333,12 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "恢复"
+      "烧伤",
+      "流血"
     ],
-    "id": "heathcliff_x4e2dzhix5e7cx5144"
+    "id": "heathcliff_x4e2dzhix5e7cx5144",
+    "faction": "中指、手指",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -3163,7 +3352,8 @@
       ],
       "effect": [
         "震颤",
-        "易损"
+        "破绽",
+        "打击易损"
       ],
       "damageType": [
         "打击"
@@ -3176,18 +3366,18 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "ishmael_lcbzuiren"
+    "id": "ishmael_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "LCCB系长",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
-        "LCCB",
         "LCC",
         "边狱公司"
       ],
@@ -3197,7 +3387,8 @@
         "挑衅值",
         "虚弱",
         "易损",
-        "破裂"
+        "破裂",
+        "子弹"
       ],
       "damageType": [
         "打击"
@@ -3210,25 +3401,24 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "麻痹"
+      "震颤",
+      "破裂"
     ],
-    "id": "ishmael_lccbx7cfbx957f"
+    "id": "ishmael_lccbx7cfbx957f",
+    "faction": "LCCB、LCC、边狱公司",
+    "special": ""
   },
   {
     "name": "し协会南部5科",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "し协会",
         "收尾人"
       ],
       "effect": [
-        "呼吸法",
-        "恢复",
-        "暴击",
-        "反击"
+        "呼吸法"
       ],
       "damageType": [
         "突刺",
@@ -3242,10 +3432,11 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "呼吸法"
     ],
-    "id": "ishmael_x3057xiehuinanbu5x79d1"
+    "id": "ishmael_x3057xiehuinanbu5x79d1",
+    "faction": "し协会、收尾人",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:荡漾",
@@ -3253,9 +3444,14 @@
     "rarity": "二灯",
     "tags": {
       "faction": [
-        "技术解放联盟"
+        "技术解放联盟",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "震颤",
+        "破裂",
+        "挑衅值"
+      ],
       "damageType": [
         "打击"
       ],
@@ -3267,14 +3463,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击"
+      "震颤",
+      "破裂"
     ],
-    "id": "ishmael_naoyegongsiex2egx2eox3ax8361x6f3e"
+    "id": "ishmael_naoyegongsiex2egx2eox3ax8361x6f3e",
+    "faction": "技术解放联盟",
+    "special": ""
   },
   {
     "name": "埃德加家族管家",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "埃德加家族",
@@ -3282,17 +3481,13 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
         "迅捷",
         "沉沦",
         "束缚",
         "防御等级降低",
-        "易损",
-        "恢复",
-        "闪避"
+        "斩击易损"
       ],
       "damageType": [
-        "打击",
         "斩击"
       ],
       "sinAffinity": [
@@ -3303,15 +3498,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "呼吸法"
+      "呼吸法",
+      "沉沦"
     ],
-    "id": "ishmael_x57c3dex52a0x5bb6x65cfx7ba1x5bb6"
+    "id": "ishmael_x57c3dex52a0x5bb6x65cfx7ba1x5bb6",
+    "faction": "埃德加家族、收尾人",
+    "special": ""
   },
   {
     "name": "R公司第四集团军驯鹿队",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "R公司"
@@ -3319,7 +3516,7 @@
       "effect": [
         "充能",
         "沉沦",
-        "闪避"
+        "混乱阈值前移"
       ],
       "damageType": [
         "打击"
@@ -3332,23 +3529,24 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "充能"
+      "充能",
+      "沉沦"
     ],
-    "id": "ishmael_rgongsix7b2csix96c6x56e2x519bx9a6fx9e7fx961f"
+    "id": "ishmael_rgongsix7b2csix96c6x56e2x519bx9a6fx9e7fx961f",
+    "faction": "R公司",
+    "special": ""
   },
   {
     "name": "六协会南部4科",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "六协会",
         "收尾人"
       ],
       "effect": [
-        "烧伤",
-        "反击"
+        "烧伤"
       ],
       "damageType": [
         "打击"
@@ -3361,18 +3559,18 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "烧伤"
     ],
-    "id": "ishmael_x516dxiehuinanbu4x79d1"
+    "id": "ishmael_x516dxiehuinanbu4x79d1",
+    "faction": "六协会、收尾人",
+    "special": ""
   },
   {
     "name": "臼齿修船厂收尾人",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "臼齿修船厂",
         "收尾人",
         "臼齿事务所"
       ],
@@ -3381,8 +3579,7 @@
         "沉沦",
         "防御等级降低",
         "易损",
-        "守护",
-        "破裂"
+        "破裂守护"
       ],
       "damageType": [
         "突刺"
@@ -3395,15 +3592,17 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "震颤"
+      "震颤",
+      "沉沦"
     ],
-    "id": "ishmael_jiuchix4feex8239x5382shouweiren"
+    "id": "ishmael_jiuchix4feex8239x5382shouweiren",
+    "faction": "臼齿修船厂、收尾人、臼齿事务所",
+    "special": ""
   },
   {
     "name": "裴廓德号船长",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "裴廓德号"
@@ -3412,10 +3611,11 @@
         "流血",
         "守护",
         "挑衅值",
-        "伤害强化",
         "烧伤",
         "呼吸法",
-        "恢复"
+        "防御等级提升",
+        "攻击等级提升",
+        "傲慢威力提升"
       ],
       "damageType": [
         "突刺"
@@ -3428,15 +3628,18 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "流血"
+      "流血",
+      "烧伤",
+      "呼吸法"
     ],
-    "id": "ishmael_x88f4x5ed3dex53f7x8239x957f"
+    "id": "ishmael_x88f4x5ed3dex53f7x8239x957f",
+    "faction": "裴廓德号",
+    "special": ""
   },
   {
     "name": "Zwei协会西部3科",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Zwei协会",
@@ -3446,7 +3649,8 @@
         "震颤",
         "挑衅值",
         "虚弱",
-        "保护"
+        "防御等级提升",
+        "防御姿态"
       ],
       "damageType": [
         "打击"
@@ -3456,18 +3660,21 @@
         "嫉妒",
         "暴食"
       ],
-      "special": []
+      "special": [
+        "城墙"
+      ]
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "ishmael_zweixiehuix897fbu3x79d1"
+    "id": "ishmael_zweixiehuix897fbu3x79d1",
+    "faction": "Zwei协会、收尾人",
+    "special": ""
   },
   {
     "name": "黑云会副会长",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑云会",
@@ -3475,9 +3682,12 @@
       ],
       "effect": [
         "流血",
-        "伤害强化",
         "易损",
-        "守护"
+        "守护",
+        "攻击等级降低",
+        "伤害强化",
+        "斩击易损",
+        "斩击威力提升"
       ],
       "damageType": [
         "斩击"
@@ -3490,15 +3700,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "流血"
     ],
-    "id": "ishmael_heiyunhuix526fhuix957f"
+    "id": "ishmael_heiyunhuix526fhuix957f",
+    "faction": "黑云会、帮派",
+    "special": ""
   },
   {
     "name": "家主候选人",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "H公司",
@@ -3507,10 +3718,9 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
         "破裂",
         "防御等级降低",
-        "闪避"
+        "攻击等级提升"
       ],
       "damageType": [
         "打击",
@@ -3521,32 +3731,36 @@
         "暴食",
         "嫉妒"
       ],
-      "special": []
+      "special": [
+        "可爱死了"
+      ]
     },
     "coreMechanic": [
-      "打击",
-      "呼吸法"
+      "呼吸法",
+      "破裂"
     ],
-    "id": "ishmael_x5bb6x4e3bx5019x9009ren"
+    "id": "ishmael_x5bb6x4e3bx5019x9009ren",
+    "faction": "H公司、家主候选人、贾家",
+    "special": ""
   },
   {
     "name": "定事务所代表",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "定事务所",
         "收尾人",
-        "直属事务所 - Öufi"
+        "直属事务所",
+        "Öufi"
       ],
       "effect": [
         "丢弃",
         "震颤",
         "沉沦",
-        "恢复",
         "强壮",
         "防御等级降低",
-        "反击"
+        "光札"
       ],
       "damageType": [
         "斩击"
@@ -3559,15 +3773,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "丢弃"
+      "震颤",
+      "沉沦"
     ],
-    "id": "ishmael_x5b9ashiwusuox4ee3x8868"
+    "id": "ishmael_x5b9ashiwusuox4ee3x8868",
+    "faction": "定事务所、收尾人、直属事务所 - Öufi",
+    "special": ""
   },
   {
     "name": "蜘蛛巢中指子辈",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "中指",
@@ -3575,10 +3791,12 @@
         "蜘蛛巢"
       ],
       "effect": [
-        "恢复",
-        "反击",
         "护盾",
-        "混乱阈值后移"
+        "混乱阈值后移",
+        "流血",
+        "烧伤",
+        "打击伤害强化",
+        "中指-仇怨"
       ],
       "damageType": [
         "打击"
@@ -3591,15 +3809,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "恢复"
+      "流血",
+      "烧伤"
     ],
-    "id": "ishmael_x8718x86dbx5de2x4e2dzhix5b50x8f88"
+    "id": "ishmael_x8718x86dbx5de2x4e2dzhix5b50x8f88",
+    "faction": "中指、手指、蜘蛛巢",
+    "special": ""
   },
   {
     "name": "LCD现场推理小队",
     "sinner": "以实玛利",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "LCD",
@@ -3607,7 +3827,14 @@
         "剑契组",
         "边狱公司"
       ],
-      "effect": [],
+      "effect": [
+        "呼吸法",
+        "流血",
+        "迅捷",
+        "墨工坊",
+        "斩击易损",
+        "麻痹"
+      ],
       "damageType": [
         "斩击"
       ],
@@ -3616,12 +3843,17 @@
         "忧郁",
         "傲慢"
       ],
-      "special": []
+      "special": [
+        "没有对手"
+      ]
     },
     "coreMechanic": [
-      "斩击"
+      "流血",
+      "呼吸法"
     ],
-    "id": "ishmael_lcdx73b0x573ax63a8x7406x5c0fx961f"
+    "id": "ishmael_lcdx73b0x573ax63a8x7406x5c0fx961f",
+    "faction": "LCD、帮派、剑契组、边狱公司",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -3629,13 +3861,11 @@
     "rarity": "一灯",
     "tags": {
       "faction": [
-        "LCB罪人",
         "LCB",
         "边狱公司"
       ],
       "effect": [
-        "流血",
-        "反击"
+        "流血"
       ],
       "damageType": [
         "斩击"
@@ -3648,24 +3878,25 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "流血"
     ],
-    "id": "rodion_lcbzuiren"
+    "id": "rodion_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "LCCB系长",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
-        "LCCB",
         "LCC",
         "边狱公司"
       ],
       "effect": [
         "麻痹",
-        "防御等级降低"
+        "防御等级降低",
+        "破绽"
       ],
       "damageType": [
         "打击"
@@ -3675,18 +3906,21 @@
         "暴食",
         "嫉妒"
       ],
-      "special": []
+      "special": [
+        "无体系者"
+      ]
     },
     "coreMechanic": [
-      "打击",
-      "麻痹"
+      "无"
     ],
-    "id": "rodion_lccbx7cfbx957f"
+    "id": "rodion_lccbx7cfbx957f",
+    "faction": "LCCB、LCC、边狱公司",
+    "special": ""
   },
   {
     "name": "N公司中锤",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "N公司",
@@ -3694,11 +3928,9 @@
       ],
       "effect": [
         "流血",
-        "麻痹",
-        "反击"
+        "麻痹"
       ],
       "damageType": [
-        "突刺",
         "打击"
       ],
       "sinAffinity": [
@@ -3709,15 +3941,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "流血"
     ],
-    "id": "rodion_ngongsix4e2dx9524"
+    "id": "rodion_ngongsix4e2dx9524",
+    "faction": "N公司、N公司狂信徒",
+    "special": ""
   },
   {
     "name": "Zwei协会南部5科",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "Zwei协会",
@@ -3726,8 +3959,6 @@
       "effect": [
         "呼吸法",
         "挑衅值",
-        "护盾",
-        "暴击",
         "易损"
       ],
       "damageType": [
@@ -3741,15 +3972,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "呼吸法"
     ],
-    "id": "rodion_zweixiehuinanbu5x79d1"
+    "id": "rodion_zweixiehuinanbu5x79d1",
+    "faction": "Zwei协会、收尾人",
+    "special": ""
   },
   {
     "name": "T公司2级征收人员",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "T公司"
@@ -3769,15 +4001,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "rodion_tgongsi2x7ea7x5f81shourenx5458"
+    "id": "rodion_tgongsi2x7ea7x5f81shourenx5458",
+    "faction": "T公司",
+    "special": ""
   },
   {
     "name": "黑云会若众",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑云会",
@@ -3786,8 +4019,6 @@
       "effect": [
         "呼吸法",
         "流血",
-        "暴击",
-        "反击",
         "守护"
       ],
       "damageType": [
@@ -3801,15 +4032,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "呼吸法"
+      "呼吸法",
+      "流血"
     ],
-    "id": "rodion_heiyunhuiruox4f17"
+    "id": "rodion_heiyunhuiruox4f17",
+    "faction": "黑云会、帮派",
+    "special": ""
   },
   {
     "name": "玫瑰扳手工坊代表",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "玫瑰扳手工坊",
@@ -3820,8 +4053,7 @@
         "震颤"
       ],
       "damageType": [
-        "打击",
-        "突刺"
+        "打击"
       ],
       "sinAffinity": [
         "傲慢",
@@ -3831,15 +4063,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "充能"
+      "充能",
+      "震颤"
     ],
-    "id": "rodion_x73abx7470x6273x624bgongx574ax4ee3x8868"
+    "id": "rodion_x73abx7470x6273x624bgongx574ax4ee3x8868",
+    "faction": "玫瑰扳手工坊、收尾人",
+    "special": ""
   },
   {
     "name": "Dieci协会南部4科",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Dieci协会",
@@ -3863,26 +4097,25 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "护盾"
+      "沉沦"
     ],
-    "id": "rodion_diecixiehuinanbu4x79d1"
+    "id": "rodion_diecixiehuinanbu4x79d1",
+    "faction": "Dieci协会、收尾人",
+    "special": ""
   },
   {
     "name": "六协会南部4科科长",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "六协会",
         "收尾人"
       ],
       "effect": [
-        "烧伤",
-        "反击"
+        "烧伤"
       ],
       "damageType": [
-        "打击",
         "突刺"
       ],
       "sinAffinity": [
@@ -3893,15 +4126,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "烧伤"
     ],
-    "id": "rodion_x516dxiehuinanbu4x79d1x79d1x957f"
+    "id": "rodion_x516dxiehuinanbu4x79d1x79d1x957f",
+    "faction": "六协会、收尾人",
+    "special": ""
   },
   {
     "name": "Девять协会北部3科",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Девять协会",
@@ -3911,7 +4145,8 @@
         "破裂",
         "迅捷",
         "防御等级降低",
-        "护盾"
+        "护盾",
+        "派送箱"
       ],
       "damageType": [
         "斩击"
@@ -3924,15 +4159,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "破裂"
     ],
-    "id": "rodion_x414x435x432x44fx442x44cxiehuix5317bu3x79d1"
+    "id": "rodion_x414x435x432x44fx442x44cxiehuix5317bu3x79d1",
+    "faction": "Девять协会、收尾人",
+    "special": ""
   },
   {
     "name": "拉·曼却领公主",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "拉·曼却领",
@@ -3943,7 +4179,7 @@
         "流血",
         "破裂",
         "强壮",
-        "反击"
+        "绽放荆棘"
       ],
       "damageType": [
         "突刺"
@@ -3956,15 +4192,17 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "流血"
+      "流血",
+      "破裂"
     ],
-    "id": "rodion_x62c9xb7x66fcx5374x9886gongx4e3b"
+    "id": "rodion_x62c9xb7x66fcx5374x9886gongx4e3b",
+    "faction": "拉·曼却领、二代眷属、血魔",
+    "special": ""
   },
   {
     "name": "黑兽-巳",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑兽",
@@ -3973,11 +4211,11 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
-        "破裂"
+        "破裂",
+        "咒杀",
+        "广域乱射"
       ],
       "damageType": [
-        "斩击",
         "突刺"
       ],
       "sinAffinity": [
@@ -3988,20 +4226,26 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "呼吸法"
+      "呼吸法",
+      "破裂"
     ],
-    "id": "rodion_heix517dx2dx5df3"
+    "id": "rodion_heix517dx2dx5df3",
+    "faction": "黑兽、H公司、黑兽-巳",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:泪锋之剑",
     "sinner": "罗佳",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "脑叶公司本部"
+        "脑叶公司本部",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "沉沦",
+        "充能"
+      ],
       "damageType": [
         "突刺"
       ],
@@ -4013,14 +4257,17 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺"
+      "沉沦",
+      "充能"
     ],
-    "id": "rodion_naoyegongsiex2egx2eox3ax6ceax950bx4e4bjian"
+    "id": "rodion_naoyegongsiex2egx2eox3ax6ceax950bx4e4bjian",
+    "faction": "脑叶公司本部",
+    "special": ""
   },
   {
     "name": "R公司第四集团军驯鹿队",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "R公司"
@@ -4028,7 +4275,8 @@
       "effect": [
         "充能",
         "沉沦",
-        "易损"
+        "易损",
+        "广域乱射"
       ],
       "damageType": [
         "打击"
@@ -4041,15 +4289,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "充能"
+      "充能",
+      "沉沦"
     ],
-    "id": "rodion_rgongsix7b2csix96c6x56e2x519bx9a6fx9e7fx961f"
+    "id": "rodion_rgongsix7b2csix96c6x56e2x519bx9a6fx9e7fx961f",
+    "faction": "R公司",
+    "special": ""
   },
   {
     "name": "环指野兽派讲解员",
     "sinner": "罗佳",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "环指",
@@ -4058,7 +4308,9 @@
         "野兽派"
       ],
       "effect": [
-        "反击"
+        "流血",
+        "沉沦",
+        "广域乱射"
       ],
       "damageType": [
         "打击"
@@ -4071,10 +4323,12 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "反击"
+      "流血",
+      "沉沦"
     ],
-    "id": "rodion_huanzhix91cex517dx6d3ex8bb2x89e3x5458"
+    "id": "rodion_huanzhix91cex517dx6d3ex8bb2x89e3x5458",
+    "faction": "环指、手指、讲解员、野兽派",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -4082,14 +4336,12 @@
     "rarity": "一灯",
     "tags": {
       "faction": [
-        "LCB罪人",
         "LCB",
         "边狱公司"
       ],
       "effect": [
         "破裂",
-        "强壮",
-        "反击"
+        "强壮"
       ],
       "damageType": [
         "斩击"
@@ -4102,15 +4354,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "破裂"
     ],
-    "id": "sinclair_lcbzuiren"
+    "id": "sinclair_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "Zwei协会南部6科",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "Zwei协会",
@@ -4120,7 +4373,7 @@
         "震颤",
         "守护",
         "挑衅值",
-        "易损"
+        "伤害弱化"
       ],
       "damageType": [
         "打击"
@@ -4133,15 +4386,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "sinclair_zweixiehuinanbu6x79d1"
+    "id": "sinclair_zweixiehuinanbu6x79d1",
+    "faction": "Zwei协会、收尾人",
+    "special": ""
   },
   {
     "name": "流浪乐队头目",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "流浪乐队",
@@ -4151,9 +4405,7 @@
       "effect": [
         "沉沦",
         "呼吸法",
-        "暴击",
-        "混乱阈值后移",
-        "闪避"
+        "混乱阈值后移"
       ],
       "damageType": [
         "打击"
@@ -4166,10 +4418,12 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "沉沦"
+      "沉沦",
+      "呼吸法"
     ],
-    "id": "sinclair_liux6d6ax4e50x961fx5934x76ee"
+    "id": "sinclair_liux6d6ax4e50x961fx5934x76ee",
+    "faction": "流浪乐队、后巷、帮派",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:朱符",
@@ -4177,11 +4431,14 @@
     "rarity": "二灯",
     "tags": {
       "faction": [
-        "技术解放联盟"
+        "技术解放联盟",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "破裂",
+        "符咒"
+      ],
       "damageType": [
-        "打击",
         "突刺"
       ],
       "sinAffinity": [
@@ -4192,27 +4449,26 @@
       "special": []
     },
     "coreMechanic": [
-      "打击"
+      "破裂"
     ],
-    "id": "sinclair_naoyegongsiex2egx2eox3ax6731x7b26"
+    "id": "sinclair_naoyegongsiex2egx2eox3ax6731x7b26",
+    "faction": "技术解放联盟",
+    "special": ""
   },
   {
     "name": "臼齿修船厂收尾人",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
-        "臼齿修船厂",
         "收尾人",
         "臼齿事务所"
       ],
       "effect": [
         "震颤",
-        "守护",
-        "破裂"
+        "破裂守护"
       ],
       "damageType": [
-        "打击",
         "突刺"
       ],
       "sinAffinity": [
@@ -4223,15 +4479,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "sinclair_jiuchix4feex8239x5382shouweiren"
+    "id": "sinclair_jiuchix4feex8239x5382shouweiren",
+    "faction": "臼齿修船厂、收尾人、臼齿事务所",
+    "special": ""
   },
   {
     "name": "Zwei协会西部3科",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "Zwei协会",
@@ -4239,10 +4496,10 @@
       ],
       "effect": [
         "震颤",
-        "挑衅值"
+        "挑衅值",
+        "防御等级提升"
       ],
       "damageType": [
-        "斩击",
         "打击"
       ],
       "sinAffinity": [
@@ -4253,15 +4510,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "震颤"
     ],
-    "id": "sinclair_zweixiehuix897fbu3x79d1"
+    "id": "sinclair_zweixiehuix897fbu3x79d1",
+    "faction": "Zwei协会、收尾人",
+    "special": ""
   },
   {
     "name": "剑契组杀手",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "剑契组",
@@ -4269,15 +4527,12 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
         "强壮",
         "流血",
         "麻痹",
-        "伤害强化",
-        "反击"
+        "伤害强化"
       ],
       "damageType": [
-        "突刺",
         "斩击"
       ],
       "sinAffinity": [
@@ -4288,15 +4543,17 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "呼吸法"
+      "呼吸法",
+      "流血"
     ],
-    "id": "sinclair_jianqizux6740x624b"
+    "id": "sinclair_jianqizux6740x624b",
+    "faction": "剑契组、帮派",
+    "special": ""
   },
   {
     "name": "准执柄者",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "N公司",
@@ -4305,7 +4562,7 @@
       "effect": [
         "烧伤",
         "流血",
-        "恢复"
+        "负币"
       ],
       "damageType": [
         "打击"
@@ -4318,15 +4575,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "烧伤"
+      "烧伤",
+      "流血"
     ],
-    "id": "sinclair_x51c6x6267x67c4zhe"
+    "id": "sinclair_x51c6x6267x67c4zhe",
+    "faction": "N公司、N公司狂信徒",
+    "special": ""
   },
   {
     "name": "Cinq协会南部4科科长",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Cinq协会",
@@ -4335,9 +4594,8 @@
       "effect": [
         "呼吸法",
         "迅捷",
-        "暴击",
         "易损",
-        "闪避"
+        "决斗宣告"
       ],
       "damageType": [
         "突刺"
@@ -4350,23 +4608,23 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "呼吸法"
     ],
-    "id": "sinclair_cinqxiehuinanbu4x79d1x79d1x957f"
+    "id": "sinclair_cinqxiehuinanbu4x79d1x79d1x957f",
+    "faction": "Cinq协会、收尾人",
+    "special": ""
   },
   {
     "name": "黎明事务所收尾人",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黎明事务所",
         "收尾人"
       ],
       "effect": [
-        "烧伤",
-        "恢复"
+        "烧伤"
       ],
       "damageType": [
         "斩击",
@@ -4380,15 +4638,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "烧伤"
     ],
-    "id": "sinclair_x9ecex660eshiwusuoshouweiren"
+    "id": "sinclair_x9ecex660eshiwusuoshouweiren",
+    "faction": "黎明事务所、收尾人",
+    "special": ""
   },
   {
     "name": "Девять协会北部3科",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Девять协会",
@@ -4398,7 +4657,8 @@
         "防御等级降低",
         "破裂",
         "迅捷",
-        "护盾"
+        "护盾",
+        "派送箱"
       ],
       "damageType": [
         "打击"
@@ -4411,15 +4671,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "防御等级降低"
+      "破裂"
     ],
-    "id": "sinclair_x414x435x432x44fx442x44cxiehuix5317bu3x79d1"
+    "id": "sinclair_x414x435x432x44fx442x44cxiehuix5317bu3x79d1",
+    "faction": "Девять协会、收尾人",
+    "special": ""
   },
   {
     "name": "中指幼弟",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "中指",
@@ -4427,10 +4688,9 @@
       ],
       "effect": [
         "流血",
-        "恢复",
         "挑衅值",
         "护盾",
-        "反击"
+        "复仇账簿"
       ],
       "damageType": [
         "打击"
@@ -4442,15 +4702,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "流血"
     ],
-    "id": "sinclair_x4e2dzhix5e7cx5f1f"
+    "id": "sinclair_x4e2dzhix5e7cx5f1f",
+    "faction": "中指、手指",
+    "special": ""
   },
   {
     "name": "拇指东部士兵II",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "拇指",
@@ -4460,8 +4721,7 @@
       "effect": [
         "烧伤",
         "震颤",
-        "护盾",
-        "伤害强化"
+        "子弹"
       ],
       "damageType": [
         "突刺",
@@ -4470,21 +4730,22 @@
       "sinAffinity": [
         "色欲",
         "怠惰",
-        "暴怒",
-        "傲慢"
+        "暴怒"
       ],
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "烧伤"
+      "烧伤",
+      "震颤"
     ],
-    "id": "sinclair_x62c7zhix4e1cbushibingii"
+    "id": "sinclair_x62c7zhix4e1cbushibingii",
+    "faction": "拇指、士兵II、手指",
+    "special": ""
   },
   {
     "name": "黑兽-酉",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑兽",
@@ -4494,7 +4755,8 @@
       "effect": [
         "烧伤",
         "破裂",
-        "反击"
+        "血炎",
+        "广域乱射"
       ],
       "damageType": [
         "斩击"
@@ -4507,24 +4769,25 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "烧伤"
+      "烧伤",
+      "破裂"
     ],
-    "id": "sinclair_heix517dx2dx9149"
+    "id": "sinclair_heix517dx2dx9149",
+    "faction": "黑兽、H公司、黑兽-酉",
+    "special": ""
   },
   {
     "name": "蜘蛛巢小指子辈",
     "sinner": "辛克莱",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "小指",
         "蜘蛛巢"
       ],
       "effect": [
-        "暴击",
         "护盾",
-        "闪避"
+        "流血",
+        "呼吸法"
       ],
       "damageType": [
         "斩击"
@@ -4537,10 +4800,12 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "暴击"
+      "呼吸法",
+      "流血"
     ],
-    "id": "sinclair_x8718x86dbx5de2x5c0fzhix5b50x8f88"
+    "id": "sinclair_x8718x86dbx5de2x5c0fzhix5b50x8f88",
+    "faction": "小指、蜘蛛巢",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -4553,11 +4818,9 @@
         "边狱公司"
       ],
       "effect": [
-        "破裂",
-        "闪避"
+        "破裂"
       ],
       "damageType": [
-        "突刺",
         "斩击"
       ],
       "sinAffinity": [
@@ -4568,15 +4831,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "破裂"
     ],
-    "id": "outis_lcbzuiren"
+    "id": "outis_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "剑契组杀手",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "剑契组",
@@ -4584,13 +4848,10 @@
       ],
       "effect": [
         "呼吸法",
-        "伤害强化",
-        "暴击",
-        "闪避"
+        "斩击伤害强化"
       ],
       "damageType": [
-        "斩击",
-        "突刺"
+        "斩击"
       ],
       "sinAffinity": [
         "暴怒",
@@ -4600,18 +4861,18 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "呼吸法"
     ],
-    "id": "outis_jianqizux6740x624b"
+    "id": "outis_jianqizux6740x624b",
+    "faction": "剑契组、帮派",
+    "special": ""
   },
   {
     "name": "G公司部长",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
-        "旧G公司",
         "G公司"
       ],
       "effect": [
@@ -4622,7 +4883,6 @@
         "虚弱"
       ],
       "damageType": [
-        "突刺",
         "打击"
       ],
       "sinAffinity": [
@@ -4633,15 +4893,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "守护"
+      "沉沦"
     ],
-    "id": "outis_ggongsibux957f"
+    "id": "outis_ggongsibux957f",
+    "faction": "旧G公司、G公司",
+    "special": ""
   },
   {
     "name": "Cinq协会南部4科",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "Cinq协会",
@@ -4651,9 +4912,7 @@
         "呼吸法",
         "迅捷",
         "挑衅值",
-        "束缚",
-        "暴击",
-        "闪避"
+        "束缚"
       ],
       "damageType": [
         "突刺"
@@ -4666,15 +4925,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "呼吸法"
     ],
-    "id": "outis_cinqxiehuinanbu4x79d1"
+    "id": "outis_cinqxiehuinanbu4x79d1",
+    "faction": "Cinq协会、收尾人",
+    "special": ""
   },
   {
     "name": "环指点彩派学徒",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "环指点彩派",
@@ -4683,12 +4943,9 @@
       ],
       "effect": [
         "流血",
-        "烧伤",
-        "伤害强化",
-        "破裂",
         "迅捷",
-        "震颤",
-        "沉沦"
+        "突刺伤害强化",
+        "突刺威力提升"
       ],
       "damageType": [
         "突刺"
@@ -4701,15 +4958,16 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
       "流血"
     ],
-    "id": "outis_huanzhix70b9x5f69x6d3ex5b66x5f92"
+    "id": "outis_huanzhix70b9x5f69x6d3ex5b66x5f92",
+    "faction": "环指点彩派、手指、环指",
+    "special": ""
   },
   {
     "name": "Seven协会南部6科科长",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Seven协会",
@@ -4719,11 +4977,11 @@
         "麻痹",
         "破裂",
         "防御等级降低",
-        "迅捷"
+        "迅捷",
+        "弱点分析"
       ],
       "damageType": [
-        "打击",
-        "斩击"
+        "打击"
       ],
       "sinAffinity": [
         "暴食",
@@ -4733,15 +4991,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "麻痹"
+      "破裂"
     ],
-    "id": "outis_sevenxiehuinanbu6x79d1x79d1x957f"
+    "id": "outis_sevenxiehuinanbu6x79d1x79d1x957f",
+    "faction": "Seven协会、收尾人",
+    "special": ""
   },
   {
     "name": "臼齿事务所收尾人",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "臼齿事务所",
@@ -4750,11 +5009,11 @@
       "effect": [
         "丢弃",
         "震颤",
-        "混乱阈值后移"
+        "混乱阈值后移",
+        "攻击等级提升"
       ],
       "damageType": [
-        "斩击",
-        "打击"
+        "斩击"
       ],
       "sinAffinity": [
         "暴怒",
@@ -4764,22 +5023,27 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "丢弃"
+      "震颤"
     ],
-    "id": "outis_jiuchishiwusuoshouweiren"
+    "id": "outis_jiuchishiwusuoshouweiren",
+    "faction": "臼齿事务所、收尾人",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:魔弹",
     "sinner": "奥提斯",
-    "rarity": "二灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "脑叶公司本部"
+        "脑叶公司本部",
+        "E.G.O装备"
       ],
-      "effect": [],
+      "effect": [
+        "烧伤",
+        "黑焰",
+        "子弹"
+      ],
       "damageType": [
-        "打击",
         "突刺"
       ],
       "sinAffinity": [
@@ -4789,22 +5053,23 @@
       "special": []
     },
     "coreMechanic": [
-      "打击"
+      "烧伤"
     ],
-    "id": "outis_naoyegongsiex2egx2eox3amox5f39"
+    "id": "outis_naoyegongsiex2egx2eox3amox5f39",
+    "faction": "脑叶公司本部",
+    "special": ""
   },
   {
     "name": "呼啸山庄首席管家",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "呼啸山庄",
         "收尾人"
       ],
       "effect": [
-        "沉沦",
-        "闪避"
+        "沉沦"
       ],
       "damageType": [
         "打击"
@@ -4817,15 +5082,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "沉沦"
     ],
-    "id": "outis_x547cx5578x5c71zhuangx9996x5e2dx7ba1x5bb6"
+    "id": "outis_x547cx5578x5c71zhuangx9996x5e2dx7ba1x5bb6",
+    "faction": "呼啸山庄、收尾人",
+    "special": ""
   },
   {
     "name": "W公司3级清扫组长",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "W公司"
@@ -4836,7 +5102,6 @@
         "破裂"
       ],
       "damageType": [
-        "打击",
         "斩击"
       ],
       "sinAffinity": [
@@ -4847,15 +5112,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "充能"
+      "充能",
+      "破裂"
     ],
-    "id": "outis_wgongsi3x7ea7x6e05x626bzux957f"
+    "id": "outis_wgongsi3x7ea7x6e05x626bzux957f",
+    "faction": "W公司",
+    "special": ""
   },
   {
     "name": "拉·曼却领理发师",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "拉·曼却领",
@@ -4864,7 +5131,7 @@
       ],
       "effect": [
         "流血",
-        "恢复"
+        "血宴"
       ],
       "damageType": [
         "斩击"
@@ -4877,15 +5144,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "流血"
     ],
-    "id": "outis_x62c9xb7x66fcx5374x9886x7406x53d1x5e08"
+    "id": "outis_x62c9xb7x66fcx5374x9886x7406x53d1x5e08",
+    "faction": "拉·曼却领、三代眷属、血魔",
+    "special": ""
   },
   {
     "name": "黑兽-卯",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑兽",
@@ -4895,7 +5163,8 @@
       "effect": [
         "破裂",
         "迅捷",
-        "反击"
+        "脚力",
+        "咒杀"
       ],
       "damageType": [
         "斩击"
@@ -4908,15 +5177,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "破裂"
     ],
-    "id": "outis_heix517dx2dx536f"
+    "id": "outis_heix517dx2dx536f",
+    "faction": "黑兽、H公司、黑兽-卯",
+    "special": ""
   },
   {
     "name": "T公司3级强制征收人员",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "T公司"
@@ -4936,15 +5206,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "震颤"
     ],
-    "id": "outis_tgongsi3x7ea7x5f3ax5236x5f81shourenx5458"
+    "id": "outis_tgongsi3x7ea7x5f3ax5236x5f81shourenx5458",
+    "faction": "T公司",
+    "special": ""
   },
   {
     "name": "LCA瓦吉特先锋三队队长",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "LCA",
@@ -4955,11 +5226,11 @@
         "震颤",
         "守护",
         "挑衅值",
-        "易损",
-        "护盾"
+        "忧郁易损",
+        "忧郁抗性弱化",
+        "子弹"
       ],
       "damageType": [
-        "斩击",
         "突刺"
       ],
       "sinAffinity": [
@@ -4970,15 +5241,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "沉沦"
+      "沉沦",
+      "震颤"
     ],
-    "id": "outis_lcax74e6jix7279x5148x950bx4e09x961fx961fx957f"
+    "id": "outis_lcax74e6jix7279x5148x950bx4e09x961fx961fx957f",
+    "faction": "LCA、边狱公司",
+    "special": ""
   },
   {
     "name": "蜘蛛巢中指父辈",
     "sinner": "奥提斯",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "中指",
@@ -4987,10 +5260,18 @@
         "长‌姊"
       ],
       "effect": [
-        "恢复",
-        "反击",
         "护盾",
-        "混乱阈值后移"
+        "混乱阈值后移",
+        "烧伤",
+        "流血",
+        "中指-仇怨纹身",
+        "束缚",
+        "挑衅",
+        "麻痹",
+        "中指-仇怨",
+        "打击伤害强化",
+        "莱瓦汀",
+        "嫉妒易损"
       ],
       "damageType": [
         "打击"
@@ -4999,13 +5280,17 @@
         "色欲",
         "嫉妒"
       ],
-      "special": []
+      "special": [
+        "！？打开包装？！"
+      ]
     },
     "coreMechanic": [
-      "打击",
-      "恢复"
+      "烧伤",
+      "流血"
     ],
-    "id": "outis_x8718x86dbx5de2x4e2dzhix7236x8f88"
+    "id": "outis_x8718x86dbx5de2x4e2dzhix7236x8f88",
+    "faction": "中指、手指、蜘蛛巢、长‌姊",
+    "special": ""
   },
   {
     "name": "LCB罪人",
@@ -5013,14 +5298,12 @@
     "rarity": "一灯",
     "tags": {
       "faction": [
-        "LCB罪人",
         "LCB",
         "边狱公司"
       ],
       "effect": [
         "破裂",
-        "易损",
-        "恢复"
+        "突刺易损"
       ],
       "damageType": [
         "斩击",
@@ -5034,15 +5317,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "破裂"
     ],
-    "id": "gregor_lcbzuiren"
+    "id": "gregor_lcbzuiren",
+    "faction": "LCB罪人、LCB、边狱公司",
+    "special": ""
   },
   {
     "name": "六协会南部6科",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "六协会",
@@ -5063,15 +5347,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "烧伤"
     ],
-    "id": "gregor_x516dxiehuinanbu6x79d1"
+    "id": "gregor_x516dxiehuinanbu6x79d1",
+    "faction": "六协会、收尾人",
+    "special": ""
   },
   {
     "name": "良·派帮厨",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "良·派",
@@ -5081,8 +5366,7 @@
       "effect": [
         "流血",
         "束缚",
-        "麻痹",
-        "恢复"
+        "麻痹"
       ],
       "damageType": [
         "打击",
@@ -5096,15 +5380,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "流血"
     ],
-    "id": "gregor_liangxb7x6d3ex5e2echu"
+    "id": "gregor_liangxb7x6d3ex5e2echu",
+    "faction": "良·派、后巷、帮派",
+    "special": ""
   },
   {
     "name": "玫瑰扳手工坊收尾人",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "玫瑰扳手工坊",
@@ -5116,8 +5401,7 @@
         "破裂"
       ],
       "damageType": [
-        "斩击",
-        "突刺"
+        "斩击"
       ],
       "sinAffinity": [
         "暴食",
@@ -5127,15 +5411,18 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "充能"
+      "充能",
+      "震颤",
+      "破裂"
     ],
-    "id": "gregor_x73abx7470x6273x624bgongx574ashouweiren"
+    "id": "gregor_x73abx7470x6273x624bgongx574ashouweiren",
+    "faction": "玫瑰扳手工坊、收尾人",
+    "special": ""
   },
   {
     "name": "黑云会副会长",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "二灯",
     "tags": {
       "faction": [
         "黑云会",
@@ -5143,11 +5430,12 @@
       ],
       "effect": [
         "流血",
-        "虚弱"
+        "虚弱",
+        "攻击等级降低",
+        "加算硬币弱化"
       ],
       "damageType": [
-        "斩击",
-        "打击"
+        "斩击"
       ],
       "sinAffinity": [
         "怠惰",
@@ -5157,26 +5445,24 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "流血"
     ],
-    "id": "gregor_heiyunhuix526fhuix957f"
+    "id": "gregor_heiyunhuix526fhuix957f",
+    "faction": "黑云会、帮派",
+    "special": ""
   },
   {
     "name": "G公司科长代理",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
-        "旧G公司",
         "G公司"
       ],
       "effect": [
-        "恢复",
         "破裂"
       ],
       "damageType": [
-        "斩击",
         "突刺"
       ],
       "sinAffinity": [
@@ -5187,15 +5473,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "恢复"
+      "破裂"
     ],
-    "id": "gregor_ggongsix79d1x957fx4ee3x7406"
+    "id": "gregor_ggongsix79d1x957fx4ee3x7406",
+    "faction": "旧G公司、G公司",
+    "special": ""
   },
   {
     "name": "Zwei协会南部4科",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "Zwei协会",
@@ -5204,7 +5491,9 @@
       "effect": [
         "迅捷",
         "护盾",
-        "挑衅值"
+        "挑衅值",
+        "防御等级提升",
+        "忍耐"
       ],
       "damageType": [
         "斩击"
@@ -5214,18 +5503,21 @@
         "暴食",
         "忧郁"
       ],
-      "special": []
+      "special": [
+        "无体系者"
+      ]
     },
     "coreMechanic": [
-      "斩击",
-      "迅捷"
+      "无"
     ],
-    "id": "gregor_zweixiehuinanbu4x79d1"
+    "id": "gregor_zweixiehuinanbu4x79d1",
+    "faction": "Zwei协会、收尾人",
+    "special": ""
   },
   {
     "name": "双钩海盗团大副",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "双钩海盗团",
@@ -5234,8 +5526,8 @@
       "effect": [
         "流血",
         "呼吸法",
-        "暴击",
-        "闪避"
+        "子弹",
+        "加算硬币强化"
       ],
       "damageType": [
         "突刺"
@@ -5248,15 +5540,17 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺",
-      "流血"
+      "流血",
+      "呼吸法"
     ],
-    "id": "gregor_x53ccx94a9x6d77x76d7x56e2x5927x526f"
+    "id": "gregor_x53ccx94a9x6d77x76d7x56e2x5927x526f",
+    "faction": "双钩海盗团、帮派",
+    "special": ""
   },
   {
     "name": "埃德加家族继承人",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "埃德加家族"
@@ -5264,7 +5558,8 @@
       "effect": [
         "沉沦",
         "迅捷",
-        "伤害强化"
+        "伤害强化",
+        "加算硬币强化"
       ],
       "damageType": [
         "斩击"
@@ -5277,15 +5572,16 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
       "沉沦"
     ],
-    "id": "gregor_x57c3dex52a0x5bb6x65cfx7ee7x627fren"
+    "id": "gregor_x57c3dex52a0x5bb6x65cfx7ee7x627fren",
+    "faction": "埃德加家族",
+    "special": ""
   },
   {
     "name": "拉·曼却领神父",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "拉·曼却领",
@@ -5295,8 +5591,7 @@
       "effect": [
         "流血",
         "破裂",
-        "挑衅值",
-        "恢复"
+        "挑衅值"
       ],
       "damageType": [
         "打击"
@@ -5309,15 +5604,17 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
-      "流血"
+      "流血",
+      "破裂"
     ],
-    "id": "gregor_x62c9xb7x66fcx5374x9886x795ex7236"
+    "id": "gregor_x62c9xb7x66fcx5374x9886x795ex7236",
+    "faction": "拉·曼却领、三代眷属、血魔",
+    "special": ""
   },
   {
     "name": "炎拳事务所幸存者",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "炎拳事务所",
@@ -5325,8 +5622,7 @@
       ],
       "effect": [
         "烧伤",
-        "伤害强化",
-        "反击"
+        "过热燃料"
       ],
       "damageType": [
         "打击"
@@ -5338,15 +5634,16 @@
       "special": []
     },
     "coreMechanic": [
-      "打击",
       "烧伤"
     ],
-    "id": "gregor_x708ex62f3shiwusuox5e78x5b58zhe"
+    "id": "gregor_x708ex62f3shiwusuox5e78x5b58zhe",
+    "faction": "炎拳事务所、收尾人",
+    "special": ""
   },
   {
     "name": "黑兽-巳",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "黑兽",
@@ -5355,11 +5652,10 @@
       ],
       "effect": [
         "呼吸法",
-        "暴击",
-        "破裂"
+        "破裂",
+        "咒杀"
       ],
       "damageType": [
-        "斩击",
         "突刺"
       ],
       "sinAffinity": [
@@ -5370,15 +5666,17 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "呼吸法"
+      "呼吸法",
+      "破裂"
     ],
-    "id": "gregor_heix517dx2dx5df3"
+    "id": "gregor_heix517dx2dx5df3",
+    "faction": "黑兽、H公司、黑兽-巳",
+    "special": ""
   },
   {
     "name": "夜锥组队长",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "夜锥组",
@@ -5388,9 +5686,9 @@
         "流血",
         "迅捷",
         "震颤",
-        "护盾",
         "束缚",
-        "防御等级降低"
+        "防御等级降低",
+        "创伤"
       ],
       "damageType": [
         "突刺"
@@ -5400,25 +5698,34 @@
         "色欲",
         "傲慢"
       ],
-      "special": []
+      "special": [
+        "？！追追！？"
+      ]
     },
     "coreMechanic": [
-      "突刺",
-      "流血"
+      "流血",
+      "震颤"
     ],
-    "id": "gregor_x591cx9525zux961fx957f"
+    "id": "gregor_x591cx9525zux961fx957f",
+    "faction": "夜锥组、帮派",
+    "special": ""
   },
   {
     "name": "脑叶公司E.G.O:目灯",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "LCE",
         "E.G.O装备",
         "边狱公司"
       ],
-      "effect": [],
+      "effect": [
+        "沉沦",
+        "烧伤",
+        "束缚",
+        "加算硬币强化"
+      ],
       "damageType": [
         "突刺"
       ],
@@ -5430,14 +5737,17 @@
       "special": []
     },
     "coreMechanic": [
-      "突刺"
+      "沉沦",
+      "烧伤"
     ],
-    "id": "gregor_naoyegongsiex2egx2eox3ax76eex706f"
+    "id": "gregor_naoyegongsiex2egx2eox3ax76eex706f",
+    "faction": "LCE、E.G.O装备、边狱公司",
+    "special": ""
   },
   {
     "name": "LCE_E.G.O:AEDD",
     "sinner": "格里高尔",
-    "rarity": "一灯",
+    "rarity": "三灯",
     "tags": {
       "faction": [
         "LCE",
@@ -5445,8 +5755,10 @@
         "边狱公司"
       ],
       "effect": [
-        "护盾",
-        "充能"
+        "充能",
+        "光电",
+        "破裂",
+        "挑衅值"
       ],
       "damageType": [
         "斩击"
@@ -5459,9 +5771,11 @@
       "special": []
     },
     "coreMechanic": [
-      "斩击",
-      "护盾"
+      "充能",
+      "破裂"
     ],
-    "id": "gregor_lcex5fex2egx2eox3aaedd"
+    "id": "gregor_lcex5fex2egx2eox3aaedd",
+    "faction": "LCE、E.G.O装备、边狱公司",
+    "special": ""
   }
 ]

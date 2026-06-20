@@ -15,21 +15,9 @@
     "{sinner}，本次携带EGO——{ego}。",
     "指令下达：{sinner}应装备{ego}。"
   ],
-  "deploy_ego_level": [
-    "致：{sinner}需装备{level}级的{tags}EGO。",
-    "{sinner}，选取{level}级的{tags}EGO。"
-  ],
-  "deploy_ego_vague": [
-    "致：{sinner}需装备{tags}类型的EGO。",
-    "{sinner}，携带{tags}属性的EGO。"
-  ],
   "deploy_ego_force_base": [
     "致：{sinner}必须仅使用初始EGO。",
     "{sinner}，禁止使用非初始EGO。"
-  ],
-  "deploy_ego_overclock": [
-    "致：{sinner}在本次战斗中，{ego}必须超频。",
-    "命令：{sinner}的{ego}，超频使用。"
   ],
   "starlight": [
     "致：选择星光【{name}】至{level}级。",
@@ -43,6 +31,9 @@
     "致：选择{effect}饰品作为开局饰品。",
     "开局饰品指定：{effect}类饰品。",
     "致：以{effect}饰品起始本局。"
+  ],
+  "starting_relic_none": [
+    "致：本轮无可用开局饰品。"
   ],
   "cardpack_pick": [
     "致：选择卡包【{pack}】。",
@@ -60,6 +51,9 @@
     "致：走向{dir}路。",
     "路线指定：{dir}路。",
     "致：选择{dir}方路线。"
+  ],
+  "combat_no_formation": [
+    "致：尚未编队，请先在编队窗口中指定出击顺序。"
   ],
   "combat_defend_all": [
     "致：全体守备一回合。",
@@ -94,12 +88,15 @@
     "{sinner}，本回合使用下方技能。"
   ],
   "combat_use_ego": [
-    "致：{sinner}必须使用EGO【{ego}】。",
-    "{sinner}，释放{ego}！"
+    "致：{sinner}必须使用{level}级EGO。",
+    "致：{sinner}必须使用具有{tags}效果的EGO。",
+    "{sinner}，释放{tags}属性的EGO！",
+    "{sinner}，本回合使用{level}级EGO出击。"
   ],
   "combat_overclock_ego": [
-    "致：{sinner}必须超频EGO【{ego}】。",
-    "{sinner}，将{ego}超频释放！"
+    "致：{sinner}必须超频{level}级EGO。",
+    "{sinner}，将{tags}EGO超频释放！",
+    "致：{sinner}，超频你的{tags}EGO。"
   ],
   "combat_guard": [
     "致：{sinner}必须使用守备技能。",
@@ -193,9 +190,7 @@
   "boss_reward": [
     "致：从关底奖励中选择第{option}个。"
   ],
-  "boss_reward_two": [
-    "致：从关底奖励中选择第{first}个和第{second}个。"
-  ],
+
   "free_instruction": [
     "致：将左手放在胸前，朗诵『指令神了』三遍。",
     "致：做三个俄式挺身俯卧撑。",
