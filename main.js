@@ -14,6 +14,9 @@ const { AchievementSystem } = require('./src/achievements');
 const { QueueManager } = require('./src/queueManager');
 const { SoundManager } = require('./src/soundManager');
 
+// Bump this when bundled data/ files change — auto-clears stale userData on next launch
+const DATA_VERSION = 1;
+
 // ── Window references ──
 let mainWindow = null;
 let overlayWindow = null;
@@ -234,8 +237,8 @@ const runState = {
 function getConfigDefaults() {
   return {
     version: 2,
-    ownedIdentities: [],
-    ownedEgos: [],
+    dataVersion: 0,
+    ownedIdentities: [],    ownedEgos: [],
     identityPools: [],
     egoPools: [],
     enabledPhases: [
@@ -1356,8 +1359,30 @@ app.whenReady().then(async () => {
   const userDataPath = app.getPath('userData');
   const bundledPath = path.join(__dirname, 'data');
 
-  dataLoader = new DataLoader(userDataPath, bundledPath);
+  // ── Store must init first so we can read dataVersion ──
   store = new Store({ defaults: getConfigDefaults() });
+
+  // ── Data version check: clear stale userData when bundled data is newer ──
+  const storedDataVersion = store.get('dataVersion') || 0;
+  if (DATA_VERSION > storedDataVersion) {
+    const fs = require('fs');
+    const userDataDir = path.join(userDataPath, 'data');
+    try {
+      const files = await fs.promises.readdir(userDataDir);
+      for (const f of files) {
+        if (f.endsWith('.json')) {
+          await fs.promises.unlink(path.join(userDataDir, f));
+        }
+      }
+      console.log(`[data-version] Cleared ${files.filter(f => f.endsWith('.json')).length} stale userData files (v${storedDataVersion} → v${DATA_VERSION})`);
+    } catch (e) {
+      // userData/data/ doesn't exist yet — noop
+    }
+    store.set('dataVersion', DATA_VERSION);
+  }
+
+  // ── Now safe to create dataLoader (userData is clean if version bumped) ──
+  dataLoader = new DataLoader(userDataPath, bundledPath);
 
   // Migrate: ensure new phases are present in enabledPhases
   const defaults = getConfigDefaults();
