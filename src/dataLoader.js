@@ -8,7 +8,7 @@ const fs = require('fs').promises;
 
 const DATA_TYPES = [
   'identities', 'egos', 'relics', 'starlight', 'cardpacks',
-  'achievements', 'templates'
+  'achievements', 'templates', 'events', 'fusions'
 ];
 
 const EMPTY_DEFAULTS = {
@@ -18,7 +18,9 @@ const EMPTY_DEFAULTS = {
   starlight: [],
   cardpacks: [],
   achievements: [],
-  templates: {}
+  templates: {},
+  events: [],
+  fusions: []
 };
 
 class DataLoader {

@@ -229,6 +229,13 @@ body {
   background: rgba(244, 67, 54, 0.45);
 }
 
+/* ── Button press animation ── */
+.pager-btn.pressed {
+  transform: scale(0.93);
+  transition: transform 0.08s ease-in;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
 /* ── Shutdown animation ── */
 #pager.shutting-down {
   opacity: 0;

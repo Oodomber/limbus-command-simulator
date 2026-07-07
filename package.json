@@ -1,6 +1,6 @@
 {
   "name": "limbus-command-simulator",
-  "version": "1.0.3",
+  "version": "1.2.1",
   "description": "边狱巴士 指令模拟器 — The Index Command Simulator for Limbus Company",
   "author": "冬熊夏鸟",
   "license": "MIT",
@@ -11,7 +11,8 @@
     "fix-data": "node tools/fix-data.js"
   },
   "dependencies": {
-    "electron-store": "^8.2.0"
+    "electron-store": "^8.2.0",
+    "playwright": "^1.61.1"
   },
   "devDependencies": {
     "electron": "^33.4.11",

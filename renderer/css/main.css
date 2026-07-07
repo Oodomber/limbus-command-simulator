@@ -528,6 +528,9 @@ td.loading, .loading {
 /* ── Settings ── */
 .settings-form {
   max-width: 600px;
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 8px;
 }
 
 .setting-group {
@@ -569,6 +572,52 @@ td.loading, .loading {
 .setting-group input[type="checkbox"] {
   accent-color: #ffd700;
   margin-right: 8px;
+}
+
+/* ── Hotkey binding buttons ── */
+.hotkey-row {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  gap: 12px;
+}
+
+.hotkey-row label {
+  min-width: 100px;
+  margin: 0 !important;
+  color: #ccc;
+  font-size: 0.9em;
+}
+
+.hotkey-btn {
+  padding: 6px 18px;
+  font-size: 13px;
+  font-weight: bold;
+  font-family: inherit;
+  background: #0f0f23;
+  color: #ffd700;
+  border: 1px solid #3a3a5a;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 70px;
+  text-align: center;
+  transition: all 0.15s;
+}
+
+.hotkey-btn:hover {
+  border-color: #ffd700;
+  background: #1a1a2e;
+}
+
+.hotkey-btn.listening {
+  border-color: #ff9800;
+  color: #ff9800;
+  animation: hotkey-pulse 0.8s ease-in-out infinite;
+}
+
+@keyframes hotkey-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.4); }
+  50% { box-shadow: 0 0 8px 2px rgba(255, 152, 0, 0.4); }
 }
 
 .setting-group p {

@@ -194,11 +194,16 @@ const DEFAULT_TEMPLATES = {
   shop_buy: [
     '致：购买一件{tags}饰品。',
   ],
+  shop_buy_specific: [
+    '致：购买饰品【{name}】({tags}，{tier}级，{price}币)。',
+    '指令下达：获取{name}，{tags}类{tier}级饰品。',
+    '致：选购{name}（{tier}级{tags}，售价{price}币）。',
+  ],
   shop_sell: [
     '致：出售一件{tier}级饰品。',
   ],
   shop_sell_ash: [
-    '致：出售骨灰瓶。',
+    '致：出售残影。',
   ],
   shop_fuse: [
     '致：合成{tier}级{tags}饰品。',
@@ -248,33 +253,33 @@ const DEFAULT_TEMPLATES = {
   ],
 
   free_instruction: [
-    '致：将左手放在胸前，朗诵『指令神了』三遍。',
     '致：做三个俄式挺身俯卧撑。',
-    '致：向后看。',
     '致：下一场战斗时将编队中第{pos1}位罪人和第{pos2}位罪人互换位置。',
-    '致：看向你的左腿。',
-    '致：闭上眼睛。',
-    '致：用手指在桌面上敲出当前楼层的数字。',
+    '致：闭上眼睛。深呼吸。',
     '致：心中默数三个质数。',
-    '致：将头转向左边再转向右边。',
     '致：下一场战斗前禁止抖腿。',
     '致：学一声猫叫。',
-    '致：以当前楼层数做相应次数的深呼吸。',
     '致：接下来的三十秒内不得说话。',
-    '致：将双手摊开，掌心向上。',
     '致：感化你的敌人。',
-    '致：单手放在额头上直到下一条指令出现。',
-    '致：用手边的任何东西敲两下桌面。',
     '致：站起来再坐下去。',
-    '致：遮住世界。',
+    '致：对{sinner}做出一句话评价。',
     '致：将目光投向窗外五秒。',
     '致：你的呼吸频率放缓。',
     '致：用鼻子吸气，用嘴呼气。',
-    '致：触碰你右边的任何东西。',
-    '致：活下去。',
+    '致：数一数你上面一排牙齿共有几颗。',
+    '致：念出："痛苦啊，你便是我的唯一"。',
     '致：保持静止直到第五个深呼吸结束。',
-    '致：尊崇本心。',
     '致：你很棒。',
+    '致：将头向后转180度。',
+    '致：询问自己呼吸时舌头是靠下平躺还是靠上紧贴。',
+    '致：遵循本心。',
+    '致：像雕像一样保持一个姿势直到下一道指令发出。',
+    '致：在口袋里收集三种不同的风声。',
+    '致：思考永恒是多久。',
+    '致：仅用舌尖在空气中画一个完美的圆。',
+    '致：使镜中的你主动先眨一次眼。',
+    '致：下一场战斗时，让编队最末位罪人变为第一位。',
+    '致：说出你的上一句话有几个字。',
   ],
 };
 
@@ -323,7 +328,7 @@ class InstructionEngine {
       case PHASES.EVENT:            result = await this._genEvent(infoCompleteness); break;
       case PHASES.EVENT_REWARD:     result = await this._genEventReward(); break;
       case PHASES.SHOP:             result = await this._genShop(rawRationality, context); break;
-      case PHASES.JUDGMENT:         result = await this._genJudgment(context); break;
+      case PHASES.JUDGMENT:         result = await this._genJudgment(rawRationality, context); break;
       case PHASES.HIDDEN_BOSS:      result = await this._genHiddenBoss(); break;
       case PHASES.BOSS_REWARD:      result = await this._genBossReward(context); break;
       default: throw new Error(`Unknown phase: ${phase}`);
@@ -586,6 +591,9 @@ class InstructionEngine {
       const poolSet = new Set(poolIds);
       pool = egos.filter(e => poolSet.has(e.id));
     }
+    // Each sinner always carries their base EGO (ZAYIN) by default — filter them
+    // out so the engine only generates instructions for non-base EGO replacements.
+    pool = pool.filter(e => !e.isBaseEgo);
 
     const uniqueSinners = [...new Set(pool.map(e => e.sinner))];
     const instructions = [];
@@ -624,19 +632,6 @@ class InstructionEngine {
           sinner, egoId: ego.id,
         }));
       }
-    }
-
-    // Throw in occasional force-base (rare).
-    // Must NOT conflict with EGO selection instructions for the same sinner.
-    // Only pick from sinners who have no EGO instructions in this batch.
-    const sinnersWithEgoInstructions = new Set(instructions.map(i => i.meta?.sinner).filter(Boolean));
-    const forceBaseCandidates = uniqueSinners.filter(s => !sinnersWithEgoInstructions.has(s));
-    if (forceBaseCandidates.length > 0 && Math.random() < 0.15) {
-      const sinner = this._pickRandom(forceBaseCandidates);
-      const tplKey = 'deploy_ego_force_base';
-      const tpl = this._pickRandom(templates[tplKey] || DEFAULT_TEMPLATES[tplKey]);
-      const text = this._fillTemplate(tpl, { sinner });
-      instructions.push(this._makeInstruction(PHASES.DEPLOY_EGO, text, true, { sinner, egoId: 'base', infoCompleteness: undefined }));
     }
 
     return { instructions, phase: PHASES.DEPLOY_EGO, isGuidance: true };
@@ -831,8 +826,8 @@ class InstructionEngine {
 
     const isRational = this._isRational(rawRationality, context);
 
-    // ── Special: Golden Bough (~2%) ──
-    if (Math.random() < 0.02) {
+    // ── Special: Golden Bough (~0.1%) ──
+    if (Math.random() < 0.001) {
       const gbType = this._pickRandom(GOLDEN_BOUGH_TYPES);
       const tpl = this._pickRandom(templates.combat_golden_bough || DEFAULT_TEMPLATES.combat_golden_bough);
       const text = this._fillTemplate(tpl, { type: gbType });
@@ -878,14 +873,27 @@ class InstructionEngine {
       const selected = shuffled.slice(0, Math.min(count, shuffled.length));
 
       for (const sinner of selected) {
-        // Build per-sinner EGO pool (strict: only from selected EGO pool)
-        let sinnerEgosInPool = egos.filter(e => e.sinner === sinner);
-        if (poolEgoIds && poolEgoIds.length > 0) {
-          const poolSet = new Set(poolEgoIds);
-          sinnerEgosInPool = sinnerEgosInPool.filter(e => poolSet.has(e.id));
+        // Build per-sinner EGO list, preferring deployed EGOs over pool.
+        // During deploy_ego, the player was told exactly which EGOs to equip —
+        // combat instructions should only reference those, not the entire pool.
+        let sinnerEgosAvailable;
+        const teamEntry = context.currentTeam?.get?.(sinner);
+        const deployedEgoIds = teamEntry?.egoIds;
+        if (deployedEgoIds && deployedEgoIds.length > 0) {
+          // Restrict to EGOs actually deployed in deploy_ego phase
+          const deployedSet = new Set(deployedEgoIds);
+          sinnerEgosAvailable = egos.filter(e => e.sinner === sinner && deployedSet.has(e.id));
+          this._trace(`${sinner} EGO过滤`, `已部署${deployedEgoIds.length}个 → ${sinnerEgosAvailable.length}个可用`);
+        } else {
+          // No deploy_ego record — fall back to pool filtering
+          sinnerEgosAvailable = egos.filter(e => e.sinner === sinner);
+          if (poolEgoIds && poolEgoIds.length > 0) {
+            const poolSet = new Set(poolEgoIds);
+            sinnerEgosAvailable = sinnerEgosAvailable.filter(e => poolSet.has(e.id));
+          }
         }
-        const hasNonBaseEgo = sinnerEgosInPool.some(e => !e.isBaseEgo);
-        const hasAnyEgoInPool = sinnerEgosInPool.length > 0;
+        const hasNonBaseEgo = sinnerEgosAvailable.some(e => !e.isBaseEgo);
+        const hasAnyEgoInPool = sinnerEgosAvailable.length > 0;
 
         // Rational → more attack (upper/lower), less ego/guard
         // If sinner has no non-base EGO in pool, reduce ego-related options
@@ -914,8 +922,8 @@ class InstructionEngine {
         let tplVars = { sinner };
 
         if (key === 'combat_use_ego') {
-          if (sinnerEgosInPool.length > 0) {
-            const ego = this._pickRandom(sinnerEgosInPool);
+          if (sinnerEgosAvailable.length > 0) {
+            const ego = this._pickRandom(sinnerEgosAvailable);
             const level = ego.level || 'ZAYIN';
             // Build tag pool for vague description to avoid mismatch
             // with deploy phase (player may have picked a different EGO)
@@ -943,7 +951,7 @@ class InstructionEngine {
             // If the picked EGO is base EGO, still generate a normal "use EGO" instruction
           } else {
             // No EGO in pool for this sinner — skip ego instruction entirely
-            // Fall back to upper/lower skill instead
+            // No EGO available for this sinner — fall back to skill/guard
             const fallbackKey = this._pickRandom(['combat_upper_skill', 'combat_lower_skill', 'combat_guard']);
             const tpl = this._pickRandom(templates[fallbackKey] || DEFAULT_TEMPLATES[fallbackKey]);
             const text = this._fillTemplate(tpl, { sinner });
@@ -1042,6 +1050,34 @@ class InstructionEngine {
     const identities = await this.dataLoader.load('identities');
     const isRational = this._isRational(rawRationality, context);
     const isIrrational = this._isIrrational(rawRationality, context);
+    const recognizedItems = context.recognizedItems || [];
+
+    // If vision recognized shop items, generate precise buy instructions first
+    if (recognizedItems.length > 0 && isRational) {
+      const instructions = [];
+      const validItems = recognizedItems.filter(i => i.id && i.name);
+      // Pick up to 3 random recognized items for instructions
+      const picked = this._shuffle([...validItems]).slice(0, 3);
+      for (const item of picked) {
+        const tpl = this._pickRandom(templates.shop_buy_specific || DEFAULT_TEMPLATES.shop_buy_specific);
+        const tags = (item.tags?.effect || []).join('、') || '未知';
+        const text = this._fillTemplate(tpl, {
+          name: item.name,
+          tags,
+          tier: item.tier || '?',
+          price: item.price || '?',
+        });
+        instructions.push(this._makeInstruction(PHASES.SHOP, text, false, {
+          shopAction: 'shop_buy_specific',
+          relicId: item.id,
+          relicName: item.name,
+        }));
+      }
+      // Only return vision-based instructions; skip generic generation for this batch
+      if (instructions.length > 0) {
+        return { instructions, isGuidance: false };
+      }
+    }
 
     const count = Math.floor(Math.random() * 5) + 1; // 1~5
 
@@ -1072,6 +1108,15 @@ class InstructionEngine {
       if (candidates.length === 0) break;
 
       const key = this._pickRandom(candidates);
+      // shop_change_identity: only ~1% chance to actually fire
+      if (key === 'shop_change_identity' && Math.random() >= 0.01) {
+        // Skip this pick — remove from available so it won't be picked again,
+        // then continue to try another operation
+        const skipIdx = available.indexOf(key);
+        if (skipIdx >= 0) available.splice(skipIdx, 1);
+        i--; // retry this iteration
+        continue;
+      }
       if (key === 'shop_heal' || key === 'shop_no_heal') hasHealOrNoHeal = true;
       if (key === 'shop_change_identity') hasChangeIdentity = true;
 
@@ -1103,11 +1148,11 @@ class InstructionEngine {
           meta.tag = tag; meta.tier = tier;
           break;
         case 'shop_sell':
-          // Rational: prefer selling 骨灰瓶 (ash bottle) or low-tier items
+          // Rational: prefer selling 残影 or low-tier items
           if (isRational && Math.random() < 0.4) {
             const ashTpl = this._pickRandom(templates.shop_sell_ash || DEFAULT_TEMPLATES.shop_sell_ash);
             text = ashTpl;
-            meta.sellTarget = '骨灰瓶';
+            meta.sellTarget = '残影';
           } else if (isIrrational) {
             // Irrational: sell high-tier or core items
             const badTier = this._pickRandom(['III', 'IV', 'V']);
@@ -1125,11 +1170,19 @@ class InstructionEngine {
           meta.tag = tag; meta.tier = fuseTier;
           break;
         case 'shop_change_identity': {
-          // Rational: replace non-core sinners → core, or upgrade rarity within core
-          // Irrational: replace core sinners → non-core, or downgrade rarity
-          const teamSinners = context.currentTeam ? [...context.currentTeam.keys()] : SINNERS;
+          // ~1% chance — pick ONE sinner and specify the exact replacement identity.
+          // The replacement MUST differ from the currently equipped identity.
+          const poolIds = context.poolIdentityIds || null;
+          const poolSet = poolIds && poolIds.length > 0 ? new Set(poolIds) : null;
 
-          // Classify each sinner: has core mechanic identity?
+          // Use full formation (all alive sinners, 1-12) — shop can replace any alive sinner's identity.
+          // Fall back to currentTeam, then all 12 SINNERS.
+          const formation = context.formation || [];
+          const teamSinners = formation.length > 0
+            ? [...formation]
+            : (context.currentTeam ? [...context.currentTeam.keys()] : [...SINNERS]);
+
+          // Classify sinners: has core-mechanic identity?
           const coreSinners = [];
           const nonCoreSinners = [];
           for (const sinner of teamSinners) {
@@ -1141,37 +1194,55 @@ class InstructionEngine {
             else nonCoreSinners.push(sinner);
           }
 
-          // Pick targets based on rationality
-          let targets;
+          // Pick 1 target sinner based on rationality
+          let targetSinner;
           if (isRational && nonCoreSinners.length > 0) {
-            // Replace non-core sinners (up to 3)
-            targets = [...nonCoreSinners].sort(() => Math.random() - 0.5).slice(0, Math.min(3, nonCoreSinners.length));
-            this._trace('商店换人', `合理→替换无核心效果的罪人: ${targets.join(',')}`);
+            targetSinner = this._pickRandom(nonCoreSinners);
           } else if (isIrrational && coreSinners.length > 0) {
-            // Replace core sinners (up to 3)
-            targets = [...coreSinners].sort(() => Math.random() - 0.5).slice(0, Math.min(3, coreSinners.length));
-            this._trace('商店换人', `不合理→替换核心效果罪人: ${targets.join(',')}`);
+            targetSinner = this._pickRandom(coreSinners);
           } else {
-            // Neutral: random
-            targets = [...SINNERS].sort(() => Math.random() - 0.5).slice(0, Math.floor(Math.random() * 3) + 1);
-            this._trace('商店换人', `中庸→随机: ${targets.join(',')}`);
+            targetSinner = this._pickRandom([...teamSinners]);
           }
 
-          meta.targets = targets;
-          if (targets.length === 3) {
-            const tpl3 = this._pickRandom(templates.shop_change_identity_triple || DEFAULT_TEMPLATES.shop_change_identity_triple);
-            text = this._fillTemplate(tpl3, { sinner1: targets[0], sinner2: targets[1], sinner3: targets[2] });
-          } else if (targets.length === 2) {
-            const tpl2 = this._pickRandom(templates.shop_change_identity_multi || DEFAULT_TEMPLATES.shop_change_identity_multi);
-            text = this._fillTemplate(tpl2, { sinner1: targets[0], sinner2: targets[1] });
-          } else {
-            text = this._fillTemplate(tpl, { sinner: targets[0] });
+          // Find the currently equipped identity for this sinner
+          const currentEntry = context.currentTeam?.get?.(targetSinner);
+          const currentId = currentEntry?.identityId || null;
+
+          // Pick a replacement identity for this sinner: must be different from current
+          // and within the active pool (if one is set)
+          let candidates = identities.filter(i => i.sinner === targetSinner && i.id !== currentId);
+          if (poolSet) {
+            const poolFiltered = candidates.filter(i => poolSet.has(i.id));
+            if (poolFiltered.length > 0) candidates = poolFiltered;
           }
+          if (candidates.length === 0) {
+            // No valid replacement — fall back to a generic "change identity" text
+            text = this._fillTemplate(tpl, { sinner: targetSinner });
+            this._trace('商店换人', `无可用替换人格 → 通用提示`);
+          } else {
+            const newId = this._pickRandom(candidates);
+            // Use buy_specific-style template: name the target identity
+            const buyTpls = templates.shop_buy_specific || DEFAULT_TEMPLATES.shop_buy_specific;
+            const buyTpl = this._pickRandom(buyTpls);
+            // Repurpose the buy_specific template: {name} = new identity, {tags}/{tier}/{price} empty
+            text = this._fillTemplate(buyTpl, {
+              name: newId.name, tags: (newId.tags?.effect || []).join('、') || '任意',
+              tier: newId.rarity || '?', price: '?',
+            });
+            // Override with clearer wording
+            text = '致：将' + targetSinner + '的人格更换为【' + newId.name + '】。';
+            meta.replacementId = newId.id;
+            this._trace('商店换人', targetSinner + ': ' + (currentId || '无') + ' → ' + newId.name);
+          }
+          meta.targets = [targetSinner];
           break;
         }
         case 'shop_keyword_reroll':
           text = this._fillTemplate(tpl, { keyword: tag });
           meta.keyword = tag;
+          break;
+        case 'shop_special_probability':
+          text = tpl; // no placeholders: "致：将特殊概率提升至100%。"
           break;
         case 'shop_replace_skill':
           text = this._fillTemplate(tpl, { sinner: this._pickRandom(SINNERS) });
@@ -1206,12 +1277,37 @@ class InstructionEngine {
   //  Phase 12: Judgment
   // ═══════════════════════════════════════════
 
-  async _genJudgment(context) {
+  async _genJudgment(rawRationality, context) {
     const templates = await this._getTemplates();
-    const teamSinners = context.currentTeam ? [...context.currentTeam.keys()] : [];
-    const sinner = teamSinners.length > 0
-      ? this._pickRandom(teamSinners)
-      : this._pickRandom(SINNERS);
+    const teamSet = new Set(context.currentTeam ? [...context.currentTeam.keys()] : []);
+    const formationSet = new Set(context.formation || []);
+
+    // Determine candidate pool based on rationality:
+    //   Rational  → pick from deployed team / formation (best stats)
+    //   Irrational → pick from sinners NOT in formation
+    //   Neutral   → random from all 12
+    let candidates;
+    const isRational = this._isRational(rawRationality, context);
+    const isIrrational = this._isIrrational(rawRationality, context);
+
+    if (isRational) {
+      // Prefer formation sinners; fall back to team; fall back to all 12
+      const inFormation = SINNERS.filter(s => formationSet.has(s));
+      candidates = inFormation.length > 0 ? inFormation
+        : (teamSet.size > 0 ? [...teamSet] : SINNERS);
+      this._trace('判定选人', `理性→编队内(${candidates.length}人): ${candidates.join(',')}`);
+    } else if (isIrrational) {
+      // Pick from sinners NOT in formation
+      const notInFormation = SINNERS.filter(s => !formationSet.has(s));
+      candidates = notInFormation.length > 0 ? notInFormation : SINNERS;
+      this._trace('判定选人', `非理性→编队外(${candidates.length}人): ${candidates.join(',')}`);
+    } else {
+      // Neutral: all 12
+      candidates = SINNERS;
+      this._trace('判定选人', `中庸→全部12人`);
+    }
+
+    const sinner = this._pickRandom(candidates);
     const tpl = this._pickRandom(templates.judgment || DEFAULT_TEMPLATES.judgment);
     const text = this._fillTemplate(tpl, { sinner });
     return {
@@ -1271,12 +1367,19 @@ class InstructionEngine {
     const templates = await this._getTemplates();
     const pool = templates.free_instruction || DEFAULT_TEMPLATES.free_instruction || ['致：等待。'];
     const tpl = this._pickRandom(pool);
-    const p1 = Math.floor(Math.random() * 7) + 1;
-    let p2 = Math.floor(Math.random() * 7) + 1;
-    while (p2 === p1) p2 = Math.floor(Math.random() * 7) + 1;
+    // Use actual formation size (all alive sinners, 1-12) instead of hardcoded 7.
+    // Formation only contains alive sinners; dead ones are removed.
+    const formationSize = (context.formation && context.formation.length > 0)
+      ? context.formation.length
+      : 12;
+    const p1 = Math.floor(Math.random() * formationSize) + 1;
+    let p2 = Math.floor(Math.random() * formationSize) + 1;
+    while (p2 === p1) p2 = Math.floor(Math.random() * formationSize) + 1;
+    const randSinner = this._pickRandom(SINNERS);
     const text = this._fillTemplate(tpl, {
       pos1: String(p1),
       pos2: String(p2),
+      sinner: randSinner,
     });
 
     this._trace('自由指令', `随机模板 → "${text}"`);

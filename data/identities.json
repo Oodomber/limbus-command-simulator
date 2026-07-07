@@ -3341,6 +3341,42 @@
     "special": ""
   },
   {
+    "name": "蜘蛛巢拇指子辈",
+    "sinner": "希斯克利夫",
+    "rarity": "三灯",
+    "tags": {
+      "faction": [
+        "手指",
+        "蜘蛛巢",
+        "拇指"
+      ],
+      "effect": [
+        "烧伤",
+        "震颤",
+        "决斗高潮",
+        "援护防御",
+        "守护",
+        "震颤-灼热",
+        "逐渐完备的教材"
+      ],
+      "damageType": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "暴怒",
+        "色欲",
+        "怠惰"
+      ]
+    },
+    "coreMechanic": [
+      "烧伤",
+      "震颤"
+    ],
+    "id": "heathcliff_zhizhuchaomuzhizibei",
+    "faction": "",
+    "special": ""
+  },
+  {
     "name": "LCB罪人",
     "sinner": "以实玛利",
     "rarity": "一灯",
@@ -4328,6 +4364,48 @@
     ],
     "id": "rodion_huanzhix91cex517dx6d3ex8bb2x89e3x5458",
     "faction": "环指、手指、讲解员、野兽派",
+    "special": ""
+  },
+  {
+    "name": "蜘蛛巢拇指父辈",
+    "sinner": "罗佳",
+    "rarity": "三灯",
+    "tags": {
+      "faction": [
+        "二老板",
+        "手指",
+        "蜘蛛巢",
+        "拇指",
+        "烟霾战争",
+        "战争英雄",
+        "七大家族"
+      ],
+      "effect": [
+        "烧伤",
+        "震颤",
+        "呼吸法",
+        "预知眼",
+        "加速弹",
+        "震颤-灼热",
+        "预知眼 过热",
+        "狩猎目标",
+        "心-不光彩"
+      ],
+      "damageType": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "暴怒",
+        "怠惰",
+        "傲慢"
+      ]
+    },
+    "coreMechanic": [
+      "烧伤",
+      "震颤"
+    ],
+    "id": "rodion_zhizhuchaomuzhifubei",
+    "faction": "",
     "special": ""
   },
   {
@@ -5745,7 +5823,7 @@
     "special": ""
   },
   {
-    "name": "LCE_E.G.O:AEDD",
+    "name": "LCE E.G.O:AEDD",
     "sinner": "格里高尔",
     "rarity": "三灯",
     "tags": {

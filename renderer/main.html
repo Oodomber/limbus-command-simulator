@@ -36,7 +36,7 @@
       </div>
       <div class="nav-footer">
         <span class="nav-author">by 冬熊夏鸟</span>
-        <span class="nav-version">v1.0.2</span>
+        <span class="nav-version">v1.1.0</span>
       </div>
     </nav>
 
@@ -235,9 +235,22 @@
 
           <div class="setting-group">
             <h3>快捷键</h3>
-            <p>F9: 手动请求指令</p>
-            <p>F10: 显示/隐藏传呼机</p>
-            <p>F11: 否决弹幕投票（暂未实装）</p>
+            <div class="hotkey-row">
+              <label>完成指令:</label>
+              <button class="hotkey-btn" data-hotkey="settings.hotkeyComplete" id="hk-complete">F2</button>
+            </div>
+            <div class="hotkey-row">
+              <label>失败指令:</label>
+              <button class="hotkey-btn" data-hotkey="settings.hotkeyFail" id="hk-fail">F3</button>
+            </div>
+            <div class="hotkey-row">
+              <label>请求指令:</label>
+              <button class="hotkey-btn" data-hotkey="settings.hotkeyRequest" id="hk-request">F9</button>
+            </div>
+            <div class="hotkey-row">
+              <label>切换传呼机:</label>
+              <button class="hotkey-btn" data-hotkey="settings.hotkeyToggleOverlay" id="hk-toggle">F10</button>
+            </div>
           </div>
 
           <div class="setting-group">
@@ -268,6 +281,31 @@
               <input type="checkbox" id="setting-notify" checked>
               成就解锁时弹窗通知
             </label>
+          </div>
+
+          <div class="setting-group">
+            <h3>视觉识别 (Vision) — 实验功能</h3>
+            <p style="color:#888;font-size:0.8em;margin-bottom:6px;">需要安装 Python 3.9+ 及 opencv-python, mss, numpy 库</p>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+              <span id="vision-status-dot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#666;"></span>
+              <span id="vision-status-text" style="font-size:0.85em;">未启动</span>
+            </div>
+            <div style="display:flex;gap:6px;margin-bottom:8px;">
+              <button id="btn-vision-start" class="btn-small">启动视觉服务</button>
+              <button id="btn-vision-stop" class="btn-small" disabled>停止</button>
+            </div>
+            <label style="display:block;margin-top:6px;">
+              <input type="checkbox" id="setting-vision-auto-detect" disabled>
+              自动检测游戏阶段
+            </label>
+            <label style="display:block;">
+              <input type="checkbox" id="setting-vision-auto-generate" disabled>
+              检测到商店时自动生成指令
+            </label>
+            <div style="display:flex;gap:6px;margin-top:8px;">
+              <button id="btn-vision-calibrate" class="btn-small" disabled>📷 校准屏幕区域</button>
+              <button id="btn-vision-rebuild-icons" class="btn-small" disabled>🔄 重建图标索引</button>
+            </div>
           </div>
 
           <div class="setting-group">

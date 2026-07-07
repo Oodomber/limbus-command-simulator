@@ -890,7 +890,7 @@ async function showRunStartModal() {
   box.style.cssText = 'background:#1a1a2e;border:2px solid #ffd700;border-radius:12px;padding:24px;max-width:500px;width:90%;';
   box.innerHTML = `
     <h3 style="color:#ffd700;margin:0 0 4px;">⚔️ 开始镜牢指引</h3>
-    <p style="color:#888;font-size:0.85em;margin:0 0 16px;">选择本次使用的人格池（必选）和EGO池（可选）</p>
+    <p style="color:#888;font-size:0.85em;margin:0 0 16px;">选择本次使用的人格池和EGO池</p>
 
     <div style="margin-bottom:14px;">
       <label style="color:#ccc;font-weight:bold;display:block;margin-bottom:6px;">人格池: <span style="color:#f44336;">*</span></label>
@@ -901,10 +901,11 @@ async function showRunStartModal() {
     </div>
 
     <div style="margin-bottom:16px;">
-      <label style="color:#ccc;font-weight:bold;display:block;margin-bottom:6px;">EGO池:</label>
+      <label style="color:#ccc;font-weight:bold;display:block;margin-bottom:6px;">EGO池: <span style="color:#f44336;">*</span></label>
       <select id="run-ego-pool-select" style="width:100%;padding:8px;background:#0f0f23;color:#e0e0e0;border:1px solid #3a3a5a;border-radius:6px;font-size:14px;">
-        <option value="">跳过（不指定EGO池）</option>
-        ${egoPools.map(p => `<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)} (${p.items.length}个)</option>`).join('')}
+        ${egoPools.length === 0
+          ? '<option value="">-- 无EGO池，请先在EGO管理页面创建 --</option>'
+          : egoPools.map(p => `<option value="${escapeHtml(p.name)}">${escapeHtml(p.name)} (${p.items.length}个)</option>`).join('')}
       </select>
     </div>
 
@@ -939,6 +940,15 @@ async function showRunStartModal() {
     const pool = pools.find(p => p.name === poolName);
     if (!pool || pool.items.length === 0) {
       alert('所选人格池中没有条目。请先在人格管理中向该池添加至少一个人格。');
+      return;
+    }
+    if (!egoPoolName) {
+      alert('请先选择一个EGO池。');
+      return;
+    }
+    const egoPool = egoPools.find(p => p.name === egoPoolName);
+    if (!egoPool || egoPool.items.length === 0) {
+      alert('所选EGO池中没有条目。请先在EGO管理中向该池添加至少一个EGO。');
       return;
     }
 
@@ -1335,6 +1345,13 @@ async function loadSettings(config) {
 
   document.getElementById('opacity-value').textContent = Math.round((settings.overlayOpacity || 0.9) * 100) + '%';
   document.getElementById('scale-value').textContent = Math.round((settings.overlayScale || 1.0) * 100) + '%';
+
+  // Vision config
+  const vision = config.vision || {};
+  const chkAutoDetect = document.getElementById('setting-vision-auto-detect');
+  const chkAutoGenerate = document.getElementById('setting-vision-auto-generate');
+  if (chkAutoDetect) chkAutoDetect.checked = vision.autoDetect === true;
+  if (chkAutoGenerate) chkAutoGenerate.checked = vision.autoGenerate === true;
 }
 
 function setupSettings() {
@@ -1417,6 +1434,250 @@ function setupSettings() {
       }
     };
     input.click();
+  });
+
+  // ── Hotkey settings ──
+  setupHotkeySettings();
+
+  // ── Vision settings ──
+  setupVisionSettings();
+}
+
+// ── Hotkey Settings ──
+function setupHotkeySettings() {
+  const HOTKEY_KEYS = [
+    'settings.hotkeyComplete',
+    'settings.hotkeyFail',
+    'settings.hotkeyRequest',
+    'settings.hotkeyToggleOverlay',
+  ];
+
+  const buttons = {};
+  for (const key of HOTKEY_KEYS) {
+    const btn = document.querySelector(`.hotkey-btn[data-hotkey="${key}"]`);
+    if (btn) buttons[key] = btn;
+  }
+
+  // Load current values from store
+  async function refreshLabels() {
+    const config = await window.electronAPI.getConfig();
+    const settings = config.settings || {};
+    for (const key of HOTKEY_KEYS) {
+      const btn = buttons[key];
+      if (!btn) continue;
+      const val = settings[key.split('.').pop()] || key.split('.').pop().replace('hotkey', '');
+      // Find matching display text — use the stored value directly
+      btn.textContent = val && val !== 'undefined' ? val : '未设置';
+    }
+  }
+  refreshLabels();
+
+  // Key capture logic
+  let listeningBtn = null;
+  let listeningKey = null;
+
+  function startListening(btn, key) {
+    // Cancel any existing listener
+    if (listeningBtn) {
+      listeningBtn.classList.remove('listening');
+      listeningBtn.textContent = listeningBtn.dataset.prevText || '...';
+    }
+    listeningBtn = btn;
+    listeningKey = key;
+    btn.dataset.prevText = btn.textContent;
+    btn.textContent = '按下按键或鼠标侧键...';
+    btn.classList.add('listening');
+  }
+
+  async function commitBinding(keyPath, accelerator) {
+    await window.electronAPI.setConfig(keyPath, accelerator);
+    // refreshLabels will be triggered by config:updated event
+  }
+
+  function cancelListening() {
+    if (listeningBtn) {
+      listeningBtn.classList.remove('listening');
+      listeningBtn.textContent = listeningBtn.dataset.prevText || '...';
+      listeningBtn = null;
+      listeningKey = null;
+    }
+  }
+
+  // Attach click handlers
+  for (const key of HOTKEY_KEYS) {
+    const btn = buttons[key];
+    if (!btn) continue;
+    btn.addEventListener('click', () => {
+      startListening(btn, key);
+    });
+  }
+
+  // ── Key capture (keyboard) ──
+  function handleKeyCapture(e) {
+    if (!listeningBtn) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Escape cancels
+    if (e.key === 'Escape') {
+      cancelListening();
+      return;
+    }
+
+    // Build accelerator string
+    const parts = [];
+    if (e.ctrlKey) parts.push('Ctrl');
+    if (e.altKey) parts.push('Alt');
+    if (e.shiftKey) parts.push('Shift');
+    if (e.metaKey) parts.push('Meta');
+
+    // Ignore lone modifier presses — wait for the full combo
+    let keyName = e.key;
+    if (keyName === 'Control' || keyName === 'Alt' || keyName === 'Shift' || keyName === 'Meta') {
+      return;
+    }
+    if (keyName === ' ') keyName = 'Space';
+
+    parts.push(keyName);
+    const accelerator = parts.join('+');
+    finishBinding(accelerator);
+  }
+
+  function handleMouseCapture(e) {
+    if (!listeningBtn) return;
+    e.preventDefault();
+    e.stopPropagation();
+
+    // Map mouse button values to accelerator names
+    const MOUSE_NAMES = { 1: 'MouseMiddle', 2: 'MouseRight', 3: 'Mouse4', 4: 'Mouse5' };
+    const name = MOUSE_NAMES[e.button];
+    if (!name) return; // Left click (0) ignored — too easy to trigger accidentally
+    finishBinding(name);
+  }
+
+  document.addEventListener('keydown', handleKeyCapture, true);
+  document.addEventListener('mousedown', handleMouseCapture, true);
+
+  // ── Shared: commit captured binding ──
+  function finishBinding(accelerator) {
+    commitBinding(listeningKey, accelerator);
+    listeningBtn.textContent = accelerator;
+    listeningBtn.classList.remove('listening');
+    listeningBtn = null;
+    listeningKey = null;
+  }
+
+  // Listen for config updates to refresh labels
+  window.electronAPI.onConfigUpdated(({ key }) => {
+    if (key && key.startsWith('settings.hotkey')) {
+      refreshLabels();
+    }
+  });
+}
+
+// ── Vision (Phase 10) ──
+function setupVisionSettings() {
+  const api = window.electronAPI;
+  if (!api || !api.visionStart) return; // vision API not available
+
+  const btnStart = document.getElementById('btn-vision-start');
+  const btnStop = document.getElementById('btn-vision-stop');
+  const statusDot = document.getElementById('vision-status-dot');
+  const statusText = document.getElementById('vision-status-text');
+  const chkAutoDetect = document.getElementById('setting-vision-auto-detect');
+  const chkAutoGenerate = document.getElementById('setting-vision-auto-generate');
+  const btnCalibrate = document.getElementById('btn-vision-calibrate');
+  const btnRebuildIcons = document.getElementById('btn-vision-rebuild-icons');
+
+  function setUIState(available) {
+    if (available) {
+      statusDot.style.background = '#4c8';
+      statusText.textContent = '运行中';
+      btnStart.disabled = true;
+      btnStop.disabled = false;
+      chkAutoDetect.disabled = false;
+      chkAutoGenerate.disabled = false;
+      btnCalibrate.disabled = false;
+      btnRebuildIcons.disabled = false;
+    } else {
+      statusDot.style.background = '#666';
+      statusText.textContent = '未启动';
+      btnStart.disabled = false;
+      btnStop.disabled = true;
+      chkAutoDetect.disabled = true;
+      chkAutoDetect.checked = false;
+      chkAutoGenerate.disabled = true;
+      chkAutoGenerate.checked = false;
+      btnCalibrate.disabled = true;
+      btnRebuildIcons.disabled = true;
+    }
+  }
+
+  // Check initial status
+  api.visionStatus().then(s => setUIState(s.available));
+
+  // Listen for status changes
+  if (api.onVisionStatusChanged) {
+    api.onVisionStatusChanged((data) => setUIState(data.available));
+  }
+
+  // Start
+  btnStart.addEventListener('click', async () => {
+    statusText.textContent = '启动中…';
+    statusDot.style.background = '#ca4';
+    btnStart.disabled = true;
+    try {
+      const result = await api.visionStart();
+      setUIState(result.ok);
+      if (!result.ok) {
+        showToast('⚠️', '视觉服务启动失败。请确认已安装 Python 3.9+ 及 opencv-python, mss, numpy。');
+      } else {
+        showToast('👁', '视觉服务已启动');
+      }
+    } catch (e) {
+      setUIState(false);
+      showToast('⚠️', '启动异常: ' + e.message);
+    }
+  });
+
+  // Stop
+  btnStop.addEventListener('click', async () => {
+    await api.visionStop();
+    setUIState(false);
+    showToast('👁', '视觉服务已停止');
+  });
+
+  // Auto-detect toggle
+  chkAutoDetect.addEventListener('change', async () => {
+    await api.setConfig('vision.autoDetect', chkAutoDetect.checked);
+  });
+
+  // Auto-generate toggle
+  chkAutoGenerate.addEventListener('change', async () => {
+    await api.setConfig('vision.autoGenerate', chkAutoGenerate.checked);
+  });
+
+  // Calibrate
+  btnCalibrate.addEventListener('click', () => {
+    showCalibrationModal();
+  });
+
+  // Rebuild icon index
+  btnRebuildIcons.addEventListener('click', async () => {
+    btnRebuildIcons.disabled = true;
+    btnRebuildIcons.textContent = '⌛ 处理中…';
+    try {
+      const result = await api.visionRebuildIconIndex();
+      if (result.ok) {
+        showToast('📦', `图标索引已重建 (${result.indexed} 张)`);
+      } else {
+        showToast('⚠️', '重建失败: ' + (result.error || 'unknown'));
+      }
+    } catch (e) {
+      showToast('⚠️', '重建异常: ' + e.message);
+    }
+    btnRebuildIcons.disabled = false;
+    btnRebuildIcons.textContent = '🔄 重建图标索引';
   });
 }
 
@@ -1513,6 +1774,13 @@ function showDevAuthModal() {
   const existing = document.getElementById('dev-auth-modal');
   if (existing) existing.remove();
 
+  // Temporarily disable global shortcuts so single-letter hotkeys
+  // (like "a") don't eat keystrokes while typing the password.
+  window.electronAPI.disableShortcuts().catch(() => {});
+  function _restoreShortcuts() {
+    window.electronAPI.enableShortcuts().catch(() => {});
+  }
+
   const overlay = document.createElement('div');
   overlay.id = 'dev-auth-modal';
   overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:99999;display:flex;align-items:center;justify-content:center;';
@@ -1562,24 +1830,165 @@ function showDevAuthModal() {
   }
 
   const doAuth = async () => {
-    const ok = await window.electronAPI.devAuth(input.value);
-    if (ok) {
-      overlay.remove();
-      showDevMenu();
-    } else {
+    var pwd = input.value || '';
+    pwd = pwd.trim();
+    try {
+      const ok = await window.electronAPI.devAuth(pwd);
+      if (ok) {
+        _restoreShortcuts();
+        overlay.remove();
+        showDevMenu();
+      } else {
+        error.style.display = 'block';
+        input.value = '';
+        input.focus();
+      }
+    } catch (e) {
+      error.textContent = '验证服务异常: ' + e.message;
       error.style.display = 'block';
-      input.value = '';
-      input.focus();
     }
   };
 
+  function _closeModal() {
+    _restoreShortcuts();
+    overlay.remove();
+  }
+
   confirm.addEventListener('click', doAuth);
-  cancel.addEventListener('click', () => overlay.remove());
+  cancel.addEventListener('click', _closeModal);
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') doAuth();
-    if (e.key === 'Escape') overlay.remove();
+    if (e.key === 'Escape') _closeModal();
   });
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) _closeModal(); });
+}
+
+// ── Vision Calibration Modal (Phase 10) ──
+async function showCalibrationModal() {
+  const api = window.electronAPI;
+  if (!api || !api.visionCalibrate) return;
+
+  const overlay = document.createElement('div');
+  overlay.className = 'modal-overlay';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:2000;display:flex;align-items:center;justify-content:center;';
   overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+
+  const box = document.createElement('div');
+  box.style.cssText = 'background:#0a0a1a;border:2px solid #c9a84c;border-radius:8px;padding:24px;width:560px;max-height:70vh;overflow-y:auto;color:#ccc;font-size:13px;';
+
+  const existing = await api.visionGetCalibration() || {};
+  const gameRegion = existing.gameRegion || null;
+  const shopGrid = existing.shopGrid || null;
+
+  box.innerHTML = `
+    <h3 style="color:#c9a84c;margin:0 0 16px;">📷 视觉校准</h3>
+    <div style="margin-bottom:16px;padding:12px;background:#141428;border-radius:4px;">
+      <strong>步骤 1：游戏画面区域</strong>
+      <p style="color:#888;font-size:11px;margin:4px 0;">将游戏窗口置于前台，输入游戏画面的屏幕坐标（左上X, 左上Y, 宽度, 高度）。</p>
+      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
+        <input id="cal-game-x" type="number" placeholder="X" value="${gameRegion?.x || 0}" style="width:70px;">
+        <input id="cal-game-y" type="number" placeholder="Y" value="${gameRegion?.y || 0}" style="width:70px;">
+        <input id="cal-game-w" type="number" placeholder="宽" value="${gameRegion?.width || 1920}" style="width:80px;">
+        <input id="cal-game-h" type="number" placeholder="高" value="${gameRegion?.height || 1080}" style="width:80px;">
+      </div>
+      <button id="cal-btn-test-capture" class="btn-small" style="margin-top:6px;">📸 测试截取</button>
+      <span id="cal-test-result" style="font-size:11px;color:#888;margin-left:8px;"></span>
+    </div>
+    <div style="margin-bottom:16px;padding:12px;background:#141428;border-radius:4px;">
+      <strong>步骤 2：商店网格标定</strong>
+      <p style="color:#888;font-size:11px;margin:4px 0;">进入商店界面后，输入饰品网格的坐标和行列数（通常是5列2行）。</p>
+      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center;">
+        <input id="cal-shop-x" type="number" placeholder="格子X" value="${shopGrid?.x || 260}" style="width:70px;">
+        <input id="cal-shop-y" type="number" placeholder="格子Y" value="${shopGrid?.y || 420}" style="width:70px;">
+        <input id="cal-shop-w" type="number" placeholder="格子宽" value="${shopGrid?.width || 1400}" style="width:80px;">
+        <input id="cal-shop-h" type="number" placeholder="格子高" value="${shopGrid?.height || 480}" style="width:80px;">
+        <span style="color:#888;">列</span><input id="cal-shop-cols" type="number" value="${shopGrid?.cols || 5}" style="width:50px;">
+        <span style="color:#888;">行</span><input id="cal-shop-rows" type="number" value="${shopGrid?.rows || 2}" style="width:50px;">
+      </div>
+    </div>
+    <div style="margin-bottom:16px;padding:12px;background:#141428;border-radius:4px;">
+      <strong>步骤 3：阶段参考图</strong>
+      <p style="color:#888;font-size:11px;margin:4px 0;">进入各游戏界面后，点击按钮截取特色UI元素作为阶段识别参考。</p>
+      <div id="cal-phase-refs" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;"></div>
+    </div>
+    <div style="display:flex;gap:8px;justify-content:flex-end;">
+      <button id="cal-btn-cancel" class="btn-small" style="background:#333;">取消</button>
+      <button id="cal-btn-save" class="btn-small" style="background:#c9a84c;color:#000;">💾 保存校准</button>
+    </div>
+  `;
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  // Phase reference capture buttons
+  const phaseLabels = { shop: '商店', combat: '战斗', cardpack: '卡包', route: '路线', boss_reward: '关底奖励' };
+  const refsEl = box.querySelector('#cal-phase-refs');
+  for (const [phase, label] of Object.entries(phaseLabels)) {
+    const btn = document.createElement('button');
+    btn.className = 'btn-small';
+    btn.textContent = `截取${label}参考`;
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      btn.textContent = '截取中…';
+      try {
+        const gr = readGameRegion(box);
+        await api.visionCalibrate({ region: gr, label: `${phase}_ref` });
+        btn.textContent = `✅ ${label}`;
+      } catch (e) {
+        btn.textContent = `❌ 失败`;
+        btn.disabled = false;
+      }
+    });
+    refsEl.appendChild(btn);
+  }
+
+  function readGameRegion(el) {
+    return {
+      x: parseInt(el.querySelector('#cal-game-x').value) || 0,
+      y: parseInt(el.querySelector('#cal-game-y').value) || 0,
+      width: parseInt(el.querySelector('#cal-game-w').value) || 1920,
+      height: parseInt(el.querySelector('#cal-game-h').value) || 1080,
+    };
+  }
+
+  box.querySelector('#cal-btn-test-capture').addEventListener('click', async () => {
+    const btn = box.querySelector('#cal-btn-test-capture');
+    const result = box.querySelector('#cal-test-result');
+    btn.disabled = true;
+    result.textContent = '截取中…';
+    try {
+      const gr = readGameRegion(box);
+      const resp = await api.visionCalibrate({ region: gr, label: 'test_capture' });
+      result.textContent = resp.ok ? `✅ 成功 (${resp.size[0]}×${resp.size[1]})` : `❌ ${resp.error || '失败'}`;
+      result.style.color = resp.ok ? '#4c8' : '#c44';
+    } catch (e) {
+      result.textContent = '❌ 服务未启动';
+      result.style.color = '#c44';
+    }
+    btn.disabled = false;
+  });
+
+  box.querySelector('#cal-btn-save').addEventListener('click', async () => {
+    const calibration = {
+      gameRegion: readGameRegion(box),
+      shopGrid: {
+        x: parseInt(box.querySelector('#cal-shop-x').value) || 0,
+        y: parseInt(box.querySelector('#cal-shop-y').value) || 0,
+        width: parseInt(box.querySelector('#cal-shop-w').value) || 0,
+        height: parseInt(box.querySelector('#cal-shop-h').value) || 0,
+        cols: parseInt(box.querySelector('#cal-shop-cols').value) || 5,
+        rows: parseInt(box.querySelector('#cal-shop-rows').value) || 2,
+      },
+    };
+    await api.visionSaveCalibration(calibration);
+    showToast('📷', '校准已保存');
+    overlay.remove();
+  });
+
+  box.querySelector('#cal-btn-cancel').addEventListener('click', () => overlay.remove());
+  document.addEventListener('keydown', function escHandler(e) {
+    if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', escHandler); }
+  });
 }
 
 async function showDevMenu() {
@@ -1624,6 +2033,7 @@ async function showDevMenu() {
       <div style="display:flex;gap:8px;align-items:center;padding:4px 8px;">
         <span style="color:#aaa;font-size:12px;white-space:nowrap;">业恐吓阈值</span>
         <input id="dev-karma-threshold" type="number" value="${karmaThreshold}" style="width:60px;background:#0f0f23;color:#e0e0e0;border:1px solid #333;border-radius:4px;padding:2px 4px;font-size:12px;">
+        <button class="dev-menu-btn" data-action="test-scare" style="padding:4px 12px;font-size:12px;margin-left:8px;" title="测试业警告动画（不影响实际数据）">⚠ 测试业警告</button>
       </div>
       <button class="dev-menu-btn" data-action="close" style="background:#333;color:#aaa;">关闭</button>
     </div>
@@ -1678,6 +2088,14 @@ async function showDevMenu() {
     await window.electronAPI.setConfig('settings.karmaScareThreshold', parseInt(karmaThreshEl.value) || 100);
     showToast('⚙', `业恐吓阈值 → ${karmaThreshEl.value}`);
   });
+  // Test karma scare button
+  const testScareBtn = document.querySelector('[data-action="test-scare"]');
+  if (testScareBtn) {
+    testScareBtn.addEventListener('click', async () => {
+      const val = parseInt(document.getElementById('dev-karma-threshold')?.value) || 150;
+      await window.electronAPI.testKarmaScare(val);
+    });
+  }
   overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
 }
 
@@ -1767,7 +2185,59 @@ async function loadEditorData(type) {
 }
 
 
+/**
+ * Sync all DOM input values back to _currentEditData.
+ * Call BEFORE any renderEditorRows() to persist pending text edits.
+ * This prevents user edits in id/name/sinner/etc from being lost
+ * when clicking a tag chip (which triggers a full re-render).
+ */
+function _syncEditorInputs() {
+  var content = document.getElementById('editor-content');
+  if (!content || !_currentEditData) return;
+
+  // Sync plain text inputs + checkboxes (data-key)
+  content.querySelectorAll('input[data-key]').forEach(function(inp) {
+    var idx = parseInt(inp.dataset.idx);
+    var key = inp.dataset.key;
+    if (isNaN(idx) || !_currentEditData[idx]) return;
+    if (inp.type === 'checkbox') {
+      _currentEditData[idx][key] = inp.checked;
+    } else {
+      _currentEditData[idx][key] = inp.value;
+    }
+  });
+
+  // Sync select dropdowns (data-key)
+  content.querySelectorAll('select[data-key]').forEach(function(sel) {
+    var idx = parseInt(sel.dataset.idx);
+    var key = sel.dataset.key;
+    if (isNaN(idx) || !_currentEditData[idx]) return;
+    _currentEditData[idx][key] = sel.value;
+  });
+
+  // Sync sinCost sub-fields (data-sinkey)
+  content.querySelectorAll('input[data-sinkey]').forEach(function(inp) {
+    var idx = parseInt(inp.dataset.idx);
+    var sinKey = inp.dataset.sinkey;
+    if (isNaN(idx) || !_currentEditData[idx]) return;
+    if (!_currentEditData[idx].sinCost) _currentEditData[idx].sinCost = {};
+    _currentEditData[idx].sinCost[sinKey] = parseInt(inp.value) || 0;
+  });
+
+  // Sync template variant text fields (data-tpl-idx)
+  content.querySelectorAll('input[data-tpl-idx]').forEach(function(inp) {
+    var idx = parseInt(inp.dataset.tplIdx);
+    var vi = parseInt(inp.dataset.vi);
+    if (isNaN(idx) || isNaN(vi) || !_currentEditData[idx]) return;
+    if (!Array.isArray(_currentEditData[idx].variants)) return;
+    _currentEditData[idx].variants[vi] = inp.value;
+  });
+}
+
 function renderEditorRows() {
+  // Persist any pending text edits before rebuilding HTML
+  _syncEditorInputs();
+
   const content = document.getElementById('editor-content');
   const data = _currentEditData;
   const type = _currentEditType;
@@ -2097,7 +2567,12 @@ function renderEditorRows() {
       renderEditorRows();
       return;
     }
+    var SINNER_ORDER = ['李箱','浮士德','堂吉诃德','良秀','默尔索','鸿璐','希斯克利夫','以实玛利','罗佳','辛克莱','奥提斯','格里高尔'];
     var template = JSON.parse(JSON.stringify(data[0] || {}));
+    // Preserve sinner (and level for EGOs) so the new item can be inserted
+    // after the last entry of the same sinner instead of always at the very end.
+    var preservedSinner = template.sinner || '';
+    var preservedLevel = template.level || '';
     Object.keys(template).forEach(function(k) {
       if (typeof template[k] === 'string') template[k] = '';
       else if (Array.isArray(template[k])) template[k] = [];
@@ -2105,14 +2580,24 @@ function renderEditorRows() {
     });
     template.id = 'new_' + Date.now();
     template.name = '新条目';
-    var SINNER_ORDER = ['李箱','浮士德','堂吉诃德','良秀','默尔索','鸿璐','希斯克利夫','以实玛利','罗佳','辛克莱','奥提斯','格里高尔'];
-    var lastSinner = template.sinner || '';
+    if (preservedSinner) template.sinner = preservedSinner;
+    if (preservedLevel) template.level = preservedLevel;
+
+    // Insert after the last existing entry of the same sinner
     var insertIdx = data.length;
-    if (lastSinner) {
-      var lastIdx = SINNER_ORDER.indexOf(lastSinner);
-      if (lastIdx >= 0) {
+    var targetSinner = template.sinner || '';
+    if (targetSinner) {
+      var targetIdx = SINNER_ORDER.indexOf(targetSinner);
+      if (targetIdx >= 0) {
+        // Scan backwards to find the last entry with sinner order <= target
         for (var i = data.length - 1; i >= 0; i--) {
-          if (SINNER_ORDER.indexOf(data[i].sinner) <= lastIdx) { insertIdx = i + 1; break; }
+          if (SINNER_ORDER.indexOf(data[i].sinner) <= targetIdx) { insertIdx = i + 1; break; }
+        }
+        // If all existing entries are after this sinner, insert at beginning of this sinner group
+        if (insertIdx === data.length) {
+          for (var j = 0; j < data.length; j++) {
+            if (SINNER_ORDER.indexOf(data[j].sinner) >= targetIdx) { insertIdx = j; break; }
+          }
         }
       }
     }
@@ -2130,48 +2615,94 @@ function renderEditorRows() {
   });
 
   // Chip handlers: .cs = selected (click removes), .cg = suggest (click adds), .ci = custom input
+  // Use direct DOM manipulation instead of full re-render to avoid lag and
+  // prevent unsaved text edits in other fields from being lost.
+
+  function _makeChipEl(isSelected, idx, field, tag) {
+    var el = document.createElement('span');
+    el.dataset.idx = idx;
+    el.dataset.field = field;
+    el.dataset.tag = tag;
+    if (isSelected) {
+      el.className = 'cs';
+      el.style.cssText = 'display:inline-flex;align-items:center;gap:1px;padding:1px 5px;background:#2a5a2a;color:#8fdf8f;border-radius:9px;font-size:10px;cursor:pointer;';
+      el.textContent = tag + ' ✕';
+      el.addEventListener('click', csHandler);
+    } else {
+      el.className = 'cg';
+      el.style.cssText = 'display:inline-flex;padding:1px 5px;background:#2a2a3a;color:#666;border-radius:9px;font-size:10px;cursor:pointer;';
+      el.textContent = '+' + tag;
+      el.addEventListener('click', cgHandler);
+    }
+    return el;
+  }
+
+  function _getChipTarget(idx, field) {
+    if (!data[idx]) return null;
+    if (field === 'coreMechanic') return data[idx];
+    if (!data[idx].tags) data[idx].tags = {};
+    return data[idx].tags;
+  }
+
+  function _getChipArr(target, field) {
+    var arr = target[field];
+    if (!Array.isArray(arr)) arr = (arr && typeof arr === 'string') ? arr.split(/[,，、\s]+/).filter(Boolean) : [];
+    return arr;
+  }
+
+  function csHandler(e) {
+    e.stopPropagation();
+    var el = e.currentTarget;
+    var idx = parseInt(el.dataset.idx);
+    var field = el.dataset.field;
+    var tag = el.dataset.tag;
+    var target = _getChipTarget(idx, field);
+    if (!target) return;
+    var arr = _getChipArr(target, field);
+    target[field] = arr.filter(function(t) { return t !== tag; });
+    // Swap .cs → .cg (back to available)
+    var newEl = _makeChipEl(false, String(idx), field, tag);
+    el.replaceWith(newEl);
+  }
+
+  function cgHandler(e) {
+    e.stopPropagation();
+    var el = e.currentTarget;
+    var idx = parseInt(el.dataset.idx);
+    var field = el.dataset.field;
+    var tag = el.dataset.tag;
+    var target = _getChipTarget(idx, field);
+    if (!target) return;
+    var arr = _getChipArr(target, field);
+    if (!arr.includes(tag)) arr.push(tag);
+    target[field] = arr;
+    // Swap .cg → .cs (now selected)
+    var newEl = _makeChipEl(true, String(idx), field, tag);
+    el.replaceWith(newEl);
+  }
+
   content.querySelectorAll('.cs').forEach(function(el) {
-    el.addEventListener('click', function() {
-      var idx = parseInt(el.dataset.idx);
-      var field = el.dataset.field;
-      var tag = el.dataset.tag;
-      if (!data[idx]) return;
-      var target = (field === 'coreMechanic') ? data[idx] : (data[idx].tags || (data[idx].tags = {}));
-      var arr = target[field];
-      if (!Array.isArray(arr)) arr = (arr && typeof arr === 'string') ? arr.split(/[,，、\s]+/).filter(Boolean) : [];
-      target[field] = arr.filter(function(t) { return t !== tag; });
-      renderEditorRows();
-    });
+    el.addEventListener('click', csHandler);
   });
   content.querySelectorAll('.cg').forEach(function(el) {
-    el.addEventListener('click', function() {
-      var idx = parseInt(el.dataset.idx);
-      var field = el.dataset.field;
-      var tag = el.dataset.tag;
-      if (!data[idx]) return;
-      var target = (field === 'coreMechanic') ? data[idx] : (data[idx].tags || (data[idx].tags = {}));
-      var arr = target[field];
-      if (!Array.isArray(arr)) arr = (arr && typeof arr === 'string') ? arr.split(/[,，、\s]+/).filter(Boolean) : [];
-      if (!arr.includes(tag)) arr.push(tag);
-      target[field] = arr;
-      renderEditorRows();
-    });
+    el.addEventListener('click', cgHandler);
   });
   content.querySelectorAll('.ci').forEach(function(inp) {
     inp.addEventListener('keydown', function(e) {
-      if (e.key === 'Enter' && inp.value.trim()) {
-        var idx = parseInt(inp.dataset.idx);
-        var field = inp.dataset.field;
-        var tag = inp.value.trim();
-        if (!data[idx]) return;
-        var target = (field === 'coreMechanic') ? data[idx] : (data[idx].tags || (data[idx].tags = {}));
-        var arr = target[field];
-        if (!Array.isArray(arr)) arr = (arr && typeof arr === 'string') ? arr.split(/[,，、\s]+/).filter(Boolean) : [];
-        if (!arr.includes(tag)) arr.push(tag);
-        target[field] = arr;
-        inp.value = '';
-        renderEditorRows();
-      }
+      if (e.key !== 'Enter' || !inp.value.trim()) return;
+      e.stopPropagation();
+      var idx = parseInt(inp.dataset.idx);
+      var field = inp.dataset.field;
+      var tag = inp.value.trim();
+      inp.value = '';
+      var target = _getChipTarget(idx, field);
+      if (!target) return;
+      var arr = _getChipArr(target, field);
+      if (!arr.includes(tag)) arr.push(tag);
+      target[field] = arr;
+      // Insert new .cs chip before the input
+      var newEl = _makeChipEl(true, String(idx), field, tag);
+      inp.parentNode.insertBefore(newEl, inp);
     });
   });
 }
@@ -2237,14 +2768,16 @@ async function saveEditorData() {
       if (!item.availability) return;
       const modes = ['normal','hard','parallel','extreme'];
       modes.forEach(m => {
-        const modeCB = content.querySelector(`.av-mode-cb[data-idx="${idx}"][data-mode="${m}"]`);
+        // NOTE: class names match what renderEditorRows creates: av-cb (not av-mode-cb)
+        const modeCB = content.querySelector(`.av-cb[data-idx="${idx}"][data-mode="${m}"]`);
         const checked = modeCB ? modeCB.checked : false;
         if (m === 'parallel' || m === 'extreme') {
           item.availability[m] = checked;
         } else {
           if (checked) {
             const floors = [];
-            content.querySelectorAll(`.av-floor-cb[data-idx="${idx}"][data-mode="${m}"]:checked`).forEach(cb => {
+            // NOTE: class name is av-fcb (not av-floor-cb)
+            content.querySelectorAll(`.av-fcb[data-idx="${idx}"][data-mode="${m}"]:checked`).forEach(cb => {
               floors.push(parseInt(cb.dataset.floor));
             });
             item.availability[m] = floors.length > 0 ? floors : [1];

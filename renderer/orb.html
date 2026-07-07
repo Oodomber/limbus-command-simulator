@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'; media-src 'self' data:; img-src 'self' file: data:">
+  <title>谨遵指令</title>
+  <link rel="stylesheet" href="css/orb.css">
+</head>
+<body>
+  <!-- ═══ 悬浮球视图 ═══ -->
+  <div id="orb-view">
+    <canvas id="orb-canvas"></canvas>
+    <div id="orb-center-box">
+      <div id="orb-typewriter"></div>
+      <span id="sg-label" style="display:none;">观星</span>
+    </div>
+  </div>
+
+  <!-- ═══ 观星视图 ═══ -->
+  <div id="stargazing-view" style="display:none;">
+    <!-- 顶栏 -->
+    <div id="sg-topbar">
+      <span id="sg-title">✦ 观星</span>
+      <div style="display:flex;gap:6px;-webkit-app-region:no-drag;">
+        <button id="sg-tab-accessories" class="sg-tab-btn active" title="饰品">饰品</button>
+        <button id="sg-tab-cardpacks" class="sg-tab-btn" title="卡包">卡包</button>
+        <button id="sg-tab-events" class="sg-tab-btn" title="事件">事件</button>
+      </div>
+      <button id="sg-close" title="缩回">◀</button>
+    </div>
+
+    <!-- 筛选器 -->
+    <div id="sg-filters">
+      <div class="filter-group">
+        <span class="filter-label">等级</span>
+        <span class="filter-chip" data-filter="tier" data-val="I">I</span>
+        <span class="filter-chip" data-filter="tier" data-val="II">II</span>
+        <span class="filter-chip" data-filter="tier" data-val="III">III</span>
+        <span class="filter-chip" data-filter="tier" data-val="IV">IV</span>
+        <span class="filter-chip" data-filter="tier" data-val="V">V</span>
+        <span class="filter-chip" data-filter="tier" data-val="EX">EX</span>
+      </div>
+      <div class="filter-group" id="filter-effects"></div>
+      <div class="filter-group" id="filter-sins"></div>
+      <div class="filter-group">
+        <span class="filter-label">获得</span>
+        <span class="filter-chip" data-filter="acq" data-val="event">事件</span>
+        <span class="filter-chip" data-filter="acq" data-val="fuse">合成</span>
+        <span class="filter-chip" data-filter="acq" data-val="pack">卡包</span>
+      </div>
+    </div>
+
+    <div id="sg-content"></div>
+    <div id="sg-cardpacks" style="display:none;"></div>
+    <div id="sg-events-search" style="display:none;">
+      <input type="text" id="event-search-input" placeholder="搜索事件名称、选项内容…">
+    </div>
+    <div id="sg-events" style="display:none;"></div>
+  </div>
+
+  <!-- ═══ 详情弹窗 ═══ -->
+  <div id="sg-detail-overlay" style="display:none;">
+    <div id="sg-detail">
+      <div id="sg-detail-header">
+        <img id="sg-detail-icon" src="" alt="">
+        <div>
+          <div id="sg-detail-name"></div>
+          <div id="sg-detail-meta"></div>
+        </div>
+        <button id="sg-detail-close">✕</button>
+      </div>
+      <div id="sg-detail-body">
+        <div id="sg-detail-info"></div>
+        <div id="sg-detail-enhance">
+          <div id="sg-detail-enhance-tabs"></div>
+          <div id="sg-detail-enhance-content"></div>
+        </div>
+        <div id="sg-detail-fuse"></div>
+        <div id="sg-detail-event" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/orb.js"></script>
+</body>
+</html>

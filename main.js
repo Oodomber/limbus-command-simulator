@@ -6,6 +6,12 @@ const {
   app, BrowserWindow, ipcMain, globalShortcut,
   dialog, screen
 } = require('electron');
+
+// Prevent Chromium from throttling timers/rAF when overlay loses focus.
+// This is critical for the typewriter animation to remain smooth when the
+// user is playing the game (game window has focus, overlay is "background").
+app.commandLine.appendSwitch('disable-background-timer-throttling');
+
 const path = require('path');
 const Store = require('electron-store');
 const { DataLoader, DATA_TYPES } = require('./src/dataLoader');
@@ -13,13 +19,15 @@ const { InstructionEngine, PHASES, GUIDANCE_PHASES } = require('./src/engine');
 const { AchievementSystem } = require('./src/achievements');
 const { QueueManager } = require('./src/queueManager');
 const { SoundManager } = require('./src/soundManager');
+const { VisionManager } = require('./src/visionManager');
 
 // Bump this when bundled data/ files change — auto-clears stale userData on next launch
-const DATA_VERSION = 1;
+const DATA_VERSION = 2;
 
 // ── Window references ──
 let mainWindow = null;
 let overlayWindow = null;
+let orbWindow = null;
 let historyWindow = null;
 let formationWindow = null;
 let weaverWindow = null;
@@ -35,6 +43,8 @@ let engine = null;
 let achievements = null;
 let soundManager = null;
 let queueManager = null;
+let visionManager = null;
+let _userDataPath = null;  // set in app.whenReady() — needed by scheduleAutoDetect
 
 // ── Phase progression ──
 // deploy_identity → deploy_ego → starlight → starting_relic → dungeon(free)
@@ -156,7 +166,9 @@ function scheduleFreeInstruction() {
     // Also check karma scare periodically
     checkKarmaScare();
     try {
-      const result = await engine._genFreeInstruction({});
+      const result = await engine._genFreeInstruction({
+        formation: runState.formation || [],
+      });
       if (result && result.instructions) {
         queueManager.enqueue(result.instructions);
         soundManager.play('bibi_long');
@@ -177,6 +189,98 @@ function stopFreeInstructionTimer() {
     clearTimeout(freeInstructionTimer);
     freeInstructionTimer = null;
   }
+}
+
+// ── Vision auto-detect (Phase 10) ──
+let autoDetectTimer = null;
+
+/**
+ * After a dungeon instruction is processed, if vision auto-detect is enabled,
+ * wait a short delay then try to detect the current game phase.
+ * If shop is detected with auto-generate enabled, recognize items + generate
+ * precise shop instructions.
+ */
+function scheduleAutoDetect() {
+  if (!store || !store.get('vision.autoDetect')) return;
+  if (!visionManager || !visionManager.available) return;
+
+  // Debounce — cancel any pending detection
+  if (autoDetectTimer) clearTimeout(autoDetectTimer);
+
+  autoDetectTimer = setTimeout(async () => {
+    autoDetectTimer = null;
+    if (!runState.active) return;
+
+    try {
+      const calibration = store.get('vision.calibration') || {};
+      const region = calibration.gameRegion || null;
+      const enabledPhases = store.get('enabledPhases') || [];
+      const dungeonPhases = ['cardpack', 'route', 'combat', 'event', 'event_reward', 'judgment', 'shop', 'hidden_boss', 'boss_reward'];
+
+      let phases;
+      if (runState.currentPhase === 'dungeon') {
+        phases = dungeonPhases.filter(p => enabledPhases.includes(p));
+      } else {
+        phases = [runState.currentPhase].filter(p => enabledPhases.includes(p));
+      }
+      if (phases.length === 0) return;
+
+      const refsDir = path.join(_userDataPath, 'refs');
+      const result = await visionManager.detectPhase({
+        region,
+        phases,
+        conf_threshold: 0.75,
+        refs_dir: refsDir,
+      });
+
+      if (!result.ok || !result.phase) return;
+
+      // If shop detected and auto-generate is on, recognize items
+      if (result.phase === 'shop' && store.get('vision.autoGenerate')) {
+        const shopGrid = calibration.shopGrid;
+        if (!shopGrid) return; // not calibrated
+
+        const shopResult = await visionManager.recognizeShop({
+          region,
+          shop_grid: shopGrid,
+          reference_dir: path.join(_userDataPath, 'refs', 'relics'),
+        });
+
+        if (shopResult.ok && shopResult.items && shopResult.items.some(i => i.id)) {
+          // Build context for engine: map recognized relic IDs to their data
+          const relics = await dataLoader.load('relics');
+          const recognizedItems = shopResult.items
+            .filter(i => i.id)
+            .map(i => {
+              const relic = relics.find(r => r.id === i.id);
+              return {
+                slot: i.slot,
+                id: i.id,
+                name: relic ? relic.name : i.id,
+                confidence: i.confidence,
+                tier: relic ? relic.tier : '?',
+                price: relic ? relic.price : null,
+                tags: relic ? relic.tags : {},
+              };
+            });
+
+          if (recognizedItems.length > 0 && !pagerRequestLocked) {
+            try {
+              const genResult = await generateInstructionPhase('shop', { recognizedItems });
+              if (genResult) {
+                console.log(`[vision] Auto-generated shop instructions for ${recognizedItems.length} recognized items`);
+              }
+            } catch (e) {
+              console.error('[vision] Auto-generate shop failed:', e.message);
+            }
+          }
+        }
+      }
+    } catch (e) {
+      // Silent — auto-detect failures shouldn't disrupt normal flow
+      console.log('[vision] Auto-detect error:', e.message);
+    }
+  }, 2000); // 2s delay to allow game UI to transition
 }
 
 // ── Karma scare (one-time when karma first exceeds 100) ──
@@ -249,6 +353,8 @@ function getConfigDefaults() {
     settings: {
       hotkeyRequest: 'F9',
       hotkeyToggleOverlay: 'F10',
+      hotkeyComplete: 'F2',
+      hotkeyFail: 'F3',
       overlayOpacity: 0.9,
       overlayScale: 1.0,
       soundEnabled: true,
@@ -261,6 +367,11 @@ function getConfigDefaults() {
       freeInstructionIntervalMin: 180,
       freeInstructionIntervalMax: 300,
       karmaScareThreshold: 100,
+    },
+    vision: {
+      autoDetect: false,
+      autoGenerate: false,
+      calibration: {},
     },
     achievements: {},
     globalStats: {
@@ -303,6 +414,7 @@ function createMainWindow() {
     stopFreeInstructionTimer();
     if (hideOverlayTimeout) { clearTimeout(hideOverlayTimeout); hideOverlayTimeout = null; }
     if (overlayWindow && !overlayWindow.isDestroyed()) overlayWindow.destroy();
+    if (orbWindow && !orbWindow.isDestroyed()) orbWindow.destroy();
     if (formationWindow && !formationWindow.isDestroyed()) formationWindow.destroy();
     if (weaverWindow && !weaverWindow.isDestroyed()) weaverWindow.destroy();
     if (historyWindow && !historyWindow.isDestroyed()) historyWindow.destroy();
@@ -330,13 +442,13 @@ function createOverlayWindow() {
     skipTaskbar: false,
     hasShadow: false,
     backgroundColor: '#00000000',
-    type: 'toolbar',
     icon: path.join(__dirname, 'resources', 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
       webSecurity: false,  // Allow file:// audio playback
+      backgroundThrottling: false,  // Prevent rAF/setInterval throttling when overlay loses focus
     },
   });
 
@@ -351,6 +463,91 @@ function createOverlayWindow() {
     if (isQuitting) return;  // Allow force-close during shutdown
     e.preventDefault();
     overlayWindow?.minimize();
+  });
+}
+
+function createNonagonMask(size, cx, cy, R) {
+  // Precompute vertices (clockwise from top)
+  const verts = [];
+  for (let k = 0; k < 9; k++) {
+    const angle = -Math.PI / 2 + k * 2 * Math.PI / 9;
+    verts.push({ x: cx + R * Math.cos(angle), y: cy + R * Math.sin(angle) });
+  }
+
+  function inside(px, py) {
+    for (let i = 0; i < 9; i++) {
+      const j = (i + 1) % 9;
+      const cross = (verts[j].x - verts[i].x) * (py - verts[i].y)
+                  - (verts[j].y - verts[i].y) * (px - verts[i].x);
+      if (cross > 0) return false; // outside for clockwise polygon
+    }
+    return true;
+  }
+
+  const rects = [];
+  for (let y = 0; y < size; y++) {
+    let startX = -1;
+    for (let x = 0; x < size; x++) {
+      if (inside(x, y)) {
+        if (startX < 0) startX = x;
+      } else {
+        if (startX >= 0) {
+          rects.push({ x: startX, y, width: x - startX, height: 1 });
+          startX = -1;
+        }
+      }
+    }
+    if (startX >= 0) {
+      rects.push({ x: startX, y, width: size - startX, height: 1 });
+    }
+  }
+  return rects;
+}
+
+function createOrbWindow() {
+  const ORB_SIZE = 220;
+  const ORB_CX = ORB_SIZE / 2;
+  const ORB_CY = ORB_SIZE / 2;
+  const ORB_R = 100;
+
+  orbWindow = new BrowserWindow({
+    width: ORB_SIZE,
+    height: ORB_SIZE,
+    x: 100,
+    y: 100,
+    transparent: true,
+    frame: false,
+    alwaysOnTop: true,
+    resizable: false,
+    skipTaskbar: true,
+    hasShadow: false,
+    backgroundColor: '#00000000',
+    type: 'toolbar',
+    icon: path.join(__dirname, 'resources', 'icon.png'),
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  });
+
+  orbWindow.loadFile(path.join(__dirname, 'renderer', 'orb.html'));
+  orbWindow.setAlwaysOnTop(true, 'screen-saver');
+  orbWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+
+  // Apply nonagon shape mask
+  orbWindow.webContents.on('did-finish-load', () => {
+    const mask = createNonagonMask(ORB_SIZE, ORB_CX, ORB_CY, ORB_R);
+    orbWindow.setShape(mask);
+  });
+
+  // Initially hidden
+  orbWindow.hide();
+
+  orbWindow.on('close', (e) => {
+    if (isQuitting) return;
+    e.preventDefault();
+    orbWindow?.hide();
   });
 }
 
@@ -561,6 +758,15 @@ function registerIpcHandlers() {
       runState.karmaScareThreshold = value;
     }
     store.set(keyPath, value);
+    // If a hotkey setting changed, re-register all shortcuts
+    if (keyPath && keyPath.startsWith('settings.hotkey')) {
+      registerShortcuts();
+      // Notify main window so the UI can refresh displayed bindings
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('config:updated', { key: keyPath, value });
+      }
+      return;
+    }
     // Broadcast config change to all renderers
     const update = { key: keyPath, value };
     if (mainWindow && !mainWindow.isDestroyed()) {
@@ -613,6 +819,16 @@ function registerIpcHandlers() {
       overlayWindow.webContents.send('pager:show-waiting');
     }
 
+    // Show orb
+    if (orbWindow && !orbWindow.isDestroyed()) {
+      orbWindow.show();
+      orbWindow.webContents.send('orb:run-state', true);
+      orbWindow.webContents.send('orb:show');
+    }
+
+    // Activate global shortcuts only while a run is active
+    registerShortcuts();
+
     return { success: true };
   });
 
@@ -635,11 +851,27 @@ function registerIpcHandlers() {
       formationWindow.close();
     }
 
+    // Reset orb
+    if (orbWindow && !orbWindow.isDestroyed()) {
+      orbWindow.webContents.send('orb:reset');
+      orbWindow.hide();
+    }
+
     pagerRequestLocked = false;
     runState.active = false;
     runState.currentTeam = null;
     queueManager.clear();
     stopFreeInstructionTimer();
+
+    // Deactivate global shortcuts when run ends
+    _registeredShortcuts.forEach(accel => {
+      try { globalShortcut.unregister(accel); } catch (e) { /* ignore */ }
+    });
+    _registeredShortcuts = [];
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('config:updated', { key: 'shortcuts.active', value: false });
+    }
+
     broadcastRunState();
 
     return { success: true };
@@ -764,7 +996,25 @@ function registerIpcHandlers() {
             runState.currentTeam.set(inst.meta.sinner, { identityId: inst.meta.identityId, egoIds: [] });
           }
         }
-        if (result.coreMechanics) runState.coreMechanics = result.coreMechanics;
+        if (result.coreMechanics) {
+          runState.coreMechanics = result.coreMechanics;
+          if (orbWindow && !orbWindow.isDestroyed()) {
+            orbWindow.webContents.send('orb:core-mechanic', result.coreMechanics);
+          }
+        }
+      }
+      if (phase === 'deploy_ego' && result.instructions && runState.currentTeam) {
+        for (const inst of result.instructions) {
+          const sinner = inst.meta?.sinner;
+          const egoId = inst.meta?.egoId;
+          // Skip force-base entries (egoId === 'base') — they're not real EGOs
+          if (sinner && egoId && egoId !== 'base') {
+            const entry = runState.currentTeam.get(sinner);
+            if (entry && !entry.egoIds.includes(egoId)) {
+              entry.egoIds.push(egoId);
+            }
+          }
+        }
       }
       if (phase === 'cardpack' && result.instructions?.length > 0) {
         const meta = result.instructions[0].meta || {};
@@ -780,6 +1030,7 @@ function registerIpcHandlers() {
       // Advance floor when boss_reward is requested (not on each instruction completion)
       if (phase === 'boss_reward') {
         runState.currentFloor = (runState.currentFloor || 1) + 1;
+        runState.usedCardpackRerolls = 0;  // reset per floor
       }
 
       const enqueued = queueManager.enqueue(result.instructions);
@@ -812,6 +1063,15 @@ function registerIpcHandlers() {
 
     broadcastPagerStats();
     broadcastRunState();
+
+    // ── Orb notifications (mirrors pager:complete logic) ──
+    if (!inst.isGuidance && orbWindow && !orbWindow.isDestroyed()) {
+      const currentPhase = runState.currentPhase;
+      if (currentPhase === 'dungeon' || !PHASE_ORDER.includes(currentPhase)) {
+        orbWindow.webContents.send('orb:instruction-done');
+      }
+    }
+
     await recordInstructionHistory(inst, 'completed');
 
     // Check achievements (async)
@@ -989,7 +1249,53 @@ function registerIpcHandlers() {
 
   // ── Developer ──
   ipcMain.handle('dev:authenticate', (_event, password) => {
-    return password === 'dongxiongxianiao';
+    return (password || '').trim() === 'dongxiongxianiao';
+  });
+
+  // Temporarily disable global shortcuts (e.g. while typing a password)
+  // so single-letter shortcuts like "a" don't eat keystrokes in input fields.
+  let _shortcutsDisabled = false;
+  ipcMain.handle('dev:disable-shortcuts', () => {
+    if (_shortcutsDisabled) return;
+    _registeredShortcuts.forEach(accel => {
+      try { globalShortcut.unregister(accel); } catch (e) { /* ignore */ }
+    });
+    _shortcutsDisabled = true;
+  });
+  ipcMain.handle('dev:enable-shortcuts', () => {
+    if (!_shortcutsDisabled) return;
+    // Only re-register if a run is currently active
+    if (runState.active) {
+      registerShortcuts();
+    }
+    _shortcutsDisabled = false;
+  });
+
+  // Test karma scare animation without affecting real stats
+  ipcMain.handle('dev:test-karma-scare', (_event, karmaValue) => {
+    const value = karmaValue || 150; // default test value
+    const scareWin = new BrowserWindow({
+      fullscreen: true,
+      transparent: true, frame: false,
+      resizable: false, skipTaskbar: true, hasShadow: false,
+      backgroundColor: '#00000000',
+      webPreferences: { contextIsolation: true, nodeIntegration: false, webSecurity: false },
+    });
+    scareWin.setAlwaysOnTop(true, 'screen-saver');
+    scareWin.loadFile(path.join(__dirname, 'renderer', 'scare.html'));
+    scareWin.webContents.on('dom-ready', () => {
+      scareWin.webContents.executeJavaScript(
+        `document.querySelector('.main').textContent = '${value} 业';`
+      );
+    });
+    // Auto-close after 10s or on click
+    setTimeout(() => {
+      if (!scareWin.isDestroyed()) scareWin.close();
+    }, 10000);
+    scareWin.on('click', () => {
+      if (!scareWin.isDestroyed()) scareWin.close();
+    });
+    return true;
   });
 
   // ── Windows ──
@@ -1004,6 +1310,150 @@ function registerIpcHandlers() {
   // ── Sound ──
   ipcMain.handle('sound:play', (_event, name) => {
     soundManager.play(name);
+  });
+
+  // ── Orb IPC ──
+  ipcMain.handle('orb:get-data', async () => {
+    try {
+      const relics = await dataLoader.load('relics');
+      const events = await dataLoader.load('events');
+      const fusions = await dataLoader.load('fusions');
+      const cardpacks = await dataLoader.load('cardpacks');
+      const coreMechanic = runState.coreMechanics || [];
+      const imageDir = path.join(__dirname, 'resources', 'relics');
+      return { relics, events, fusions, cardpacks, coreMechanic, imageDir };
+    } catch (e) {
+      return { relics: [], events: [], fusions: [], cardpacks: [], coreMechanic: [], imageDir: '' };
+    }
+  });
+
+  // ── Vision IPC (Phase 10) ──
+
+  ipcMain.handle('vision:start', async () => {
+    const ok = await visionManager.start();
+    return { ok };
+  });
+
+  ipcMain.handle('vision:stop', async () => {
+    await visionManager.stop();
+    return { ok: true };
+  });
+
+  ipcMain.handle('vision:status', () => {
+    return { available: visionManager.available };
+  });
+
+  ipcMain.handle('vision:detect-phase', async () => {
+    if (!visionManager.available) return { ok: false, error: 'Vision server not running' };
+    const calibration = store.get('vision.calibration') || {};
+    const region = calibration.gameRegion || null;
+    const enabledPhases = store.get('enabledPhases') || [];
+    const dungeonPhases = ['cardpack', 'route', 'combat', 'event', 'event_reward', 'judgment', 'shop', 'hidden_boss', 'boss_reward'];
+    const phases = runState.currentPhase === 'dungeon'
+      ? dungeonPhases.filter(p => enabledPhases.includes(p))
+      : [runState.currentPhase].filter(p => enabledPhases.includes(p));
+    if (phases.length === 0) return { ok: false, error: 'No enabled phases to detect' };
+    const refsDir = path.join(userDataPath, 'refs');
+    return visionManager.detectPhase({
+      region,
+      phases,
+      conf_threshold: 0.75,
+      refs_dir: refsDir,
+    });
+  });
+
+  ipcMain.handle('vision:recognize-shop', async () => {
+    if (!visionManager.available) return { ok: false, error: 'Vision server not running' };
+    const calibration = store.get('vision.calibration') || {};
+    const region = calibration.gameRegion || null;
+    const shopGrid = calibration.shopGrid || null;
+    if (!shopGrid) return { ok: false, error: 'Shop grid not calibrated' };
+    const refsDir = path.join(userDataPath, 'refs', 'relics');
+    return visionManager.recognizeShop({
+      region,
+      shop_grid: shopGrid,
+      reference_dir: refsDir,
+    });
+  });
+
+  ipcMain.handle('vision:calibrate', async (_event, params) => {
+    if (!visionManager.available) return { ok: false, error: 'Vision server not running' };
+    const { region, label } = params;
+    return visionManager.calibrateCapture(region, label);
+  });
+
+  ipcMain.handle('vision:get-calibration', () => {
+    return store.get('vision.calibration') || {};
+  });
+
+  ipcMain.handle('vision:save-calibration', (_event, calibration) => {
+    store.set('vision.calibration', calibration);
+    return { ok: true };
+  });
+
+  ipcMain.handle('vision:rebuild-icon-index', async () => {
+    if (!visionManager.available) return { ok: false, error: 'Vision server not running' };
+    const relicsDir = path.join(__dirname, 'resources', 'relics');
+    const destDir = path.join(userDataPath, 'refs', 'relics');
+    return visionManager.rebuildRelicIndex(relicsDir, destDir);
+  });
+
+  // ── Forward vision status events to main window ──
+  visionManager.on('status-changed', (data) => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('vision:status-changed', data);
+    }
+  });
+
+  visionManager.on('error', (msg) => {
+    console.error('[vision]', msg);
+    if (mainWindow && !mainWindow.isDestroyed()) {
+      mainWindow.webContents.send('vision:status-changed', { available: false, error: msg });
+    }
+  });
+
+  ipcMain.handle('orb:get-bounds', () => {
+    if (!orbWindow || orbWindow.isDestroyed()) return { x: 0, y: 0, width: 220, height: 220 };
+    return orbWindow.getBounds();
+  });
+
+  ipcMain.handle('orb:move', (_event, x, y) => {
+    if (orbWindow && !orbWindow.isDestroyed()) {
+      orbWindow.setPosition(Math.round(x), Math.round(y));
+    }
+  });
+
+  ipcMain.handle('orb:set-size', (_event, w, h) => {
+    if (orbWindow && !orbWindow.isDestroyed()) {
+      const oldBounds = orbWindow.getBounds();
+      // Use setBounds (no animation) to avoid race conditions with setShape.
+      // Preserve the current position — renderer will move window afterwards if needed.
+      orbWindow.setBounds({
+        x: oldBounds.x,
+        y: oldBounds.y,
+        width: w,
+        height: h,
+      }, false);
+      // Delay setShape slightly so the OS has processed the resize before
+      // we apply the pixel mask. Without this, repeated expand/collapse cycles
+      // accumulate sizing errors (borders cut off, ghost transparent regions).
+      setTimeout(() => {
+        if (orbWindow && !orbWindow.isDestroyed()) {
+          if (w === 220 && h === 220) {
+            const mask = createNonagonMask(220, 110, 110, 100);
+            orbWindow.setShape(mask);
+          } else {
+            // Stargazing view: rectangular mask
+            orbWindow.setShape([{ x: 0, y: 0, width: w, height: h }]);
+          }
+        }
+      }, 80);
+    }
+  });
+
+  ipcMain.handle('orb:get-display', () => {
+    const display = screen.getPrimaryDisplay();
+    return display.workAreaSize;
   });
 
   // ── Pager events (fire-and-forget) ──
@@ -1059,6 +1509,18 @@ function registerIpcHandlers() {
             }
           }
           if (result.coreMechanics) runState.coreMechanics = result.coreMechanics;
+        }
+        if (phaseId === 'deploy_ego' && result.instructions && runState.currentTeam) {
+          for (const inst of result.instructions) {
+            const sinner = inst.meta?.sinner;
+            const egoId = inst.meta?.egoId;
+            if (sinner && egoId && egoId !== 'base') {
+              const entry = runState.currentTeam.get(sinner);
+              if (entry && !entry.egoIds.includes(egoId)) {
+                entry.egoIds.push(egoId);
+              }
+            }
+          }
         }
         if (phaseId === 'cardpack' && result.instructions?.length > 0) {
           const meta = result.instructions[0].meta || {};
@@ -1125,6 +1587,10 @@ function registerIpcHandlers() {
 
     // Advance phase after guidance is done
     if (completedPhase === 'deploy_identity') {
+      // Notify orb: identity deployment complete
+      if (orbWindow && !orbWindow.isDestroyed()) {
+        orbWindow.webContents.send('orb:phase-complete', { phase: 'deploy_identity' });
+      }
       runState.currentPhase = getNextPhase(runState.currentPhase);
       unlockPagerRequest();
       sendPhaseChanged();
@@ -1151,6 +1617,28 @@ function registerIpcHandlers() {
 
     broadcastPagerStats();
     broadcastRunState();
+
+    // ── Orb notifications ──
+    if (!inst.isGuidance) {
+      const preAdvancePhase = runState.currentPhase;
+
+      // Pre-dungeon phases: notify orb when batch is complete
+      if (PHASE_ORDER.includes(runState.currentPhase) && runState.currentPhase !== 'dungeon') {
+        if (runState.pendingBatchRemaining <= 1) {
+          // This was the last instruction in this phase's batch
+          if (orbWindow && !orbWindow.isDestroyed()) {
+            orbWindow.webContents.send('orb:phase-complete', { phase: preAdvancePhase });
+          }
+        }
+      }
+
+      // Dungeon phase: each instruction opens an eye
+      if (runState.currentPhase === 'dungeon' || !PHASE_ORDER.includes(runState.currentPhase)) {
+        if (orbWindow && !orbWindow.isDestroyed()) {
+          orbWindow.webContents.send('orb:instruction-done');
+        }
+      }
+    }
     await recordInstructionHistory(inst, 'completed');
 
     // Floor is now advanced when boss_reward is requested (instruction:generate),
@@ -1175,6 +1663,7 @@ function registerIpcHandlers() {
         if (runState.pendingBatchRemaining <= 0) {
           runState.pendingBatchRemaining = 0;
           unlockPagerRequest();
+          scheduleAutoDetect();
           if (mainWindow && !mainWindow.isDestroyed()) {
             mainWindow.webContents.send('instruction:processed', { phase: inst.phase, remaining: 0 });
           }
@@ -1248,6 +1737,7 @@ function registerIpcHandlers() {
         if (runState.pendingBatchRemaining <= 0) {
           runState.pendingBatchRemaining = 0;
           unlockPagerRequest();
+          scheduleAutoDetect();
           if (mainWindow && !mainWindow.isDestroyed()) {
             mainWindow.webContents.send('instruction:processed', { phase: inst.phase, remaining: 0 });
           }
@@ -1266,43 +1756,54 @@ function registerIpcHandlers() {
 }
 
 // ── Global shortcuts ──
+let _registeredShortcuts = []; // track accelerators for unregister
 
+/**
+ * Register all global shortcuts from current store settings.
+ * Called on startup and whenever shortcut bindings change.
+ */
 function registerShortcuts() {
-  // F9: Manual instruction request
-  globalShortcut.register('F9', () => {
-    // Respect pager lock
-    if (pagerRequestLocked) return;
-    // Send to pager to open phase picker directly
-    if (runState.active && overlayWindow && !overlayWindow.isDestroyed()) {
-      const isDungeon = runState.currentPhase === 'dungeon';
-      const enabledPhases = store.get('enabledPhases') || [];
-      let phases;
-      if (isDungeon) {
-        phases = DUNGEON_PHASES.filter(id => enabledPhases.includes(id)).map(id => ({ id, label: PHASE_LABELS[id] || id }));
-      } else {
-        // Pre-dungeon: auto-advance if disabled
-        const cp = runState.currentPhase;
-        if (enabledPhases.includes(cp)) {
-          phases = [{ id: cp, label: PHASE_LABELS[cp] || cp }];
-        } else {
-          runState.currentPhase = getNextPhase(runState.currentPhase);
-          sendPhaseChanged();
-          return;
-        }
-      }
-      if (phases.length === 0) return;
-      overlayWindow.webContents.send('pager:show-phase-picker', {
-        phases,
-        isDungeon,
-      });
-    }
+  // Unregister all existing shortcuts
+  _registeredShortcuts.forEach(accel => {
+    try { globalShortcut.unregister(accel); } catch (e) { /* ignore */ }
   });
+  _registeredShortcuts = [];
 
-  // F10: Toggle overlay visibility (only during active run)
-  globalShortcut.register('F10', () => {
-    if (!runState.active) return; // Pager only exists during a run
+  const hotkeys = {
+    request:        store.get('settings.hotkeyRequest')        || 'F9',
+    toggleOverlay:  store.get('settings.hotkeyToggleOverlay')  || 'F10',
+    vetoDanmaku:    store.get('settings.hotkeyVetoDanmaku')    || 'F11',
+    complete:       store.get('settings.hotkeyComplete')       || 'F2',
+    fail:           store.get('settings.hotkeyFail')           || 'F3',
+  };
+
+  // ── Handler: Request instruction (open phase picker on overlay) ──
+  function handleRequest() {
+    if (pagerRequestLocked) return;
+    if (!runState.active || !overlayWindow || overlayWindow.isDestroyed()) return;
+    const isDungeon = runState.currentPhase === 'dungeon';
+    const enabledPhases = store.get('enabledPhases') || [];
+    let phases;
+    if (isDungeon) {
+      phases = DUNGEON_PHASES.filter(id => enabledPhases.includes(id)).map(id => ({ id, label: PHASE_LABELS[id] || id }));
+    } else {
+      const cp = runState.currentPhase;
+      if (enabledPhases.includes(cp)) {
+        phases = [{ id: cp, label: PHASE_LABELS[cp] || cp }];
+      } else {
+        runState.currentPhase = getNextPhase(runState.currentPhase);
+        sendPhaseChanged();
+        return;
+      }
+    }
+    if (phases.length === 0) return;
+    overlayWindow.webContents.send('pager:show-phase-picker', { phases, isDungeon });
+  }
+
+  // ── Handler: Toggle overlay visibility ──
+  function handleToggleOverlay() {
+    if (!runState.active) return;
     if (!overlayWindow || overlayWindow.isDestroyed()) {
-      // Recreate if destroyed
       createOverlayWindow();
       return;
     }
@@ -1315,19 +1816,60 @@ function registerShortcuts() {
         if (min) overlayWindow.restore();
         overlayWindow.show();
         overlayWindow.setAlwaysOnTop(true, 'screen-saver');
-        // Don't send show-waiting — preserve current state
       }
     } catch (e) {
-      console.error('F10 toggle error:', e);
+      console.error('[shortcut] Toggle overlay error:', e);
     }
-  });
+  }
 
-  // F11: Veto danmaku vote (deferred)
-  globalShortcut.register('F11', () => {
+  // ── Handler: Veto danmaku vote ──
+  function handleVetoDanmaku() {
     if (runState.danmakuVoteActive && mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send('shortcut:f11-pressed');
     }
-  });
+  }
+
+  // ── Handler: Complete (delegates to overlay for animation + state check) ──
+  function handleComplete() {
+    if (overlayWindow && !overlayWindow.isDestroyed()) {
+      overlayWindow.webContents.send('pager:shortcut-complete');
+    }
+  }
+
+  // ── Handler: Fail (delegates to overlay for animation + state check) ──
+  function handleFail() {
+    if (overlayWindow && !overlayWindow.isDestroyed()) {
+      overlayWindow.webContents.send('pager:shortcut-fail');
+    }
+  }
+
+  const handlers = {
+    request: handleRequest,
+    toggleOverlay: handleToggleOverlay,
+    vetoDanmaku: handleVetoDanmaku,
+    complete: handleComplete,
+    fail: handleFail,
+  };
+
+  for (const [action, accel] of Object.entries(hotkeys)) {
+    if (!accel) continue;
+    try {
+      const ok = globalShortcut.register(accel, handlers[action]);
+      if (ok) {
+        _registeredShortcuts.push(accel);
+      } else {
+        if (/^Mouse/.test(accel)) {
+          console.warn(`[shortcut] Mouse buttons are not supported as global shortcuts. "${accel}" (${action}) will not work while the game is focused.`);
+        } else {
+          console.warn(`[shortcut] Failed to register "${accel}" (${action}) — may conflict with another app`);
+        }
+      }
+    } catch (e) {
+      console.warn(`[shortcut] Error registering "${accel}":`, e.message);
+    }
+  }
+
+  console.log('[shortcut] Registered:', _registeredShortcuts.join(', '));
 }
 
 // ── App lifecycle ──
@@ -1357,6 +1899,7 @@ process.on('unhandledRejection', (reason) => {
 app.whenReady().then(async () => {
   // Initialize data services
   const userDataPath = app.getPath('userData');
+  _userDataPath = userDataPath;
   const bundledPath = path.join(__dirname, 'data');
 
   // ── Store must init first so we can read dataVersion ──
@@ -1402,6 +1945,7 @@ app.whenReady().then(async () => {
   engine = new InstructionEngine(dataLoader, store);
   achievements = new AchievementSystem(dataLoader, store);
   soundManager = new SoundManager(path.join(__dirname, 'resources', 'sounds'));
+  visionManager = new VisionManager(userDataPath, bundledPath);
   queueManager = new QueueManager();
 
   // Give soundManager access to both windows for playback
@@ -1424,12 +1968,12 @@ app.whenReady().then(async () => {
   // Create windows (pager starts hidden, shown only when run starts)
   createMainWindow();
   createOverlayWindow();
+  createOrbWindow();
   // Hide pager at startup — it only appears when 谨遵指令 is clicked
   overlayWindow.hide();
 
-  // Register IPC handlers and shortcuts
+  // Register IPC handlers (shortcuts are registered only during active runs)
   registerIpcHandlers();
-  registerShortcuts();
 
   console.log('[main] 谨遵指令 started');
 });
@@ -1440,6 +1984,13 @@ app.on('before-quit', () => {
   if (hideOverlayTimeout) {
     clearTimeout(hideOverlayTimeout);
     hideOverlayTimeout = null;
+  }
+  if (visionManager) {
+    visionManager.stop().catch(() => {});
+  }
+  if (autoDetectTimer) {
+    clearTimeout(autoDetectTimer);
+    autoDetectTimer = null;
   }
 });
 

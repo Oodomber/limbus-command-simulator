@@ -1,0 +1,520 @@
+[
+  {
+    "result": "镇魂",
+    "category": "烧伤",
+    "materials": [
+      "熔化的石蜡",
+      "万年炖锅",
+      "烹饪秘诀书",
+      "尘归尘",
+      "土归土"
+    ],
+    "materialCount": 5
+  },
+  {
+    "result": "盗来的火焰",
+    "category": "烧伤",
+    "materials": [
+      "烧焦的圆盘",
+      "炽热的智慧",
+      "万年炉火"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "制式服装-六协会",
+    "category": "烧伤",
+    "materials": [
+      "谷底之星",
+      "偏振光",
+      "红领带"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "血雾",
+    "category": "流血",
+    "materials": [
+      "被扣留的颂歌",
+      "蜜拉卡",
+      "虔诚",
+      "烟霾与铁丝网",
+      "锈蚀的笼头"
+    ],
+    "materialCount": 5
+  },
+  {
+    "result": "出血性休克",
+    "category": "流血",
+    "materials": [
+      "染血铁钉",
+      "锈蚀的美工刀",
+      "撕裂的血袋"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "完全性",
+    "category": "流血",
+    "materials": [
+      "钉与锤之书",
+      "污秽"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "绝景",
+    "category": "流血",
+    "materials": [
+      "陈旧的刀柄",
+      "破碎的刀刃"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "微型摩天轮",
+    "category": "流血",
+    "materials": [
+      "重叠的创可贴",
+      "全血烧瓶",
+      "游行的面具"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "杰作",
+    "category": "流血",
+    "materials": [
+      "归途",
+      "空白画布",
+      "凡作"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "杰作：进化的跃动",
+    "category": "流血",
+    "materials": [
+      "作品：跃动",
+      "万物的骨架"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "杰作：剥制的野性",
+    "category": "流血",
+    "materials": [
+      "作品：野性",
+      "万物的本能"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "无振八方钟",
+    "category": "震颤",
+    "materials": [
+      "宝石振子",
+      "摇晃的酒桶",
+      "震中",
+      "剧毒外皮",
+      "齿轮发条"
+    ],
+    "materialCount": 5
+  },
+  {
+    "result": "震颤耦合",
+    "category": "震颤",
+    "materials": [
+      "辉光变动仪",
+      "真理之钟",
+      "嵌合的齿轮"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "怀表：Type L",
+    "category": "震颤",
+    "materials": [
+      "银色的表壳",
+      "蚀刻的指针"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "怀表：Type E",
+    "category": "震颤",
+    "materials": [
+      "银色的表壳",
+      "锈蚀的指针"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "怀表：Type Y",
+    "category": "震颤",
+    "materials": [
+      "褪色的表壳",
+      "蚀刻的指针"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "怀表：Type P",
+    "category": "震颤",
+    "materials": [
+      "褪色的表壳",
+      "锈蚀的指针"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "手镜",
+    "category": "震颤",
+    "materials": [
+      "镜触觉通感",
+      "首席管家的秘籍"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "影子怪物",
+    "category": "震颤",
+    "materials": [
+      "熄灭的提灯",
+      "熄灭的烛台"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "破灭",
+    "category": "破裂",
+    "materials": [
+      "骨桩",
+      "终末的碎片",
+      "奇怪的石像",
+      "雷击木",
+      "损坏的左轮手枪"
+    ],
+    "materialCount": 5
+  },
+  {
+    "result": "恍惚镜",
+    "category": "破裂",
+    "materials": [
+      "成捆的符咒",
+      "标准负载电池",
+      "荆棘捕绳"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "山茶花、眼镜和送达的信",
+    "category": "破裂",
+    "materials": [
+      "破伞",
+      "破碎的眼镜",
+      "未寄出的信",
+      "山茶花枝"
+    ],
+    "materialCount": 4
+  },
+  {
+    "result": "漆字琉璃钿",
+    "category": "破裂",
+    "materials": [
+      "镌刻的异文",
+      "异文符咒"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "切磋琢磨",
+    "category": "破裂",
+    "materials": [
+      "品德 - 智",
+      "品德 - 勇",
+      "品德 - 仁"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "暗中行动",
+    "category": "破裂",
+    "materials": [
+      "黑兽丸 - 卯",
+      "卯足",
+      "影织斗笠"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "袭来的浪潮",
+    "category": "沉沦",
+    "materials": [
+      "如歌",
+      "褪色的外套",
+      "浪景球",
+      "荆棘之路",
+      "彼方之星"
+    ],
+    "materialCount": 5
+  },
+  {
+    "result": "黑色乐谱",
+    "category": "沉沦",
+    "materials": [
+      "仲冬夜之噩梦",
+      "无头肖像",
+      "碎裂的骨片"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "霜冻足迹",
+    "category": "沉沦",
+    "materials": [
+      "鬼附鞋",
+      "冰封的哀嚎"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "粉红花束",
+    "category": "沉沦",
+    "materials": [
+      "曾经的祝福",
+      "残响",
+      "粉红花瓣"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "福袋",
+    "category": "呼吸法",
+    "materials": [
+      "追忆吊坠",
+      "某日的记忆",
+      "追忆",
+      "四叶草",
+      "马蹄铁饰物"
+    ],
+    "materialCount": 5
+  },
+  {
+    "result": "桶装烈酒",
+    "category": "呼吸法",
+    "materials": [
+      "内啡肽试剂组",
+      "魔鬼所享",
+      "天使所私"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "照亮前方的汽灯",
+    "category": "呼吸法",
+    "materials": [
+      "雾化吸入器",
+      "捕鲸枪义腿"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "万恶之终结",
+    "category": "呼吸法",
+    "materials": [
+      "守镇鱼叉",
+      "鲸心"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "快乐的毛绒玩偶",
+    "category": "呼吸法",
+    "materials": [
+      "毛球帽",
+      "巨大的礼物袋",
+      "悲伤的毛绒玩偶"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "第五类永动机",
+    "category": "充能",
+    "materials": [
+      "不间断电源装置",
+      "微缩电线杆",
+      "绝缘子",
+      "简历",
+      "避雷针"
+    ],
+    "materialCount": 5
+  },
+  {
+    "result": "第一类永动机",
+    "category": "充能",
+    "materials": [
+      "护腕",
+      "物理屏蔽力场",
+      "1B型八角螺栓"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "自动关节",
+    "category": "充能",
+    "materials": [
+      "生物发电电池",
+      "义体关节伺服电机"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "过度充能电池",
+    "category": "充能",
+    "materials": [
+      "生物发电电池",
+      "血液结晶"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "永动伺服电机",
+    "category": "充能",
+    "materials": [
+      "心脏反应模块",
+      "义体关节伺服电机"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "心动力宝石",
+    "category": "充能",
+    "materials": [
+      "心脏反应模块",
+      "血液结晶"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "C型清扫人员装备套组",
+    "category": "充能",
+    "materials": [
+      "E型次元短剑",
+      "便携式力场电池",
+      "W公司制式帽子"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "壮观",
+    "category": "斩击",
+    "materials": [
+      "锈蚀的刀柄",
+      "破碎的刀刃"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "不动",
+    "category": "斩击",
+    "materials": [
+      "锈蚀的刀柄",
+      "损坏的刀刃"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "琢磨",
+    "category": "斩击",
+    "materials": [
+      "陈旧的刀柄",
+      "损坏的刀刃"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "本国剑谱",
+    "category": "斩击",
+    "materials": [
+      "磨损的砥石",
+      "红色流苏",
+      "无纹的刀镡"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "亡命之徒",
+    "category": "突刺",
+    "materials": [
+      "夹杂着噪音的对讲机",
+      "喙形项链",
+      "撕裂的弹带"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "永恒的缘分锁链",
+    "category": "打击",
+    "materials": [
+      "忠义锁链",
+      "强化纹身-中指"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "幼·兄登场",
+    "category": "打击",
+    "materials": [
+      "安息之地",
+      "血香降临",
+      "登场专用音响"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "月之记忆",
+    "category": "泛用",
+    "materials": [
+      "业火残片",
+      "魅惑残片",
+      "惰性残片",
+      "欲望残片",
+      "蚕食残片",
+      "骄慢残片",
+      "摩擦残片",
+      "切开的记忆",
+      "洞穿的记忆",
+      "粉碎的记忆"
+    ],
+    "materialCount": 10
+  },
+  {
+    "result": "高危作战用装备",
+    "category": "泛用",
+    "materials": [
+      "常规作战用装备",
+      "作战批准卡"
+    ],
+    "materialCount": 2
+  },
+  {
+    "result": "小巧而精致的小提琴",
+    "category": "泛用",
+    "materials": [
+      "沾染油污的扳手",
+      "闪光废料",
+      "损坏的小提琴"
+    ],
+    "materialCount": 3
+  },
+  {
+    "result": "礼物",
+    "category": "20区的奇迹 复刻",
+    "materials": [
+      "包装盒",
+      "包装缎带"
+    ],
+    "materialCount": 2
+  }
+]

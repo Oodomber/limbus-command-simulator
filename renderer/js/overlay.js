@@ -35,7 +35,9 @@ function randomScramble() {
 }
 
 // ── Matrix typewriter animation ──
-function startTypewriter(text, speed = 50) {
+// Single-timer design: no rAF dependency — avoids VSync/compositing issues
+// with transparent layered windows where DWM may throttle rAF unpredictably.
+function startTypewriter(text, speed = 35) {
   stopTypewriter();
   const target = text;
   pagerText.textContent = '';
@@ -43,46 +45,36 @@ function startTypewriter(text, speed = 50) {
   pagerCursor.classList.add('typing');
   pagerCursor.classList.remove('cursor-blink');
 
-  let revealed = 0;          // how many positions are "active"
-  let scrambleFrame = null;  // requestAnimationFrame ID
+  let revealed = 0;
 
   isAnimating = true;
   pagerButtons.classList.add('hidden');
 
-  // Continuously flicker all revealed positions (throttled to ~15fps)
-  let flickerTick = 0;
-  function flicker() {
-    flickerTick++;
-    if (flickerTick % 6 === 0) { // ~10fps
-      let display = '';
-      for (let i = 0; i < revealed; i++) {
-        display += randomScramble();
-      }
-      pagerText.textContent = display;
-    }
-    scrambleFrame = requestAnimationFrame(flicker);
-  }
-  flicker();
-
-  // Gradually reveal positions
   typewriterTimer = setInterval(() => {
     revealed++;
+
     if (revealed >= target.length) {
-      // Done: cancel scrambling, snap to real text
       clearInterval(typewriterTimer);
       typewriterTimer = null;
-      cancelAnimationFrame(scrambleFrame);
-      scrambleFrame = null;
-
       pagerText.textContent = target;
       pagerCursor.classList.remove('typing');
       pagerCursor.classList.add('cursor-blink');
-
       if (!currentIsGuidance) {
         pagerButtons.classList.remove('hidden');
       }
       isAnimating = false;
+      return;
     }
+
+    // Build scramble display: revealed chars flicker, rest stays blank
+    let display = '';
+    for (let i = 0; i < revealed; i++) {
+      display += randomScramble();
+    }
+    pagerText.textContent = display;
+    // Cursor stays solid while typing
+    pagerCursor.classList.add('typing');
+    pagerCursor.classList.remove('cursor-blink');
   }, speed);
 }
 
@@ -243,19 +235,11 @@ phaseCancelBtn.addEventListener('click', hidePhasePicker);
 
 // ── Button handlers ──
 btnComplete.addEventListener('click', () => {
-  if (!currentInstructionId || currentIsGuidance || isAnimating) return;
-  playSfx('bibi-short'); // Play immediately with user gesture
-  pagerButtons.classList.add('hidden');
-  showWaiting();
-  window.pagerAPI.complete();
+  triggerComplete();
 });
 
 btnFail.addEventListener('click', () => {
-  if (!currentInstructionId || currentIsGuidance || isAnimating) return;
-  playSfx('bibi-short');
-  pagerButtons.classList.add('hidden');
-  showWaiting();
-  window.pagerAPI.fail();
+  triggerFail();
 });
 
 // Guidance navigation
@@ -288,7 +272,50 @@ btnFormation.addEventListener('click', () => {
   window.pagerAPI.openFormation();
 });
 
-// ── Keyboard shortcuts for pager ──
+// ── Button press animation ──
+function animateButton(btn) {
+  btn.classList.add('pressed');
+  // The "pressed" class adds a brief scale-down + glow via CSS transition.
+  // Remove it after the transition completes so the button can be
+  // animated again on the next press.
+  setTimeout(() => btn.classList.remove('pressed'), 200);
+}
+
+// ── Shortcut-triggered complete (from global hotkey or local keyboard) ──
+function triggerComplete() {
+  if (!currentInstructionId || currentIsGuidance || isAnimating) return;
+  animateButton(btnComplete);
+  playSfx('bibi-short');
+  // Brief delay so the press animation is visible before the button
+  // container gets display:none via .hidden.
+  setTimeout(() => {
+    pagerButtons.classList.add('hidden');
+    showWaiting();
+    window.pagerAPI.complete();
+  }, 120);
+}
+
+function triggerFail() {
+  if (!currentInstructionId || currentIsGuidance || isAnimating) return;
+  animateButton(btnFail);
+  playSfx('bibi-short');
+  setTimeout(() => {
+    pagerButtons.classList.add('hidden');
+    showWaiting();
+    window.pagerAPI.fail();
+  }, 120);
+}
+
+// ── Global shortcut events from main process ──
+window.pagerAPI.onShortcutComplete(() => {
+  triggerComplete();
+});
+
+window.pagerAPI.onShortcutFail(() => {
+  triggerFail();
+});
+
+// ── Local keyboard shortcuts (Enter/Escape when overlay has focus) ──
 document.addEventListener('keydown', (e) => {
   // Phase picker shortcuts
   if (!phasePicker.classList.contains('hidden')) {
@@ -301,14 +328,12 @@ document.addEventListener('keydown', (e) => {
     return;
   }
 
-  if (!currentInstructionId || currentIsGuidance || isAnimating) return;
-
   if (e.key === 'Enter') {
     e.preventDefault();
-    btnComplete.click();
+    triggerComplete();
   } else if (e.key === 'Escape') {
     e.preventDefault();
-    btnFail.click();
+    triggerFail();
   }
 });
 
