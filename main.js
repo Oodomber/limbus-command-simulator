@@ -2205,9 +2205,25 @@ app.whenReady().then(async () => {
           'opacity =', ov ? ov.getOpacity() : 'n/a');
         console.log('[vision2/fake-pager] queue =', JSON.stringify(queueManager.getState()));
         if (ov) {
-          ov.webContents.executeJavaScript(
-            'JSON.stringify({loading:document.readyState,hasPager:!!document.getElementById("pager"),bodyBg:getComputedStyle(document.body).backgroundColor,pagerH:document.getElementById("pager")?document.getElementById("pager").getBoundingClientRect().height:0,text:(document.getElementById("pager-text")||{}).innerText||""})'
-          ).then((r) => console.log('[vision2/fake-pager] dom =', r)).catch((e) => console.log('[vision2/fake-pager] dom 失败:', e.message));
+          // 等打字机把文字吐出来再看 DOM，否则刚入队那一瞬 text 必然还是空的
+          setTimeout(() => {
+            ov.webContents.executeJavaScript(
+              'JSON.stringify({loading:document.readyState,hasPager:!!document.getElementById("pager"),bodyBg:getComputedStyle(document.body).backgroundColor,pagerH:document.getElementById("pager")?document.getElementById("pager").getBoundingClientRect().height:0,text:(document.getElementById("pager-text")||{}).innerText||""})'
+            ).then((r) => console.log('[vision2/fake-pager] dom =', r)).catch((e) => console.log('[vision2/fake-pager] dom 失败:', e.message));
+            // 直接把传呼机窗口自己截下来：屏幕截图受 DWM/分层窗口影响看不准，
+            // capturePage 拿到的是渲染进程真正画出来的东西，这是唯一可信的证据。
+            ov.webContents.capturePage()
+              .then((img) => {
+                const out = path.join(app.getPath('userData'), 'logs', 'pager-capture.png');
+                require('fs').writeFileSync(out, img.toPNG());
+                const { width, height } = img.getSize();
+                const bmp = img.toBitmap();
+                let opaque = 0;
+                for (let i = 3; i < bmp.length; i += 4) if (bmp[i] > 8) opaque++;
+                console.log('[vision2/fake-pager] capture =', JSON.stringify({ out, width, height, opaqueRatio: +(opaque / (width * height)).toFixed(4) }));
+              })
+              .catch((e) => console.log('[vision2/fake-pager] capture 失败:', e.message));
+          }, 1600);
         }
       } catch (e) {
         console.log('[vision2/fake-pager] 失败:', e.message);
