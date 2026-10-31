@@ -90,7 +90,7 @@ const GROUPS = [
     note: '生成函数 `_genShop`。`{sinner}`/`{name}` 等视条目而定。',
     keys: [
       'shop_heal', 'shop_no_heal', 'shop_reroll', 'shop_keyword_reroll', 'shop_buy',
-      'shop_buy_specific', 'shop_upgrade', 'shop_fuse', 'shop_sell', 'shop_sell_ash',
+      'shop_upgrade', 'shop_fuse', 'shop_sell', 'shop_sell_ash',
       'shop_replace_skill', 'shop_change_identity', 'shop_special_probability',
     ],
   },

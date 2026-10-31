@@ -2,8 +2,7 @@
   "deploy_identity": [
     "致：{sinner}必须装备人格【{identity}】。",
     "{sinner}，你被指定使用{identity}。",
-    "指令下达：{sinner}的人格应为{identity}。",
-    "{sinner}，食指指定你使用{identity}。"
+    "指令下达：{sinner}的人格应为{identity}。"
   ],
   "deploy_identity_vague": [
     "致：{sinner}需使用具有{tags}特质的人格。",
@@ -127,7 +126,7 @@
     "事件选择：{option}。"
   ],
   "event_vague": [
-    "致：选你觉得最赚的选项。",
+    "致：选择符合心意的道路。",
     "致：选择对你最有利的选项。"
   ],
   "event_reward": [
@@ -136,11 +135,6 @@
   ],
   "shop_buy": [
     "致：购买一件{tags}饰品。"
-  ],
-  "shop_buy_specific": [
-    "致：购买饰品【{name}】({tags}，{tier}级，{price}币)。",
-    "指令下达：获取{name}，{tags}类{tier}级饰品。",
-    "致：选购{name}（{tier}级{tags}，售价{price}币）。"
   ],
   "shop_sell": [
     "致：出售一件{tier}级饰品。"
@@ -289,7 +283,7 @@
   ],
 
   "starlight_vague": [
-    "致：{name}在闪烁，触碰{taps}下。"
+    "致：{name}在呼唤你的名字。"
   ],
   "starlight_none_vague": [
     "致：这一轮，不需要星的指引。"
@@ -300,17 +294,12 @@
   ],
 
   "route_vague": [
-    "致：你的脚步自然会迈向{dir}方。",
     "致：{dir}，这便是你的方向。"
   ],
 
   "event_option_vague": [
     "致：你的直觉已经给出了答案。",
     "致：不要读选项，感受它。"
-  ],
-  "event_reward_vague": [
-    "致：第{position}张卡在发光。",
-    "致：从{position}的方向取走你的奖赏。"
   ],
 
   "judgment_vague": [

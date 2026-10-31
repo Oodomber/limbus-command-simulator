@@ -184,7 +184,7 @@ const DEFAULT_TEMPLATES = {
     '事件选择：{option}。',
   ],
   event_vague: [
-    '致：选你觉得最赚的选项。',
+    '致：选择符合心意的道路。',
     '致：选择对你最有利的选项。',
   ],
   event_reward: [
@@ -193,11 +193,6 @@ const DEFAULT_TEMPLATES = {
   ],
   shop_buy: [
     '致：购买一件{tags}饰品。',
-  ],
-  shop_buy_specific: [
-    '致：购买饰品【{name}】({tags}，{tier}级，{price}币)。',
-    '指令下达：获取{name}，{tags}类{tier}级饰品。',
-    '致：选购{name}（{tier}级{tags}，售价{price}币）。',
   ],
   shop_sell: [
     '致：出售一件{tier}级饰品。',
@@ -342,7 +337,7 @@ const DEFAULT_TEMPLATES = {
   ],
 
   starlight_vague: [
-    '致：{name}在闪烁，触碰{taps}下。',
+    '致：{name}在呼唤你的名字。',
   ],
   starlight_none_vague: [
     '致：这一轮，不需要星的指引。',
@@ -353,17 +348,12 @@ const DEFAULT_TEMPLATES = {
   ],
 
   route_vague: [
-    '致：你的脚步自然会迈向{dir}方。',
     '致：{dir}，这便是你的方向。',
   ],
 
   event_option_vague: [
     '致：你的直觉已经给出了答案。',
     '致：不要读选项，感受它。',
-  ],
-  event_reward_vague: [
-    '致：第{position}张卡在发光。',
-    '致：从{position}的方向取走你的奖赏。',
   ],
 
   judgment_vague: [
@@ -624,24 +614,33 @@ class InstructionEngine {
 
   _computeStarlightEffects(selectedStarlights) {
     let interstellarTravelLevel = 0;
+    let interstellarSelected = false;
     let meteorRainSelected = false;
     let doubleStarShopSelected = false;
     let fullPossibilitySelected = false;
     for (const s of selectedStarlights) {
       const id = s.starlightId || s.id || '';
       const level = s.level ?? 1;
-      if (id === STARLIGHT_IDS.INTERSTELLAR_TRAVEL) interstellarTravelLevel = level;
-      else if (id === STARLIGHT_IDS.METEOR_RAIN) meteorRainSelected = true;
+      if (id === STARLIGHT_IDS.INTERSTELLAR_TRAVEL) {
+        interstellarSelected = true;
+        interstellarTravelLevel = level;
+      } else if (id === STARLIGHT_IDS.METEOR_RAIN) meteorRainSelected = true;
       else if (id === STARLIGHT_IDS.DOUBLE_STAR_SHOP) doubleStarShopSelected = true;
       else if (id === STARLIGHT_IDS.FULL_POSSIBILITY) fullPossibilitySelected = true;
     }
-    return { interstellarTravelLevel, meteorRainSelected, doubleStarShopSelected, fullPossibilitySelected };
+    return { interstellarTravelLevel, interstellarSelected, meteorRainSelected, doubleStarShopSelected, fullPossibilitySelected };
   }
 
-  /** Compute the number of cardpack rerolls available based on starlight effects */
+  /**
+   * 卡包刷新次数（按输入.txt 的口径）：
+   *   默认 1 次；选了「星际旅行」→ 2 次；强化一级 → 3 次；二级 → 4 次。
+   *   游戏内上限 4 次。
+   */
   _getCardpackRerollCount(effects) {
-    const interstellarLevel = (effects && effects.interstellarTravelLevel) || 0;
-    return 1 + interstellarLevel * 2; // lv0→1, lv1→3, lv2→5 (capped in game at 4)
+    const base = 1;
+    if (!effects || !effects.interstellarSelected) return base;
+    const level = effects.interstellarTravelLevel || 0;
+    return Math.min(4, base + 1 + level);
   }
 
   /** Compute the number of cardpacks shown */
@@ -894,14 +893,13 @@ class InstructionEngine {
 
     this._trace('当前层数', `第${currentFloor}层 (${mode})`);
 
-    // 40% chance: use real cardpack name filtered by floor
-    const useRealPack = Math.random() < 0.4;
-    if (useRealPack && cardpacks && cardpacks.length > 0) {
-      const floorPacks = cardpacks.filter(p => {
+    // 可用的「按卡包名指定」候选（受当前层数与模式限制）
+    let floorPacks = [];
+    if (cardpacks && cardpacks.length > 0) {
+      floorPacks = cardpacks.filter(p => {
         if (!p.availability) return false;
         const avail = p.availability[mode];
-        // normal/hard: array of floor numbers (e.g. [1,2,3])
-        // parallel/extreme: true/false boolean
+        // normal/hard: 楼层数组（如 [1,2,3]）；parallel/extreme: 布尔
         if (mode === 'parallel' || mode === 'extreme') {
           return avail === true;
         }
@@ -909,49 +907,68 @@ class InstructionEngine {
       });
       if (floorPacks.length > 0) {
         this._trace('卡包匹配', `${floorPacks.length}个可用: ${floorPacks.slice(0,5).map(p=>p.name).join(', ')}${floorPacks.length>5?'...':''}`);
-        const picked = this._pickRandom(floorPacks);
-        const tpl = this._pickTieredTemplate(templates, 'cardpack_pick');
-        const text = this._fillTemplate(tpl, { pack: picked.name });
-        return {
-          instructions: [this._makeInstruction(PHASES.CARDPACK, text, false, { cardpackId: picked.id })],
-          phase: PHASES.CARDPACK, isGuidance: false,
-        };
+      } else {
+        this._trace('卡包匹配', `${mode}模式下无可用卡包，使用序号描述`);
       }
-      this._trace('卡包匹配', `${mode}模式下无可用卡包，使用序号描述`);
     }
 
-    // Reroll: only if rerolls remain, and probability decreases as rerolls are used
-    const rerollChance = remainingRerolls > 0 ? Math.min(0.35, remainingRerolls * 0.12) : 0;
-    if (Math.random() < rerollChance) {
-      // 刷新之后玩家还要再选一次卡包，所以这里必须一次给两条：
-      // 第一条让他刷新，第二条告诉他刷新后选第几个。只给刷新的话，
-      // 玩家刷完就卡在卡包页等不到下一条指令。
-      const rerollTpl = this._pickTieredTemplate(templates, 'cardpack_reroll');
-      const rerollText = this._fillTemplate(rerollTpl, {});
-      const rerollPosition = Math.floor(Math.random() * packCount) + 1;
-      const afterTpl = this._pickTieredTemplate(templates, 'cardpack_position');
-      const afterText = this._fillTemplate(afterTpl, { position: String(rerollPosition) });
-      return {
-        instructions: [
-          this._makeInstruction(PHASES.CARDPACK, rerollText, false, {
-            isReroll: true, remainingRerolls: remainingRerolls - 1,
-          }),
-          this._makeInstruction(PHASES.CARDPACK, afterText, false, {
-            cardpackNum: rerollPosition, afterReroll: true,
-          }),
-        ],
-        phase: PHASES.CARDPACK, isGuidance: false,
-      };
-    }
-
-    // Position-based pick
-    const position = Math.floor(Math.random() * packCount) + 1;
-    const tpl = this._pickTieredTemplate(templates, 'cardpack_position');
-    const text = this._fillTemplate(tpl, { position: String(position) });
-    return {
-      instructions: [this._makeInstruction(PHASES.CARDPACK, text, false, { cardpackNum: position })],
-      phase: PHASES.CARDPACK, isGuidance: false,
+    const buildPositionPick = (afterReroll) => {
+      const position = Math.floor(Math.random() * packCount) + 1;
+      const tpl = this._pickTieredTemplate(templates, 'cardpack_position');
+      const text = this._fillTemplate(tpl, { position: String(position) });
+      return this._makeInstruction(PHASES.CARDPACK, text, false, {
+        cardpackNum: position, afterReroll: !!afterReroll,
+      });
     };
+
+    const buildRealPick = (afterReroll) => {
+      if (!floorPacks.length) return null;
+      const picked = this._pickRandom(floorPacks);
+      const tpl = this._pickTieredTemplate(templates, 'cardpack_pick');
+      const text = this._fillTemplate(tpl, { pack: picked.name, position: '1' });
+      return this._makeInstruction(PHASES.CARDPACK, text, false, {
+        cardpackId: picked.id, afterReroll: !!afterReroll,
+      });
+    };
+
+    const buildReroll = () => {
+      const tpl = this._pickTieredTemplate(templates, 'cardpack_reroll');
+      const text = this._fillTemplate(tpl, {});
+      return this._makeInstruction(PHASES.CARDPACK, text, false, { isReroll: true });
+    };
+
+    // 三种指令（按卡包名 / 按序号 / 刷新）等概率挑一个。
+    // 抽到「刷新」就再生成一条：玩家刷新完还要再选一次，
+    // 只给刷新的话他会卡在卡包页等不到下一条指令。
+    // 刷新次数由星光决定（_getCardpackRerollCount），用完后不再出刷新。
+    // 同一批里最多只出一次刷新——连着刷两次只会让玩家照着点，没有意义。
+    const instructions = [];
+    let remaining = remainingRerolls;
+    for (let guard = 0; guard < 6; guard += 1) {
+      const pool = ['position'];
+      if (floorPacks.length > 0) pool.push('real');
+      if (remaining > 0 && instructions.length === 0) pool.push('reroll');
+
+      const kind = this._pickRandom(pool);
+      if (kind === 'reroll') {
+        remaining -= 1;
+        const inst = buildReroll();
+        inst.meta = { ...(inst.meta || {}), remainingRerolls: remaining };
+        instructions.push(inst);
+        continue;
+      }
+      const afterReroll = instructions.length > 0;
+      const inst = kind === 'real' ? buildRealPick(afterReroll) : buildPositionPick(afterReroll);
+      if (inst) {
+        instructions.push(inst);
+        break;
+      }
+      // 理论上不会走到：real 已在 pool 里时 floorPacks 非空
+      instructions.push(buildPositionPick(afterReroll));
+      break;
+    }
+
+    return { instructions, phase: PHASES.CARDPACK, isGuidance: false };
   }
 
   // ═══════════════════════════════════════════
@@ -1216,34 +1233,6 @@ class InstructionEngine {
     const identities = await this.dataLoader.load('identities');
     const isRational = this._isRational(rawRationality, context);
     const isIrrational = this._isIrrational(rawRationality, context);
-    const recognizedItems = context.recognizedItems || [];
-
-    // If vision recognized shop items, generate precise buy instructions first
-    if (recognizedItems.length > 0 && isRational) {
-      const instructions = [];
-      const validItems = recognizedItems.filter(i => i.id && i.name);
-      // Pick up to 3 random recognized items for instructions
-      const picked = this._pickRandomN([...validItems], 3);
-      for (const item of picked) {
-        const tpl = this._pickRandom(templates.shop_buy_specific || DEFAULT_TEMPLATES.shop_buy_specific);
-        const tags = (item.tags?.effect || []).join('、') || '未知';
-        const text = this._fillTemplate(tpl, {
-          name: item.name,
-          tags,
-          tier: item.tier || '?',
-          price: item.price || '?',
-        });
-        instructions.push(this._makeInstruction(PHASES.SHOP, text, false, {
-          shopAction: 'shop_buy_specific',
-          relicId: item.id,
-          relicName: item.name,
-        }));
-      }
-      // Only return vision-based instructions; skip generic generation for this batch
-      if (instructions.length > 0) {
-        return { instructions, isGuidance: false };
-      }
-    }
 
     const count = Math.floor(Math.random() * 5) + 1; // 1~5
 
@@ -1387,15 +1376,6 @@ class InstructionEngine {
             this._trace('商店换人', `无可用替换人格 → 通用提示`);
           } else {
             const newId = this._pickRandom(candidates);
-            // Use buy_specific-style template: name the target identity
-            const buyTpls = templates.shop_buy_specific || DEFAULT_TEMPLATES.shop_buy_specific;
-            const buyTpl = this._pickRandom(buyTpls);
-            // Repurpose the buy_specific template: {name} = new identity, {tags}/{tier}/{price} empty
-            text = this._fillTemplate(buyTpl, {
-              name: newId.name, tags: (newId.tags?.effect || []).join('、') || '任意',
-              tier: newId.rarity || '?', price: '?',
-            });
-            // Override with clearer wording
             text = '致：将' + targetSinner + '的人格更换为【' + newId.name + '】。';
             meta.replacementId = newId.id;
             this._trace('商店换人', targetSinner + ': ' + (currentId || '无') + ' → ' + newId.name);
