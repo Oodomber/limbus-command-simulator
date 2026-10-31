@@ -267,6 +267,37 @@ function ensureVisionLoop() {
   if (!liveVision.running) liveVision.start();
 }
 
+/**
+ * 开局后自动拉起视觉：开面板 → 连游戏窗口 → 开始实时识别。
+ * 窗口可能还没起来（游戏正在加载），所以失败会重试几次。
+ */
+async function autoStartVision(attempt = 1) {
+  const MAX = 6;
+  if (!captureController || !liveVision) return;
+
+  if (liveVision.running) {
+    if (store && !store.get('vision.autoDetect')) store.set('vision.autoDetect', true);
+    return;
+  }
+
+  const r = await captureController.autoAttachGame();
+  if (r && r.ok) {
+    console.log(`[vision] 已自动连接窗口「${r.name}」（${r.transport}）`);
+    if (!liveVision.running) {
+      console.log('[vision] 已自动开始实时识别：' + JSON.stringify(liveVision.start()));
+    }
+    if (store && !store.get('vision.autoDetect')) store.set('vision.autoDetect', true);
+    return;
+  }
+
+  console.log(`[vision] 自动连接第 ${attempt}/${MAX} 次失败：${(r && r.error) || '未知原因'}`);
+  if (attempt < MAX && runState.active) {
+    setTimeout(() => { if (runState.active) autoStartVision(attempt + 1); }, 2500);
+  } else if (attempt >= MAX) {
+    console.log('[vision] 自动连接放弃，请在采集面板里手动选窗口并点「连接此窗口」');
+  }
+}
+
 function setupVisionAuto() {
   if (!liveVision) return;
   liveVision.onPhase(async (payload) => {
@@ -882,23 +913,7 @@ function registerIpcHandlers() {
     dungeonStarted = false;  // 等第一次识别到卡包页才认为真正进了地牢
     // 点「开始一局」就把视觉采集和识别拉起来，玩家不用再按 F7 开面板手动连接。
     // 开局前的页面照样会被识别，但闸门会拦住不出指令。
-    if (captureController && liveVision) {
-      Promise.resolve()
-        .then(() => captureController.autoAttachGame())
-        .then((r) => {
-          if (!r || !r.ok) {
-            console.log('[vision] 自动开启视觉失败：' + ((r && r.error) || '未知原因'));
-            return;
-          }
-          console.log(`[vision] 已自动连接窗口「${r.name}」（${r.transport}）`);
-          if (!liveVision.running) {
-            const st = liveVision.start();
-            console.log('[vision] 已自动开始实时识别：' + JSON.stringify(st));
-          }
-          if (store && !store.get('vision.autoDetect')) store.set('vision.autoDetect', true);
-        })
-        .catch((e) => console.log('[vision] 自动开启视觉异常：' + e.message));
-    }
+    autoStartVision();
     karmaScareTriggered = false;
     runState.karmaScareThreshold = store.get('settings.karmaScareThreshold') ?? 100;
     queueManager.clear();
@@ -2117,6 +2132,29 @@ app.whenReady().then(async () => {
   });
   liveVision.init();
   setupVisionAuto();
+
+  // 开发期自检：VISION2_AUTOSTART=1 时走一遍「点开始一局」的自动视觉路径，
+  // 用来在没有开局的情况下验证 autoAttachGame + liveVision.start 是否通。
+  if (!app.isPackaged && process.env.VISION2_AUTOSTART === '1') {
+    setTimeout(async () => {
+      try {
+        const r = await captureController.autoAttachGame();
+        console.log('[vision2/autostart] attach =>', JSON.stringify(r));
+        if (r && r.ok && !liveVision.running) {
+          console.log('[vision2/autostart] live =>', JSON.stringify(liveVision.start()));
+          setTimeout(() => {
+            try {
+              console.log('[vision2/autostart] status =>', JSON.stringify(liveVision.status()));
+            } catch (e) {
+              console.log('[vision2/autostart] status 失败:', e.message);
+            }
+          }, 3500);
+        }
+      } catch (e) {
+        console.log('[vision2/autostart] 异常:', e.message);
+      }
+    }, 2500);
+  }
 
   // 开发开关：自动连上窗口后跑一段时间实时识别，把帧数/环节打到 stdout。
   // 用于在没有游戏的情况下验证「真窗口取帧 → 分类」这条链路是否通。
