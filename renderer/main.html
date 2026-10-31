@@ -36,7 +36,7 @@
       </div>
       <div class="nav-footer">
         <span class="nav-author">by 冬熊夏鸟</span>
-        <span class="nav-version">v1.1.0</span>
+        <span class="nav-version">v1.2.4</span>
       </div>
     </nav>
 
@@ -318,8 +318,23 @@
 
           <div class="setting-group">
             <h3>数据管理</h3>
-            <button id="btn-export-data" class="btn-small">导出数据</button>
-            <button id="btn-import-data" class="btn-small">导入数据</button>
+            <button id="btn-export-data" class="btn-small">导出人格数据</button>
+            <button id="btn-import-data" class="btn-small">导入人格数据</button>
+          </div>
+
+          <div class="setting-group">
+            <h3>自由指令模板</h3>
+            <p style="color:#888;font-size:0.8em;margin-bottom:8px;">
+              镜牢自由环节随机抽取。可用变量（引擎自动替换）：<br>
+              <code style="background:#1a1a3a;color:#7ab8e0;padding:1px 4px;border-radius:3px;">{sinner}</code> 随机替换为一名罪人的名字（李箱、浮士德…共12人）<br>
+              <code style="background:#1a1a3a;color:#7ab8e0;padding:1px 4px;border-radius:3px;">{pos1}</code> 随机替换为当前存活队伍中的一个位置号（1~阵亡后剩余人数）<br>
+              <code style="background:#1a1a3a;color:#7ab8e0;padding:1px 4px;border-radius:3px;">{pos2}</code> 同上，但保证与 {pos1} 不同
+            </p>
+            <div id="free-templates-list" style="max-height:260px;overflow-y:auto;margin-bottom:10px;"></div>
+            <div style="display:flex;gap:6px;">
+              <input id="free-template-input" type="text" placeholder="输入新指令模板…" style="flex:1;padding:7px 10px;background:#0f0f23;color:#e0e0e0;border:1px solid #3a3a5a;border-radius:4px;font-size:13px;">
+              <button id="btn-add-free-template" style="padding:7px 16px;background:#4caf50;color:#fff;border:none;border-radius:4px;cursor:pointer;font-size:13px;white-space:nowrap;">➕ 添加</button>
+            </div>
           </div>
         </div>
       </div>

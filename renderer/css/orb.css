@@ -1,5 +1,5 @@
 /* ══════════════════════════════════════════════
-   orb.css — 悬浮球 v3 + 观星页面
+   orb.css — 悬浮球 v4 (圆形) + 观星页面
    ══════════════════════════════════════════════ */
 
 /* ── 基础重置 ── */
@@ -36,7 +36,8 @@ body {
   justify-content: center;
   cursor: grab;
   position: relative;
-  -webkit-app-region: drag;
+  /* no -webkit-app-region:drag here — drag is handled manually via IPC in setupDrag()
+     to avoid conflicts that cause the center box to detach during window move */
 }
 #orb-view:active { cursor: grabbing; }
 #orb-view.clickable { cursor: pointer; }
@@ -50,10 +51,13 @@ body {
 }
 
 /* ── Center black box (drawn with CSS, overlaid on canvas) ── */
+/* Uses position:fixed with pixel coords so it stays locked to the window
+   viewport during drag — percentage+transform can lag behind. */
+/* Window 220×220, center at (110,110), box 90×28 → left=65, top=96 */
 #orb-center-box {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
+  position: fixed;
+  left: 65px;
+  top: 96px;
   width: 90px;
   height: 28px;
   display: flex;

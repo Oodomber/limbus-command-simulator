@@ -676,3 +676,13 @@ td.loading, .loading {
   0%, 100% { opacity: 0.5; }
   50% { opacity: 0.8; }
 }
+
+/* ── Editor new-item highlight flash ── */
+@keyframes highlightFlash {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7); border-color: #ffd700; }
+  30%  { box-shadow: 0 0 24px 6px rgba(255, 215, 0, 0.5); border-color: #ffd700; }
+  100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); border-color: #2a2a4a; }
+}
+.highlight-flash {
+  animation: highlightFlash 2.2s ease-out;
+}

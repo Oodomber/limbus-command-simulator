@@ -101,6 +101,7 @@ function setupNavigation() {
 
       // Refresh panels on switch
       if (tab === 'achievements') renderAchievements();
+      if (tab === 'settings') loadFreeTemplates();
     });
   });
 }
@@ -694,6 +695,70 @@ function showPoolNameModal(callback, type) {
 
   input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') { overlay.remove(); callback(input.value.trim()); }
+    if (e.key === 'Escape') { overlay.remove(); callback(null); }
+  });
+}
+
+function showSinnerPickerModal(callback) {
+  var existing = document.getElementById('sinner-picker-modal');
+  if (existing) existing.remove();
+
+  var SINNER_ORDER = ['李箱','浮士德','堂吉诃德','良秀','默尔索','鸿璐','希斯克利夫','以实玛利','罗佳','辛克莱','奥提斯','格里高尔'];
+
+  var overlay = document.createElement('div');
+  overlay.id = 'sinner-picker-modal';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);z-index:999999;display:flex;align-items:center;justify-content:center;';
+
+  var box = document.createElement('div');
+  box.style.cssText = 'background:#1a1a2e;border:2px solid #ffd700;border-radius:12px;padding:24px;min-width:300px;';
+  box.innerHTML =
+    '<h3 style="color:#ffd700;margin:0 0 16px;">🧑 选择罪人</h3>' +
+    '<select id="sinner-picker-select" style="width:100%;padding:10px;background:#0f0f23;color:#e0e0e0;border:1px solid #3a3a5a;border-radius:6px;font-size:14px;margin-bottom:16px;">' +
+      SINNER_ORDER.map(function(s) { return '<option value="' + s + '">' + s + '</option>'; }).join('') +
+    '</select>' +
+    '<div style="display:flex;gap:8px;">' +
+      '<button id="sinner-picker-confirm" style="flex:1;padding:10px;background:#ffd700;color:#1a1a2e;border:none;border-radius:6px;font-weight:bold;cursor:pointer;">确定</button>' +
+      '<button id="sinner-picker-cancel" style="flex:1;padding:10px;background:#333;color:#aaa;border:1px solid #444;border-radius:6px;cursor:pointer;">取消</button>' +
+    '</div>';
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  var select = document.getElementById('sinner-picker-select');
+
+  // Focus the select
+  window.electronAPI.focusWindow().catch(function() {});
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() { select.focus(); });
+  });
+
+  overlay.addEventListener('click', function(e) {
+    if (e.target.tagName === 'BUTTON') return;
+    select.focus();
+  });
+
+  // Safety net: repeated focus attempts
+  [100, 300, 600].forEach(function(delay) {
+    setTimeout(function() {
+      if (document.getElementById('sinner-picker-modal') && document.activeElement !== select) {
+        select.focus();
+      }
+    }, delay);
+  });
+
+  document.getElementById('sinner-picker-confirm').addEventListener('click', function() {
+    overlay.remove();
+    callback(select.value);
+  });
+  document.getElementById('sinner-picker-cancel').addEventListener('click', function() {
+    overlay.remove();
+    callback(null);
+  });
+
+  overlay.addEventListener('keydown', function(e) { e.stopPropagation(); });
+
+  select.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') { overlay.remove(); callback(select.value); }
     if (e.key === 'Escape') { overlay.remove(); callback(null); }
   });
 }
@@ -1384,33 +1449,22 @@ function setupSettings() {
     await window.electronAPI.setConfig('settings.historyLimit', Math.max(50, Math.min(1000, val)));
   });
 
-  // Export/Import
+  // Export/Import — identities only (for sharing correct identity data with users)
   document.getElementById('btn-export-data').addEventListener('click', async () => {
-    // Get all data
-    const types = await window.electronAPI.listDataTypes();
-    const exportData = {};
-    for (const type of types) {
-      exportData[type] = await window.electronAPI.loadData(type);
-    }
-    const config = await window.electronAPI.getConfig();
-    exportData._config = config;
-
-    // Download as JSON file
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+    const identities = await window.electronAPI.loadData('identities');
+    const blob = new Blob([JSON.stringify(identities, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `limbus_data_${new Date().toISOString().slice(0, 10)}.json`;
+    a.download = `identities_backup_${new Date().toISOString().slice(0, 10)}.json`;
     a.click();
     URL.revokeObjectURL(url);
-
-    showToast('📦', '数据已导出');
+    showToast('📦', '人格数据已导出');
   });
 
   document.getElementById('btn-import-data').addEventListener('click', async () => {
-    if (!confirm('导入数据将覆盖当前用户数据，确定继续吗？\n建议先导出备份。')) return;
+    if (!confirm('导入人格数据将覆盖当前所有人格信息（含标签、阵营等），确定继续吗？\n建议先导出当前数据备份。')) return;
 
-    // Create file input
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = '.json';
@@ -1419,15 +1473,13 @@ function setupSettings() {
       if (!file) return;
       try {
         const text = await file.text();
-        const data = JSON.parse(text);
-        let imported = 0;
-        for (const [type, content] of Object.entries(data)) {
-          if (type === '_config') continue; // skip config
-          await window.electronAPI.saveData(type, content);
-          imported++;
+        const identities = JSON.parse(text);
+        if (!Array.isArray(identities)) {
+          alert('文件格式不正确：应为包含人格数组的 JSON 文件');
+          return;
         }
-        showToast('📥', `已导入 ${imported} 个数据文件`);
-        // Reload
+        await window.electronAPI.saveData('identities', identities);
+        showToast('📥', `已导入 ${identities.length} 条人格数据`);
         await loadInitialData();
       } catch (e) {
         alert('导入失败: ' + e.message);
@@ -1441,6 +1493,99 @@ function setupSettings() {
 
   // ── Vision settings ──
   setupVisionSettings();
+
+  // ── Free instruction templates ──
+  setupFreeTemplates();
+}
+
+// ── Free Instruction Templates ──
+
+let _freeBuiltIn = [];   // built-in templates from engine defaults
+let _freeCustom = [];    // user-added templates (stored in config)
+let _freeHidden = [];    // built-in templates user deleted (stored in config)
+
+async function loadFreeTemplates() {
+  try {
+    const data = await window.electronAPI.getFreeTemplates();
+    _freeBuiltIn = data.builtIn || [];
+    _freeCustom = data.custom || [];
+    _freeHidden = data.hidden || [];
+  } catch (e) {
+    console.error('[freeTemplates] load error:', e);
+    _freeBuiltIn = [];
+    _freeCustom = [];
+    _freeHidden = [];
+  }
+  renderFreeTemplateList();
+}
+
+function _mergedFreeTemplates() {
+  // Built-in minus hidden, then user customs appended
+  const visible = _freeBuiltIn.filter(function(t) { return !_freeHidden.includes(t); });
+  return visible.concat(_freeCustom);
+}
+
+function renderFreeTemplateList() {
+  const container = document.getElementById('free-templates-list');
+  if (!container) return;
+
+  const merged = _mergedFreeTemplates();
+
+  if (merged.length === 0) {
+    container.innerHTML = '<div style="color:#555;padding:16px;text-align:center;font-size:0.85em;">暂无模板，在下方添加</div>';
+    return;
+  }
+
+  container.innerHTML = merged.map(function(tpl, i) {
+    return '<div style="display:flex;align-items:center;gap:8px;padding:6px 8px;margin-bottom:4px;background:#141428;border-radius:4px;border:1px solid #252545;">' +
+      '<span style="flex:1;font-size:13px;color:#e0e0e0;word-break:break-all;">' + escapeHtml(tpl) + '</span>' +
+      '<button data-del-free-tpl="' + i + '" title="删除" style="flex-shrink:0;padding:2px 8px;background:none;border:1px solid #442222;color:#f44336;border-radius:3px;cursor:pointer;font-size:11px;">✕</button>' +
+    '</div>';
+  }).join('');
+
+  // Bind delete buttons
+  container.querySelectorAll('button[data-del-free-tpl]').forEach(function(btn) {
+    btn.addEventListener('click', async function() {
+      var idx = parseInt(btn.dataset.delFreeTpl);
+      var merged = _mergedFreeTemplates();
+      if (isNaN(idx) || idx < 0 || idx >= merged.length) return;
+      var target = merged[idx];
+      // If it's a user custom, remove from custom. Otherwise hide from built-in.
+      var customIdx = _freeCustom.indexOf(target);
+      if (customIdx >= 0) {
+        _freeCustom.splice(customIdx, 1);
+      } else {
+        _freeHidden.push(target);
+      }
+      await window.electronAPI.saveFreeTemplates(_freeCustom, _freeHidden);
+      renderFreeTemplateList();
+    });
+  });
+}
+
+function setupFreeTemplates() {
+  document.getElementById('btn-add-free-template').addEventListener('click', async function() {
+    var input = document.getElementById('free-template-input');
+    var text = (input.value || '').trim();
+    if (!text) return;
+    _freeCustom.push(text);
+    await window.electronAPI.saveFreeTemplates(_freeCustom, _freeHidden);
+    input.value = '';
+    renderFreeTemplateList();
+  });
+
+  // Enter key to add
+  document.getElementById('free-template-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('btn-add-free-template').click();
+    }
+  });
+
+  // Initial load — render placeholder while data loads
+  var container = document.getElementById('free-templates-list');
+  if (container) container.innerHTML = '<div style="color:#555;padding:16px;text-align:center;font-size:0.85em;">加载中…</div>';
+  loadFreeTemplates();
 }
 
 // ── Hotkey Settings ──
@@ -2014,7 +2159,6 @@ async function showDevMenu() {
     <div style="display:flex;flex-direction:column;gap:8px;">
       <button class="dev-menu-btn" data-action="editor">✏️ 数据编辑器 (人格/EGO/饰品)</button>
       <button class="dev-menu-btn" data-action="weaver">🕸 编织器 (指令生成调试)</button>
-      <button class="dev-menu-btn" data-action="export">📦 导出所有数据 (JSON)</button>
       <button class="dev-menu-btn" data-action="reload">🔄 重新加载数据</button>
       <button class="dev-menu-btn" data-action="stats">📊 查看数据统计</button>
       <button class="dev-menu-btn" data-action="reset-stats" style="color:#ff6b6b;">🗑 重置累计数据（加护/业/历史/成就）</button>
@@ -2048,12 +2192,11 @@ async function showDevMenu() {
     btn.addEventListener('mouseleave', () => { btn.style.background = '#0f0f23'; btn.style.borderColor = '#2a2a4a'; });
   });
 
-  box.querySelector('[data-action="editor"]').addEventListener('click', () => { showDataEditor(); });
+  box.querySelector('[data-action="editor"]').addEventListener('click', () => { overlay.remove(); showDataEditor(); });
   box.querySelector('[data-action="weaver"]').addEventListener('click', async () => {
     await window.electronAPI.openWeaver();
     overlay.remove();
   });
-  box.querySelector('[data-action="export"]').addEventListener('click', () => { document.getElementById('btn-export-data').click(); });
   box.querySelector('[data-action="reload"]').addEventListener('click', async () => { await loadInitialData(); showToast('🔄', '数据已重新加载'); });
   box.querySelector('[data-action="stats"]').addEventListener('click', () => { showDataStats(); });
   box.querySelector('[data-action="reset-stats"]').addEventListener('click', async () => {
@@ -2131,9 +2274,10 @@ function showDataEditor() {
   overlay.id = 'data-editor-modal';
   overlay.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:99998;display:flex;align-items:center;justify-content:center;';
   const box = document.createElement('div');
-  box.style.cssText = 'background:#1a1a2e;border:2px solid #ffd700;border-radius:12px;padding:20px;width:95%;max-width:1100px;max-height:90vh;display:flex;flex-direction:column;';
+  box.style.cssText = 'position:relative;background:#1a1a2e;border:2px solid #ffd700;border-radius:12px;padding:20px;width:95%;max-width:1100px;max-height:90vh;display:flex;flex-direction:column;';
   box.innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+    <button id="editor-close-x" style="position:absolute;top:10px;right:14px;background:none;border:none;color:#888;font-size:22px;cursor:pointer;line-height:1;padding:0;width:30px;height:30px;display:flex;align-items:center;justify-content:center;border-radius:4px;" title="关闭编辑器">✕</button>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:8px;padding-right:30px;">
       <h3 style="color:#ffd700;margin:0;">✏️ 数据编辑器</h3>
       <div style="display:flex;gap:6px;flex-wrap:wrap;">
         ${types.map(t => `<button class="editor-type-btn" data-type="${t.id}" style="padding:6px 14px;background:#0f0f23;color:#aaa;border:1px solid #2a2a4a;border-radius:6px;cursor:pointer;font-size:12px;">${t.label}</button>`).join('')}
@@ -2141,7 +2285,6 @@ function showDataEditor() {
       <div style="display:flex;gap:8px;align-items:center;">
         <input id="editor-filter" placeholder="搜索..." style="width:120px;padding:5px 8px;background:#0f0f23;color:#e0e0e0;border:1px solid #3a3a5a;border-radius:4px;font-size:12px;">
         <button id="editor-save" style="padding:6px 16px;background:#4caf50;color:#fff;border:none;border-radius:4px;cursor:pointer;font-weight:bold;font-size:12px;">💾 保存</button>
-        <button id="editor-close" style="padding:6px 12px;background:#333;color:#aaa;border:1px solid #444;border-radius:4px;cursor:pointer;font-size:12px;">关闭</button>
       </div>
     </div>
     <div id="editor-type-hint" style="color:#666;font-size:0.85em;margin-bottom:8px;">请先选择要编辑的数据类型</div>
@@ -2166,8 +2309,11 @@ function showDataEditor() {
   });
 
   document.getElementById('editor-save').addEventListener('click', saveEditorData);
-  document.getElementById('editor-close').addEventListener('click', () => overlay.remove());
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
+  const closeX = document.getElementById('editor-close-x');
+  closeX.addEventListener('click', () => overlay.remove());
+  closeX.addEventListener('mouseenter', () => { closeX.style.color = '#ff4444'; closeX.style.background = 'rgba(255,68,68,0.15)'; });
+  closeX.addEventListener('mouseleave', () => { closeX.style.color = '#888'; closeX.style.background = 'none'; });
+  // Editor only closes via the close buttons — clicking outside does nothing
 }
 
 async function loadEditorData(type) {
@@ -2234,9 +2380,12 @@ function _syncEditorInputs() {
   });
 }
 
-function renderEditorRows() {
-  // Persist any pending text edits before rebuilding HTML
-  _syncEditorInputs();
+function renderEditorRows(skipSync) {
+  // Persist any pending text edits before rebuilding HTML.
+  // IMPORTANT: skip when called after data structure changes (add/delete),
+  // because the DOM still has old data-idx values that don't match the
+  // now-shifted _currentEditData indices, which would corrupt data.
+  if (!skipSync) { _syncEditorInputs(); }
 
   const content = document.getElementById('editor-content');
   const data = _currentEditData;
@@ -2290,7 +2439,7 @@ function renderEditorRows() {
     html += items.map(function(item) {
       var oi = data.indexOf(item);
       var t = item.tags || {};
-      return '<div class="edit-card" style="margin-bottom:12px;padding:10px;background:#1a1a2e;border-radius:6px;border:1px solid #2a2a4a;">' +
+      return '<div class="edit-card" id="edit-card-' + oi + '" style="margin-bottom:12px;padding:10px;background:#1a1a2e;border-radius:6px;border:1px solid #2a2a4a;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
           '<span style="color:#ffd700;font-weight:bold;font-size:12px;">#' + (oi+1) + ' ' + escapeHtml(item.name) + '</span>' +
           '<button data-delete="' + oi + '" style="padding:2px 8px;background:#662222;color:#f44336;border:1px solid #883333;border-radius:3px;cursor:pointer;font-size:10px;">🗑</button>' +
@@ -2316,7 +2465,7 @@ function renderEditorRows() {
     html += items.map(function(item) {
       var oi = data.indexOf(item);
       var t = item.tags || {};
-      return '<div class="edit-card" style="margin-bottom:12px;padding:10px;background:#1a1a2e;border-radius:6px;border:1px solid #2a2a4a;">' +
+      return '<div class="edit-card" id="edit-card-' + oi + '" style="margin-bottom:12px;padding:10px;background:#1a1a2e;border-radius:6px;border:1px solid #2a2a4a;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
           '<span style="color:#ffd700;font-weight:bold;font-size:12px;">#' + (oi+1) + ' ' + escapeHtml(item.name) + '</span>' +
           '<button data-delete="' + oi + '" style="padding:2px 8px;background:#662222;color:#f44336;border:1px solid #883333;border-radius:3px;cursor:pointer;font-size:10px;">🗑</button>' +
@@ -2341,7 +2490,7 @@ function renderEditorRows() {
   } else if (type === 'relics') {
     html += items.map(function(item) {
       var oi = data.indexOf(item);
-      return '<div class="edit-card" style="margin-bottom:12px;padding:10px;background:#1a1a2e;border-radius:6px;border:1px solid #2a2a4a;">' +
+      return '<div class="edit-card" id="edit-card-' + oi + '" style="margin-bottom:12px;padding:10px;background:#1a1a2e;border-radius:6px;border:1px solid #2a2a4a;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
           '<span style="color:#ffd700;font-weight:bold;font-size:12px;">#' + (oi+1) + ' ' + escapeHtml(item.name) + '</span>' +
           '<button data-delete="' + oi + '" style="padding:2px 8px;background:#662222;color:#f44336;border:1px solid #883333;border-radius:3px;cursor:pointer;font-size:10px;">🗑</button>' +
@@ -2365,7 +2514,7 @@ function renderEditorRows() {
     html += items.map(function(item) {
       var oi = data.indexOf(item);
       var av = item.availability || {};
-      return '<div class="edit-card" style="margin-bottom:12px;padding:10px;background:#1a1a2e;border-radius:6px;border:1px solid #2a2a4a;">' +
+      return '<div class="edit-card" id="edit-card-' + oi + '" style="margin-bottom:12px;padding:10px;background:#1a1a2e;border-radius:6px;border:1px solid #2a2a4a;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
           '<span style="color:#ffd700;font-weight:bold;font-size:12px;">#' + (oi+1) + ' ' + escapeHtml(item.name) + '</span>' +
           '<button data-delete="' + oi + '" style="padding:2px 8px;background:#662222;color:#f44336;border:1px solid #883333;border-radius:3px;cursor:pointer;font-size:10px;">🗑</button>' +
@@ -2440,7 +2589,7 @@ function renderEditorRows() {
         '</div>';
       }).join('');
 
-      return '<div class="tpl-card" style="margin-bottom:8px;padding:8px 10px;background:#141428;border-radius:4px;border:1px solid #252545;">' +
+      return '<div class="tpl-card" id="tpl-card-' + oi + '" style="margin-bottom:8px;padding:8px 10px;background:#141428;border-radius:4px;border:1px solid #252545;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
           '<div><code style="color:#ffd700;font-size:12px;font-weight:bold;">' + escapeHtml(item.key) + '</code>' +
           (varTags ? ' <span style="margin-left:8px;">' + varTags + '</span>' : '') + '</div>' +
@@ -2483,7 +2632,7 @@ function renderEditorRows() {
     var keys = Object.keys(data[0]||{}).filter(function(k) { return k !== 'tags' && k !== 'sinCost' && k !== 'availability'; });
     html += items.map(function(item) {
       var oi = data.indexOf(item);
-      return '<div class="edit-card" style="margin-bottom:12px;padding:10px;background:#1a1a2e;border-radius:6px;border:1px solid #2a2a4a;">' +
+      return '<div class="edit-card" id="edit-card-' + oi + '" style="margin-bottom:12px;padding:10px;background:#1a1a2e;border-radius:6px;border:1px solid #2a2a4a;">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">' +
           '<span style="color:#ffd700;font-weight:bold;font-size:12px;">#' + (oi+1) + ' ' + escapeHtml(item.name||item.id||'') + '</span>' +
           '<button data-delete="' + oi + '" style="padding:2px 8px;background:#662222;color:#f44336;border:1px solid #883333;border-radius:3px;cursor:pointer;font-size:10px;">🗑</button>' +
@@ -2517,6 +2666,15 @@ function renderEditorRows() {
       }
       data.push({ key: newKey.trim(), variants: [''] });
       renderEditorRows();
+      var newIdx2 = data.length - 1;
+      setTimeout(function() {
+        var card = document.getElementById('tpl-card-' + newIdx2);
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.add('highlight-flash');
+          setTimeout(function() { card.classList.remove('highlight-flash'); }, 2400);
+        }
+      }, 80);
     });
     // Add variant
     content.querySelectorAll('button[data-add-var]').forEach(function(b) {
@@ -2565,44 +2723,74 @@ function renderEditorRows() {
       }
       data.push({ key: newKey.trim(), variants: [''] });
       renderEditorRows();
+      var newTplIdx = data.length - 1;
+      setTimeout(function() {
+        var card = document.getElementById('tpl-card-' + newTplIdx);
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.add('highlight-flash');
+          setTimeout(function() { card.classList.remove('highlight-flash'); }, 2400);
+        }
+      }, 80);
       return;
     }
-    var SINNER_ORDER = ['李箱','浮士德','堂吉诃德','良秀','默尔索','鸿璐','希斯克利夫','以实玛利','罗佳','辛克莱','奥提斯','格里高尔'];
-    var template = JSON.parse(JSON.stringify(data[0] || {}));
-    // Preserve sinner (and level for EGOs) so the new item can be inserted
-    // after the last entry of the same sinner instead of always at the very end.
-    var preservedSinner = template.sinner || '';
-    var preservedLevel = template.level || '';
-    Object.keys(template).forEach(function(k) {
-      if (typeof template[k] === 'string') template[k] = '';
-      else if (Array.isArray(template[k])) template[k] = [];
-      else if (typeof template[k] === 'object' && template[k]) template[k] = {};
-    });
-    template.id = 'new_' + Date.now();
-    template.name = '新条目';
-    if (preservedSinner) template.sinner = preservedSinner;
-    if (preservedLevel) template.level = preservedLevel;
+    // Helper: create a blank template and insert at the right position
+    function _doAdd(selectedSinner) {
+      var SINNER_ORDER = ['李箱','浮士德','堂吉诃德','良秀','默尔索','鸿璐','希斯克利夫','以实玛利','罗佳','辛克莱','奥提斯','格里高尔'];
+      var template = JSON.parse(JSON.stringify(data[0] || {}));
+      // Preserve level for EGOs
+      var preservedLevel = template.level || '';
+      Object.keys(template).forEach(function(k) {
+        if (typeof template[k] === 'string') template[k] = '';
+        else if (Array.isArray(template[k])) template[k] = [];
+        else if (typeof template[k] === 'object' && template[k]) template[k] = {};
+      });
+      template.id = 'new_' + Date.now();
+      template.name = '新条目';
+      if (selectedSinner) template.sinner = selectedSinner;
+      if (preservedLevel) template.level = preservedLevel;
 
-    // Insert after the last existing entry of the same sinner
-    var insertIdx = data.length;
-    var targetSinner = template.sinner || '';
-    if (targetSinner) {
-      var targetIdx = SINNER_ORDER.indexOf(targetSinner);
-      if (targetIdx >= 0) {
-        // Scan backwards to find the last entry with sinner order <= target
-        for (var i = data.length - 1; i >= 0; i--) {
-          if (SINNER_ORDER.indexOf(data[i].sinner) <= targetIdx) { insertIdx = i + 1; break; }
-        }
-        // If all existing entries are after this sinner, insert at beginning of this sinner group
-        if (insertIdx === data.length) {
-          for (var j = 0; j < data.length; j++) {
-            if (SINNER_ORDER.indexOf(data[j].sinner) >= targetIdx) { insertIdx = j; break; }
+      // Insert after the last existing entry of the same sinner
+      var insertIdx = data.length;
+      var targetSinner = template.sinner || '';
+      if (targetSinner) {
+        var targetIdx = SINNER_ORDER.indexOf(targetSinner);
+        if (targetIdx >= 0) {
+          // Scan backwards to find the last entry with sinner order <= target
+          for (var i = data.length - 1; i >= 0; i--) {
+            if (data[i].sinner === targetSinner) { insertIdx = i + 1; break; }
+          }
+          // If all existing entries are after this sinner, insert at beginning of this sinner group
+          if (insertIdx === data.length) {
+            for (var j = 0; j < data.length; j++) {
+              if (SINNER_ORDER.indexOf(data[j].sinner) > targetIdx) { insertIdx = j; break; }
+            }
           }
         }
       }
+      data.splice(insertIdx, 0, template);
+      renderEditorRows(true);  // skipSync: splice shifted indices, DOM has stale data-idx
+      // Scroll to and highlight the new item
+      var newCardId = 'edit-card-' + insertIdx;
+      setTimeout(function() {
+        var card = document.getElementById(newCardId);
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.add('highlight-flash');
+          setTimeout(function() { card.classList.remove('highlight-flash'); }, 2400);
+        }
+      }, 80);
     }
-    data.splice(insertIdx, 0, template);
-    renderEditorRows();
+
+    // For identities and EGOs, let user pick a sinner first
+    if (type === 'identities' || type === 'egos') {
+      showSinnerPickerModal(function(selectedSinner) {
+        if (!selectedSinner) return;
+        _doAdd(selectedSinner);
+      });
+    } else {
+      _doAdd(null);
+    }
   });
 
   // Delete buttons
@@ -2610,7 +2798,7 @@ function renderEditorRows() {
     b.addEventListener('click', function() {
       if (!confirm('确定删除此条目？')) return;
       data.splice(parseInt(b.dataset.delete), 1);
-      renderEditorRows();
+      renderEditorRows(true);  // skipSync: splice shifted indices, DOM has stale data-idx
     });
   });
 

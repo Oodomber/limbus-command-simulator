@@ -281,6 +281,122 @@ const DEFAULT_TEMPLATES = {
     '致：下一场战斗时，让编队最末位罪人变为第一位。',
     '致：说出你的上一句话有几个字。',
   ],
+
+  // ── 暗示层 (40%) ──
+
+  combat_use_ego_vague: [
+    '致：{sinner}，释放你心中{tags}的冲动。',
+    '{sinner}，{level}级的光在你体内。',
+  ],
+  combat_overclock_ego_vague: [
+    '致：{sinner}，把{tags}EGO推到极限。',
+    '{sinner}，引导那{level}级的力量。',
+  ],
+  combat_guard_vague: [
+    '致：{sinner}，不要主动出击。',
+  ],
+  combat_defend_all_vague: [
+    '致：全员，防御。',
+  ],
+  combat_no_ego_vague: [
+    '致：EGO的力量不该出现在本回合。',
+  ],
+  combat_win_rate_vague: [
+    '致：相信你的直觉，让它替你选择。',
+  ],
+  combat_damage_vague: [
+    '致：不需要思考，只需要破坏。',
+  ],
+  combat_speed_attack_vague: [
+    '致：第{rank}位罪人，进攻。',
+  ],
+  combat_golden_bough_vague: [
+    '致：回应{type}层金枝的呼唤。',
+  ],
+
+  shop_buy_vague: [
+    '致：{tags}之物，是你需要的。',
+  ],
+  shop_sell_vague: [
+    '致：舍弃一件{tier}级的旧物。',
+  ],
+  shop_reroll_vague: [
+    '致：这些不是你要的，再看看。',
+  ],
+  shop_heal_vague: [
+    '致：是时候愈合你们的伤口了。',
+  ],
+  shop_fuse_vague: [
+    '致：把{tier}级之物熔铸成新的形态。',
+  ],
+  shop_upgrade_vague: [
+    '致：使已有饰品发生变化。',
+  ],
+
+  cardpack_pick_vague: [
+    '致：名为{pack}的门扉之后，才是应行之路。',
+    '致：{pack}在低语，它才是正确的选择。',
+  ],
+  cardpack_reroll_vague: [
+    '致：这些门都不是你要进的，再看看。',
+  ],
+
+  starlight_vague: [
+    '致：{name}在闪烁，触碰{taps}下。',
+  ],
+  starlight_none_vague: [
+    '致：这一轮，不需要星的指引。',
+  ],
+
+  starting_relic_vague: [
+    '致：你踏出第一步时，{effect}之物应该在你手边。',
+  ],
+
+  route_vague: [
+    '致：你的脚步自然会迈向{dir}方。',
+    '致：{dir}，这便是你的方向。',
+  ],
+
+  event_option_vague: [
+    '致：你的直觉已经给出了答案。',
+    '致：不要读选项，感受它。',
+  ],
+  event_reward_vague: [
+    '致：第{position}张卡在发光。',
+    '致：从{position}的方向取走你的奖赏。',
+  ],
+
+  judgment_vague: [
+    '致：{sinner}来审视这一切。',
+    '致：决定权交给{sinner}。',
+    '致：由有{tags}的罪人来判定。',
+  ],
+
+  hidden_boss_fight_vague: [
+    '致：深处的目光在注视着你。',
+  ],
+
+  boss_reward_vague: [
+    '致：第{option}个果实，由你摘取。',
+  ],
+
+  // ── 谜语层 (20%) ──
+
+  combat_meta: [
+    '致：将编队中最弱之人移至首位。',
+    '致：将编队中最强之人移至末尾。',
+    '致：有一个罪人是不需要的，让他离开队伍。',
+  ],
+
+
+  hidden_boss_fight_meta: [
+    '致：要么向前要么转身，但你不会后悔任何一个选择。',
+  ],
+
+  free_instruction_meta: [
+    '致：违背这条指令即是遵守这条指令。',
+    '致：不要遵守下一条指令。',
+  ],
 };
 
 let _instructionCounter = 0;
@@ -446,6 +562,33 @@ class InstructionEngine {
   }
 
   _pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+  /**
+   * Pick a template with 3-tier probability: 40% 明示, 40% 暗示, 20% 谜语.
+   * Falls back gracefully if a tier has no templates defined.
+   * @param {object} templates — loaded templates object (or null)
+   * @param {string} key — base template key
+   * @param {string} [fallbackKey] — optional extra fallback key
+   */
+  _pickTieredTemplate(templates, key, fallbackKey) {
+    const r = Math.random();
+    let tierKey;
+    if (r < 0.2) tierKey = key + '_meta';
+    else if (r < 0.6) tierKey = key + '_vague';
+    else tierKey = key;
+
+    // Try tiered key from user data first, then engine defaults
+    let pool = (templates && templates[tierKey]) || DEFAULT_TEMPLATES[tierKey];
+    // Fall back to base key if tier not available
+    if (!pool || pool.length === 0) {
+      pool = (templates && templates[key]) || DEFAULT_TEMPLATES[key];
+    }
+    // Optional extra fallback
+    if ((!pool || pool.length === 0) && fallbackKey) {
+      pool = (templates && templates[fallbackKey]) || DEFAULT_TEMPLATES[fallbackKey];
+    }
+    return this._pickRandom(pool || ['指令错误']);
+  }
 
   _fillTemplate(template, vars) {
     return template.replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? '');
@@ -646,7 +789,7 @@ class InstructionEngine {
     const templates = await this._getTemplates();
 
     if (starlights.length === 0) {
-      const tpl = this._pickRandom(DEFAULT_TEMPLATES.starlight_none);
+      const tpl = this._pickTieredTemplate(null, 'starlight_none');
       return {
         instructions: [this._makeInstruction(PHASES.STARLIGHT, tpl, false)],
         phase: PHASES.STARLIGHT, isGuidance: false,
@@ -657,7 +800,7 @@ class InstructionEngine {
     const count = Math.floor(Math.random() * (starlights.length + 1)); // 0~10
 
     if (count === 0) {
-      const tpl = this._pickRandom(templates.starlight_none || DEFAULT_TEMPLATES.starlight_none);
+      const tpl = this._pickTieredTemplate(templates, 'starlight_none');
       return {
         instructions: [this._makeInstruction(PHASES.STARLIGHT, tpl, false)],
         phase: PHASES.STARLIGHT, isGuidance: false,
@@ -670,8 +813,8 @@ class InstructionEngine {
     const instructions = selected.map(star => {
       // Level: 0 (not upgraded), 1 (basic), or 2 (enhanced)
       const level = Math.floor(Math.random() * 3); // 0, 1, 2
-      const tpl = this._pickRandom(templates.starlight || DEFAULT_TEMPLATES.starlight);
-      const text = this._fillTemplate(tpl, { name: star.name, level: String(level) });
+      const tpl = this._pickTieredTemplate(templates, 'starlight');
+      const text = this._fillTemplate(tpl, { name: star.name, level: String(level), taps: String(level + 1) });
       return this._makeInstruction(PHASES.STARLIGHT, text, false, { starlightId: star.id, level });
     });
 
@@ -696,7 +839,7 @@ class InstructionEngine {
     // Use team core mechanics from deploy_identity (already stored in context)
     const coreMechanics = context.coreMechanics || [];
     if (coreMechanics.length === 0) {
-      const tpl = this._pickRandom(templates.starting_relic_none || DEFAULT_TEMPLATES.starting_relic_none);
+      const tpl = this._pickTieredTemplate(templates, 'starting_relic_none');
       return {
         instructions: [this._makeInstruction(PHASES.STARTING_RELIC, tpl, false)],
         phase: PHASES.STARTING_RELIC, isGuidance: false,
@@ -706,7 +849,7 @@ class InstructionEngine {
     // Pick one core mechanic at random
     const pickedEffect = this._pickRandom(coreMechanics);
 
-    const tpl = this._pickRandom(templates.starting_relic || DEFAULT_TEMPLATES.starting_relic);
+    const tpl = this._pickTieredTemplate(templates, 'starting_relic');
     const text = this._fillTemplate(tpl, { effect: pickedEffect });
 
     return {
@@ -756,7 +899,7 @@ class InstructionEngine {
       if (floorPacks.length > 0) {
         this._trace('卡包匹配', `${floorPacks.length}个可用: ${floorPacks.slice(0,5).map(p=>p.name).join(', ')}${floorPacks.length>5?'...':''}`);
         const picked = this._pickRandom(floorPacks);
-        const tpl = this._pickRandom(templates.cardpack_pick || DEFAULT_TEMPLATES.cardpack_pick);
+        const tpl = this._pickTieredTemplate(templates, 'cardpack_pick');
         const text = this._fillTemplate(tpl, { pack: picked.name });
         return {
           instructions: [this._makeInstruction(PHASES.CARDPACK, text, false, { cardpackId: picked.id })],
@@ -769,7 +912,7 @@ class InstructionEngine {
     // Reroll: only if rerolls remain, and probability decreases as rerolls are used
     const rerollChance = remainingRerolls > 0 ? Math.min(0.35, remainingRerolls * 0.12) : 0;
     if (Math.random() < rerollChance) {
-      const tpl = this._pickRandom(templates.cardpack_reroll || DEFAULT_TEMPLATES.cardpack_reroll);
+      const tpl = this._pickTieredTemplate(templates, 'cardpack_reroll');
       return {
         instructions: [this._makeInstruction(PHASES.CARDPACK, tpl, false, {
           isReroll: true, remainingRerolls: remainingRerolls - 1,
@@ -780,7 +923,7 @@ class InstructionEngine {
 
     // Position-based pick
     const position = Math.floor(Math.random() * packCount) + 1;
-    const tpl = this._pickRandom(templates.cardpack_position || DEFAULT_TEMPLATES.cardpack_position);
+    const tpl = this._pickTieredTemplate(templates, 'cardpack_position');
     const text = this._fillTemplate(tpl, { position: String(position) });
     return {
       instructions: [this._makeInstruction(PHASES.CARDPACK, text, false, { cardpackNum: position })],
@@ -795,7 +938,7 @@ class InstructionEngine {
   async _genRoute() {
     const templates = await this._getTemplates();
     const dir = this._pickRandom(ROUTE_OPTIONS);
-    const tpl = this._pickRandom(templates.route || DEFAULT_TEMPLATES.route);
+    const tpl = this._pickTieredTemplate(templates, 'route');
     const text = this._fillTemplate(tpl, { dir });
     return {
       instructions: [this._makeInstruction(PHASES.ROUTE, text, false, { direction: dir })],
@@ -829,7 +972,7 @@ class InstructionEngine {
     // ── Special: Golden Bough (~0.1%) ──
     if (Math.random() < 0.001) {
       const gbType = this._pickRandom(GOLDEN_BOUGH_TYPES);
-      const tpl = this._pickRandom(templates.combat_golden_bough || DEFAULT_TEMPLATES.combat_golden_bough);
+      const tpl = this._pickTieredTemplate(templates, 'combat_golden_bough');
       const text = this._fillTemplate(tpl, { type: gbType });
       return {
         instructions: [this._makeInstruction(PHASES.COMBAT, text, false, {
@@ -847,7 +990,7 @@ class InstructionEngine {
       const key = this._pickRandom(speedKeys);
       const maxRank = Math.min(fieldSinners.length, 7);
       const rank = Math.floor(Math.random() * maxRank) + 1;
-      const tpl = this._pickRandom(templates[key] || DEFAULT_TEMPLATES[key]);
+      const tpl = this._pickTieredTemplate(templates, key);
       const text = this._fillTemplate(tpl, { rank: String(rank) });
       instructions.push(this._makeInstruction(PHASES.COMBAT, text, false, { category: key, speedRank: rank }));
     }
@@ -862,7 +1005,7 @@ class InstructionEngine {
         'combat_no_ego',
       ];
       const key = this._pickRandom(globalOptions);
-      const tpl = this._pickRandom(templates[key] || DEFAULT_TEMPLATES[key]);
+      const tpl = this._pickTieredTemplate(templates, key);
       const text = this._fillTemplate(tpl, {});
       instructions.push(this._makeInstruction(PHASES.COMBAT, text, false, { category: key }));
 
@@ -941,7 +1084,7 @@ class InstructionEngine {
             // (base EGO cannot be overclocked in the game)
             const overclockChance = isRational ? 0.1 : 0.35;
             if (Math.random() < overclockChance && !ego.isBaseEgo) {
-              const ocTpl = this._pickRandom(templates.combat_overclock_ego || DEFAULT_TEMPLATES.combat_overclock_ego);
+              const ocTpl = this._pickTieredTemplate(templates, 'combat_overclock_ego');
               const text = this._fillTemplate(ocTpl, tplVars);
               instructions.push(this._makeInstruction(PHASES.COMBAT, text, false, {
                 sinner, category: 'combat_overclock_ego', egoId: ego.id,
@@ -953,14 +1096,14 @@ class InstructionEngine {
             // No EGO in pool for this sinner — skip ego instruction entirely
             // No EGO available for this sinner — fall back to skill/guard
             const fallbackKey = this._pickRandom(['combat_upper_skill', 'combat_lower_skill', 'combat_guard']);
-            const tpl = this._pickRandom(templates[fallbackKey] || DEFAULT_TEMPLATES[fallbackKey]);
+            const tpl = this._pickTieredTemplate(templates, fallbackKey);
             const text = this._fillTemplate(tpl, { sinner });
             instructions.push(this._makeInstruction(PHASES.COMBAT, text, false, { sinner, category: fallbackKey, rationality: rawRationality, isRational }));
             continue;
           }
         }
 
-        const tpl = this._pickRandom(templates[key] || DEFAULT_TEMPLATES[key]);
+        const tpl = this._pickTieredTemplate(templates, key);
         const text = this._fillTemplate(tpl, tplVars);
         instructions.push(this._makeInstruction(PHASES.COMBAT, text, false, { sinner, category: key, rationality: rawRationality, isRational }));
       }
@@ -977,7 +1120,7 @@ class InstructionEngine {
     const templates = await this._getTemplates();
 
     if (infoCompleteness < 0.25) {
-      const tpl = this._pickRandom(templates.event_vague || DEFAULT_TEMPLATES.event_vague);
+      const tpl = this._pickTieredTemplate(templates, 'event_vague');
       return {
         instructions: [this._makeInstruction(PHASES.EVENT, tpl, false)],
         phase: PHASES.EVENT, isGuidance: false,
@@ -1007,7 +1150,7 @@ class InstructionEngine {
       }
     }
 
-    const tpl = this._pickRandom(templates.event_option || DEFAULT_TEMPLATES.event_option);
+    const tpl = this._pickTieredTemplate(templates, 'event_option');
     const text = this._fillTemplate(tpl, { option: optionLabel });
 
     return {
@@ -1032,7 +1175,7 @@ class InstructionEngine {
       : pickIndex === 1 ? `从左往右第2个`
       : `从右往左第2个`;
 
-    const tpl = this._pickRandom(templates.event_reward || DEFAULT_TEMPLATES.event_reward);
+    const tpl = this._pickTieredTemplate(templates, 'event_reward');
     const text = this._fillTemplate(tpl, { position });
 
     return {
@@ -1123,7 +1266,7 @@ class InstructionEngine {
       const idx = available.indexOf(key);
       if (idx >= 0) available.splice(idx, 1);
 
-      const tpl = this._pickRandom(templates[key] || DEFAULT_TEMPLATES[key]);
+      const tpl = this._pickTieredTemplate(templates, key);
       const tier = this._pickRandom(['I', 'II', 'III', 'IV', 'V']);
 
       let tag;
@@ -1266,7 +1409,7 @@ class InstructionEngine {
     const templates = await this._getTemplates();
     const fight = Math.random() < 0.5;
     const key = fight ? 'hidden_boss_fight' : 'hidden_boss_leave';
-    const tpl = this._pickRandom(templates[key] || DEFAULT_TEMPLATES[key]);
+    const tpl = this._pickTieredTemplate(templates, key);
     return {
       instructions: [this._makeInstruction(PHASES.HIDDEN_BOSS, tpl, false, { fight })],
       phase: PHASES.HIDDEN_BOSS, isGuidance: false,
@@ -1308,8 +1451,12 @@ class InstructionEngine {
     }
 
     const sinner = this._pickRandom(candidates);
-    const tpl = this._pickRandom(templates.judgment || DEFAULT_TEMPLATES.judgment);
-    const text = this._fillTemplate(tpl, { sinner });
+    const tpl = this._pickTieredTemplate(templates, 'judgment');
+    // For vague templates: pick a random tag from core mechanics or common effects
+    const tagPool = (context.coreMechanics && context.coreMechanics.length > 0)
+      ? context.coreMechanics : ['烧伤','流血','震颤','破裂','沉沦','呼吸法','充能'];
+    const tag = this._pickRandom(tagPool);
+    const text = this._fillTemplate(tpl, { sinner, tags: tag });
     return {
       instructions: [this._makeInstruction(PHASES.JUDGMENT, text, false, { sinner })],
       phase: PHASES.JUDGMENT, isGuidance: false,
@@ -1330,9 +1477,9 @@ class InstructionEngine {
       let second;
       do { second = Math.floor(Math.random() * 4) + 1; } while (second === first);
 
-      const tpl1 = this._pickRandom(templates.boss_reward || DEFAULT_TEMPLATES.boss_reward);
+      const tpl1 = this._pickTieredTemplate(templates, 'boss_reward');
       const text1 = this._fillTemplate(tpl1, { option: String(first) });
-      const tpl2 = this._pickRandom(templates.boss_reward || DEFAULT_TEMPLATES.boss_reward);
+      const tpl2 = this._pickTieredTemplate(templates, 'boss_reward');
       const text2 = this._fillTemplate(tpl2, { option: String(second) });
 
       return {
@@ -1344,7 +1491,7 @@ class InstructionEngine {
       };
     } else {
       const option = Math.floor(Math.random() * 3) + 1;
-      const tpl = this._pickRandom(templates.boss_reward || DEFAULT_TEMPLATES.boss_reward);
+      const tpl = this._pickTieredTemplate(templates, 'boss_reward');
       const text = this._fillTemplate(tpl, { option: String(option) });
       return {
         instructions: [this._makeInstruction(PHASES.BOSS_REWARD, text, false, {
@@ -1365,7 +1512,16 @@ class InstructionEngine {
 
   async _genFreeInstruction(context) {
     const templates = await this._getTemplates();
-    const pool = templates.free_instruction || DEFAULT_TEMPLATES.free_instruction || ['致：等待。'];
+    // Base pool: prefer dataLoader templates, fall back to engine defaults
+    const basePool = (templates && Array.isArray(templates.free_instruction) && templates.free_instruction.length > 0)
+      ? templates.free_instruction
+      : DEFAULT_TEMPLATES.free_instruction;
+    // Merge user customs from store (settings page additions/deletions)
+    const storeCustom = this.store.get('customFreeTemplates') || [];
+    const storeHidden = this.store.get('hiddenFreeTemplates') || [];
+    const metaPool = DEFAULT_TEMPLATES.free_instruction_meta || [];
+    const pool = basePool.filter(t => !storeHidden.includes(t)).concat(storeCustom).concat(metaPool);
+    if (pool.length === 0) pool.push('致：等待。');
     const tpl = this._pickRandom(pool);
     // Use actual formation size (all alive sinners, 1-12) instead of hardcoded 7.
     // Formation only contains alive sinners; dead ones are removed.
@@ -1397,4 +1553,4 @@ class InstructionEngine {
   }
 }
 
-module.exports = { InstructionEngine, PHASES, GUIDANCE_PHASES, STARLIGHT_IDS };
+module.exports = { InstructionEngine, PHASES, GUIDANCE_PHASES, STARLIGHT_IDS, DEFAULT_TEMPLATES };

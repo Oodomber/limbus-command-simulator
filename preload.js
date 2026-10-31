@@ -95,10 +95,21 @@ if (isFormation || isWeaver) {
   });
 
 } else if (isOrb) {
-  // ── Orb Window API v3 ──
+  // ── Orb Window API v4 (circular orb + separate stargazing window) ──
   contextBridge.exposeInMainWorld('orbAPI', {
     invoke: (channel, ...args) => ipcRenderer.invoke(channel, ...args),
     send: (channel, ...args) => ipcRenderer.send(channel, ...args),
+
+    // Temporarily disable global shortcuts (e.g. while typing in a text field)
+    disableShortcuts: () => ipcRenderer.invoke('dev:disable-shortcuts'),
+    enableShortcuts: () => ipcRenderer.invoke('dev:enable-shortcuts'),
+
+    // Detect which mode to show (orb vs stargazing)
+    onMode: (callback) => {
+      const handler = (_event, mode) => callback(mode);
+      ipcRenderer.on('orb:mode', handler);
+      return () => ipcRenderer.removeListener('orb:mode', handler);
+    },
 
     onPhaseComplete: (callback) => {
       const handler = (_event, data) => callback(data);
@@ -125,7 +136,6 @@ if (isFormation || isWeaver) {
       ipcRenderer.on('orb:reset', handler);
       return () => ipcRenderer.removeListener('orb:reset', handler);
     },
-    openStargazing: () => ipcRenderer.send('orb:request-open'),
   });
 
 } else {
@@ -139,6 +149,10 @@ if (isFormation || isWeaver) {
     // ── Config ──
     getConfig: (keyPath) => ipcRenderer.invoke('config:get', keyPath),
     setConfig: (keyPath, value) => ipcRenderer.invoke('config:set', keyPath, value),
+
+    // ── Free templates ──
+    getFreeTemplates: () => ipcRenderer.invoke('templates:get-free'),
+    saveFreeTemplates: (custom, hidden) => ipcRenderer.invoke('templates:save-free', custom, hidden),
     onConfigUpdated: (callback) => {
       const handler = (_event, data) => callback(data);
       ipcRenderer.on('config:updated', handler);
@@ -255,5 +269,51 @@ if (isFormation || isWeaver) {
       ipcRenderer.on('vision:status-changed', handler);
       return () => ipcRenderer.removeListener('vision:status-changed', handler);
     },
+
+    // ── Vision capture v2 (Phase 0 · 窗口级采集) ──
+    vision2Open: () => ipcRenderer.invoke('vision2:open'),
+    vision2Phases: () => ipcRenderer.invoke('vision2:phases'),
+    vision2ListWindows: () => ipcRenderer.invoke('vision2:list-windows'),
+    vision2Attach: (sourceId, name) => ipcRenderer.invoke('vision2:attach', sourceId, name),
+    vision2Detach: () => ipcRenderer.invoke('vision2:detach'),
+    vision2SetPhase: (phase) => ipcRenderer.invoke('vision2:set-phase', phase),
+    vision2SaveFrame: (label) => ipcRenderer.invoke('vision2:save-frame', label),
+    vision2Auto: (on, intervalMs) => ipcRenderer.invoke('vision2:auto', on, intervalMs),
+    vision2OpenDir: () => ipcRenderer.invoke('vision2:open-dir'),
+    vision2Stats: () => ipcRenderer.invoke('vision2:stats'),
+    vision2GrabThumb: () => ipcRenderer.invoke('vision2:grab-thumb'),
+    vision2Frame: (payload) => ipcRenderer.send('vision2:frame', payload),
+    vision2CaptureError: (payload) => ipcRenderer.send('vision2:capture-error', payload),
+    vision2Attached: (payload) => ipcRenderer.send('vision2:attached', payload),
+    onVision2DoAttach: (callback) => {
+      const handler = (_event, payload) => callback(payload);
+      ipcRenderer.on('vision2:do-attach', handler);
+      return () => ipcRenderer.removeListener('vision2:do-attach', handler);
+    },
+    onVision2DoDetach: (callback) => {
+      const handler = () => callback();
+      ipcRenderer.on('vision2:do-detach', handler);
+      return () => ipcRenderer.removeListener('vision2:do-detach', handler);
+    },
+    onVision2Grab: (callback) => {
+      const handler = (_event, payload) => callback(payload);
+      ipcRenderer.on('vision2:grab', handler);
+      return () => ipcRenderer.removeListener('vision2:grab', handler);
+    },
+    onVision2State: (callback) => {
+      const handler = (_event, payload) => callback(payload);
+      ipcRenderer.on('vision2:state', handler);
+      return () => ipcRenderer.removeListener('vision2:state', handler);
+    },
+    onVision2Phase: (callback) => {
+      const handler = (_event, payload) => callback(payload);
+      ipcRenderer.on('vision2:phase', handler);
+      return () => ipcRenderer.removeListener('vision2:phase', handler);
+    },
+    vision2LiveStart: (intervalMs) => ipcRenderer.invoke('vision2:live-start', intervalMs),
+    vision2LiveStop: () => ipcRenderer.invoke('vision2:live-stop'),
+    vision2LiveStatus: () => ipcRenderer.invoke('vision2:live-status'),
+    vision2LiveClassify: () => ipcRenderer.invoke('vision2:live-classify'),
+    vision2SetDifficulty: (v) => ipcRenderer.invoke('vision2:set-difficulty', v),
   });
 }

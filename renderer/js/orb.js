@@ -1,5 +1,5 @@
 /**
- * orb.js — 悬浮球 v3：正九边形 + Canvas 眼睛 + 打字机 + 音频联动
+ * orb.js — 悬浮球 v4：圆形 + Canvas 眼睛 + 打字机 + 音频联动
  */
 
 // ══════════════════════════════════════════════
@@ -9,7 +9,7 @@
 const WIN_SIZE = 220;
 const CX = WIN_SIZE / 2;          // 110
 const CY = WIN_SIZE / 2;          // 110
-const NONAGON_R = 100;           // 九边形顶点半径
+const ORB_R = 100;               // 圆形半径
 const EYE_CENTER_DIST = 78;      // 眼睛中心到球心的距离
 const EYE_OUTER_R = 11;          // 眼睛外圈半径
 const EYE_INNER_R = 5;           // 瞳孔半径
@@ -60,13 +60,21 @@ document.addEventListener('DOMContentLoaded', () => {
   centerBox = document.getElementById('orb-center-box');
   sgLabel = document.getElementById('sg-label');
 
-  resizeCanvas();
-  drawFrame();
+  // Check if loaded in the stargazing window (via query param)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('mode') === 'stargazing') {
+    // Stargazing mode — show stargazing view, hide orb view
+    orbView.style.display = 'none';
+    initStargazingMode();
+  } else {
+    // Orb mode — normal initialization
+    resizeCanvas();
+    drawFrame();
+    setupDrag();
+  }
 
-  setupDrag();
   setupIPC();
-
-  console.log('Orb v3 initialized');
+  console.log('Orb v4 initialized');
 });
 
 function resizeCanvas() {
@@ -221,24 +229,18 @@ function resetOrb() {
 //  CANVAS RENDERING
 // ══════════════════════════════════════════════
 
-function getNonagonVertices() {
-  const verts = [];
+/** Get eye angles (9 evenly spaced, clockwise from top). */
+function getEyeAngles() {
+  const angles = [];
   for (let k = 0; k < 9; k++) {
-    const angle = -Math.PI / 2 + k * 2 * Math.PI / 9;  // clockwise from top
-    verts.push({
-      x: CX + NONAGON_R * Math.cos(angle),
-      y: CY + NONAGON_R * Math.sin(angle),
-      angle: angle,
-    });
+    angles.push(-Math.PI / 2 + k * 2 * Math.PI / 9);
   }
-  return verts;
+  return angles;
 }
 
 function drawFrame() {
   const ctx = orbCtx;
   ctx.clearRect(0, 0, WIN_SIZE, WIN_SIZE);
-
-  const verts = getNonagonVertices();
 
   // ── Outer glow ──
   ctx.save();
@@ -246,22 +248,18 @@ function drawFrame() {
   ctx.shadowBlur = 18;
   ctx.fillStyle = '#0a0a18';
   ctx.beginPath();
-  ctx.moveTo(verts[0].x, verts[0].y);
-  for (let i = 1; i < 9; i++) ctx.lineTo(verts[i].x, verts[i].y);
-  ctx.closePath();
+  ctx.arc(CX, CY, ORB_R, 0, Math.PI * 2);
   ctx.fill();
   ctx.restore();
 
-  // ── Nonagon body ──
-  const bodyGrad = ctx.createRadialGradient(CX - 10, CY - 15, NONAGON_R * 0.15, CX, CY, NONAGON_R);
+  // ── Circle body ──
+  const bodyGrad = ctx.createRadialGradient(CX - 10, CY - 15, ORB_R * 0.15, CX, CY, ORB_R);
   bodyGrad.addColorStop(0, '#1a2040');
   bodyGrad.addColorStop(0.5, '#0e1228');
   bodyGrad.addColorStop(1, '#060810');
   ctx.fillStyle = bodyGrad;
   ctx.beginPath();
-  ctx.moveTo(verts[0].x, verts[0].y);
-  for (let i = 1; i < 9; i++) ctx.lineTo(verts[i].x, verts[i].y);
-  ctx.closePath();
+  ctx.arc(CX, CY, ORB_R, 0, Math.PI * 2);
   ctx.fill();
 
   // ── Golden border ──
@@ -270,29 +268,23 @@ function drawFrame() {
   ctx.shadowColor = 'rgba(201, 168, 76, 0.4)';
   ctx.shadowBlur = 8;
   ctx.beginPath();
-  ctx.moveTo(verts[0].x, verts[0].y);
-  for (let i = 1; i < 9; i++) ctx.lineTo(verts[i].x, verts[i].y);
-  ctx.closePath();
+  ctx.arc(CX, CY, ORB_R, 0, Math.PI * 2);
   ctx.stroke();
   ctx.shadowBlur = 0;
 
   // ── Inner subtle border ──
   ctx.strokeStyle = 'rgba(201, 168, 76, 0.25)';
   ctx.lineWidth = 1;
-  const innerR = NONAGON_R - 6;
   ctx.beginPath();
-  ctx.moveTo(CX + innerR * Math.cos(verts[0].angle), CY + innerR * Math.sin(verts[0].angle));
-  for (let i = 1; i < 9; i++) {
-    ctx.lineTo(CX + innerR * Math.cos(verts[i].angle), CY + innerR * Math.sin(verts[i].angle));
-  }
-  ctx.closePath();
+  ctx.arc(CX, CY, ORB_R - 6, 0, Math.PI * 2);
   ctx.stroke();
 
   // ── Eyes ──
   const now = performance.now();
+  const angles = getEyeAngles();
   for (let k = 0; k < 9; k++) {
-    const ex = CX + EYE_CENTER_DIST * Math.cos(verts[k].angle);
-    const ey = CY + EYE_CENTER_DIST * Math.sin(verts[k].angle);
+    const ex = CX + EYE_CENTER_DIST * Math.cos(angles[k]);
+    const ey = CY + EYE_CENTER_DIST * Math.sin(angles[k]);
     const openState = (k < eyesOpen) ? 'open' : 'closed';
 
     // Check for active animation
@@ -309,13 +301,15 @@ function drawFrame() {
     drawEye(ctx, ex, ey, EYE_OUTER_R, openState, animT, k);
   }
 
-  // ── Corner decorations (small dots at each vertex) ──
+  // ── Perimeter dot decorations (9 evenly spaced around circle) ──
   for (let k = 0; k < 9; k++) {
+    const dx = CX + ORB_R * Math.cos(angles[k]);
+    const dy = CY + ORB_R * Math.sin(angles[k]);
     ctx.fillStyle = '#c9a84c';
     ctx.shadowColor = 'rgba(201, 168, 76, 0.8)';
     ctx.shadowBlur = 4;
     ctx.beginPath();
-    ctx.arc(verts[k].x, verts[k].y, 2.5, 0, Math.PI * 2);
+    ctx.arc(dx, dy, 2.5, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
   }
@@ -557,7 +551,7 @@ function setupDrag() {
     }
   });
 
-  document.addEventListener('mouseup', () => {
+  document.addEventListener('mouseup', (e) => {
     if (!drag.active) return;
     const didMove = drag.moved;
     drag.active = false;
@@ -622,22 +616,33 @@ function initStargazingDOM() {
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => renderEvents(), 150);
   });
+  // Disable global shortcuts while typing in the search box.
+  // (Same approach as the dev-auth password field — see main.js showDevAuthModal.)
+  eventSearch.addEventListener('focus', () => {
+    api.disableShortcuts().catch(() => {});
+  });
+  eventSearch.addEventListener('blur', () => {
+    api.enableShortcuts().catch(() => {});
+  });
 
   setupFilters();
 }
 
 let stargazingLoaded = false;
 
-async function expandToStargazing() {
+async function initStargazingMode() {
   if (!stargazingLoaded) {
     await loadStargazingData();
     initStargazingDOM();
     stargazingLoaded = true;
   }
+  // Hide orb elements, show stargazing
+  orbView.style.display = 'none';
+  sgView.style.display = 'flex';
+  setTimeout(() => { sgView.classList.add('active'); renderStargazing(); }, 150);
+}
 
-  // Save orb position before expanding
-  try { const b = await api.invoke('orb:get-bounds'); orbState.orbPos = { x: b.x, y: b.y }; } catch(e) {}
-
+async function expandToStargazing() {
   // Flash orb bright before transition
   orbCanvas.style.transition = 'filter 0.2s';
   orbCanvas.style.filter = 'brightness(2.5)';
@@ -645,39 +650,17 @@ async function expandToStargazing() {
   setTimeout(async () => {
     orbCanvas.style.filter = '';
     orbCanvas.style.transition = '';
-    orbView.style.display = 'none';
-    sgView.style.display = 'flex';
-    await api.invoke('orb:set-size', SG_WIDTH, SG_HEIGHT);
-    // Center the stargazing window on screen
-    try {
-      const display = await api.invoke('orb:get-display');
-      await api.invoke('orb:move',
-        Math.round((display.width - SG_WIDTH) / 2),
-        Math.round((display.height - SG_HEIGHT) / 2)
-      );
-    } catch(e) {}
-    setTimeout(() => { sgView.classList.add('active'); renderStargazing(); }, 150);
+    // Main process creates a separate rectangular window for stargazing
+    // and hides this orb window.
+    await api.invoke('orb:open-stargazing');
   }, 250);
 }
 
 async function collapseToOrb() {
-  sgView.classList.remove('active');
-
-  setTimeout(async () => {
-    sgView.style.display = 'none';
-    orbView.style.display = 'flex';
-    orbView.style.width = WIN_SIZE + 'px';
-    orbView.style.height = WIN_SIZE + 'px';
-
-    await api.invoke('orb:set-size', WIN_SIZE, WIN_SIZE);
-    if (orbState.orbPos) {
-      await api.invoke('orb:move', orbState.orbPos.x, orbState.orbPos.y);
-    }
-
-    await new Promise(r => setTimeout(r, 100));
-    resizeCanvas();
-    drawFrame();
-  }, 350);
+  // Main process hides the stargazing window and shows this orb window.
+  await api.invoke('orb:close-stargazing');
+  resizeCanvas();
+  drawFrame();
 }
 
 // ── Tab switching ──

@@ -224,5 +224,114 @@
     "致：使镜中的你主动先眨一次眼。",
     "致：下一场战斗时，让编队最末位罪人变为第一位。",
     "致：说出你的上一句话有几个字。"
+  ],
+
+  "combat_use_ego_vague": [
+    "致：{sinner}，释放你心中{tags}的冲动。",
+    "{sinner}，{level}级的光在你体内。"
+  ],
+  "combat_overclock_ego_vague": [
+    "致：{sinner}，把{tags}EGO推到极限。",
+    "{sinner}，引导那{level}级的力量。"
+  ],
+  "combat_guard_vague": [
+    "致：{sinner}，不要主动出击。"
+  ],
+  "combat_defend_all_vague": [
+    "致：全员，防御。"
+  ],
+  "combat_no_ego_vague": [
+    "致：EGO的力量不该出现在本回合。"
+  ],
+  "combat_win_rate_vague": [
+    "致：相信你的直觉，让它替你选择。"
+  ],
+  "combat_damage_vague": [
+    "致：不需要思考，只需要破坏。"
+  ],
+  "combat_speed_attack_vague": [
+    "致：第{rank}位罪人，进攻。"
+  ],
+  "combat_golden_bough_vague": [
+    "致：回应{type}层金枝的呼唤。"
+  ],
+  "combat_meta": [
+    "致：将编队中最弱之人移至首位。",
+    "致：将编队中最强之人移至末尾。",
+    "致：有一个罪人是不需要的，让他离开队伍。"
+  ],
+
+  "shop_buy_vague": [
+    "致：{tags}之物，是你需要的。"
+  ],
+  "shop_sell_vague": [
+    "致：舍弃一件{tier}级的旧物。"
+  ],
+  "shop_reroll_vague": [
+    "致：这些不是你要的，再看看。"
+  ],
+  "shop_heal_vague": [
+    "致：是时候愈合你们的伤口了。"
+  ],
+  "shop_fuse_vague": [
+    "致：把{tier}级之物熔铸成新的形态。"
+  ],
+  "shop_upgrade_vague": [
+    "致：使已有饰品发生变化。"
+  ],
+
+  "cardpack_pick_vague": [
+    "致：名为{pack}的门扉之后，才是应行之路。",
+    "致：{pack}在低语，它才是正确的选择。"
+  ],
+  "cardpack_reroll_vague": [
+    "致：这些门都不是你要进的，再看看。"
+  ],
+
+  "starlight_vague": [
+    "致：{name}在闪烁，触碰{taps}下。"
+  ],
+  "starlight_none_vague": [
+    "致：这一轮，不需要星的指引。"
+  ],
+
+  "starting_relic_vague": [
+    "致：你踏出第一步时，{effect}之物应该在你手边。"
+  ],
+
+  "route_vague": [
+    "致：你的脚步自然会迈向{dir}方。",
+    "致：{dir}，这便是你的方向。"
+  ],
+
+  "event_option_vague": [
+    "致：你的直觉已经给出了答案。",
+    "致：不要读选项，感受它。"
+  ],
+  "event_reward_vague": [
+    "致：第{position}张卡在发光。",
+    "致：从{position}的方向取走你的奖赏。"
+  ],
+
+  "judgment_vague": [
+    "致：{sinner}来审视这一切。",
+    "致：决定权交给{sinner}。",
+    "致：由有{tags}的罪人来判定。"
+  ],
+
+  "hidden_boss_fight_vague": [
+    "致：深处的目光在注视着你。"
+  ],
+  "hidden_boss_fight_meta": [
+    "致：要么向前要么转身，但你不会后悔任何一个选择。"
+  ],
+
+  "boss_reward_vague": [
+    "致：第{option}个果实，由你摘取。"
+  ],
+
+  "free_instruction_meta": [
+    "致：违背这条指令即是遵守这条指令。",
+    "致：不要遵守下一条指令。"
   ]
 }

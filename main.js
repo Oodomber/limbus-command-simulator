@@ -19,7 +19,8 @@ const { InstructionEngine, PHASES, GUIDANCE_PHASES } = require('./src/engine');
 const { AchievementSystem } = require('./src/achievements');
 const { QueueManager } = require('./src/queueManager');
 const { SoundManager } = require('./src/soundManager');
-const { VisionManager } = require('./src/visionManager');
+const { LiveVision } = require('./src/vision/liveVision');
+const { CaptureController } = require('./src/vision/captureController');
 
 // Bump this when bundled data/ files change — auto-clears stale userData on next launch
 const DATA_VERSION = 2;
@@ -28,6 +29,29 @@ const DATA_VERSION = 2;
 let mainWindow = null;
 let overlayWindow = null;
 let orbWindow = null;
+let stargazingWindow = null;   // separate window for stargazing (rectangular)
+
+// ── Orb shape constants ──
+const ORB_SIZE = 220;
+const ORB_CX = ORB_SIZE / 2;   // 110
+const ORB_CY = ORB_SIZE / 2;   // 110
+const ORB_R = 100;             // circle radius
+
+/** Build a circular mask for setShape as scanline rectangles. */
+function getOrbCircleShape() {
+  const rects = [];
+  for (let y = 0; y < ORB_SIZE; y++) {
+    const dy = y - ORB_CY;
+    if (Math.abs(dy) > ORB_R) continue;
+    const dx = Math.floor(Math.sqrt(ORB_R * ORB_R - dy * dy));
+    const x1 = Math.max(0, ORB_CX - dx);
+    const x2 = Math.min(ORB_SIZE - 1, ORB_CX + dx);
+    if (x2 >= x1) {
+      rects.push({ x: x1, y, width: x2 - x1 + 1, height: 1 });
+    }
+  }
+  return rects;
+}
 let historyWindow = null;
 let formationWindow = null;
 let weaverWindow = null;
@@ -44,6 +68,8 @@ let achievements = null;
 let soundManager = null;
 let queueManager = null;
 let visionManager = null;
+let liveVision = null;
+let captureController = null;
 let _userDataPath = null;  // set in app.whenReady() — needed by scheduleAutoDetect
 
 // ── Phase progression ──
@@ -200,87 +226,68 @@ let autoDetectTimer = null;
  * If shop is detected with auto-generate enabled, recognize items + generate
  * precise shop instructions.
  */
-function scheduleAutoDetect() {
+/**
+ * 视觉自动推进：liveVision 判定出环节切换时，直接生成该环节的指令。
+ * 「全自动」的含义就是这个——不再等玩家点确认。
+ *
+ * combat_battle（交战进行中）不生成指令：指令在 combat（指令选择）那一步已经给过了。
+ * hidden_boss 已从环节表移除。
+ */
+const VISION_TO_ENGINE_PHASE = {
+  cardpack: 'cardpack',
+  route: 'route',
+  combat: 'combat',
+  combat_battle: null,
+  event: 'event',
+  judgment: 'judgment',
+  event_reward: 'event_reward',
+  shop: 'shop',
+  boss_reward: 'boss_reward',
+};
+
+let autoAdvanceBusy = false;
+/** 由 registerIpcHandlers 填入：generateInstructionPhase 定义在那个函数作用域里 */
+let _generateInstructionPhase = null;
+
+/** 确保实时识别循环在跑（已连游戏窗口 + 开了自动识别才启动） */
+function ensureVisionLoop() {
   if (!store || !store.get('vision.autoDetect')) return;
-  if (!visionManager || !visionManager.available) return;
+  if (!liveVision || !captureController || !captureController.sourceId) return;
+  if (!liveVision.running) liveVision.start();
+}
 
-  // Debounce — cancel any pending detection
-  if (autoDetectTimer) clearTimeout(autoDetectTimer);
-
-  autoDetectTimer = setTimeout(async () => {
-    autoDetectTimer = null;
+function setupVisionAuto() {
+  if (!liveVision) return;
+  liveVision.onPhase(async (payload) => {
+    if (autoAdvanceBusy) return;
+    if (!store || !store.get('vision.autoDetect')) return;
     if (!runState.active) return;
+    if (!Object.prototype.hasOwnProperty.call(VISION_TO_ENGINE_PHASE, payload.phase)) return;
 
+    const mapped = VISION_TO_ENGINE_PHASE[payload.phase];
+    if (!mapped) return; // combat_battle：不生成
+    if (pagerRequestLocked) return; // 玩家正在看一条指令，别插队
+
+    autoAdvanceBusy = true;
     try {
-      const calibration = store.get('vision.calibration') || {};
-      const region = calibration.gameRegion || null;
-      const enabledPhases = store.get('enabledPhases') || [];
-      const dungeonPhases = ['cardpack', 'route', 'combat', 'event', 'event_reward', 'judgment', 'shop', 'hidden_boss', 'boss_reward'];
-
-      let phases;
-      if (runState.currentPhase === 'dungeon') {
-        phases = dungeonPhases.filter(p => enabledPhases.includes(p));
-      } else {
-        phases = [runState.currentPhase].filter(p => enabledPhases.includes(p));
+      if (!_generateInstructionPhase) {
+        console.log('[vision] 自动推进不可用：指令生成入口尚未注册');
+        return;
       }
-      if (phases.length === 0) return;
-
-      const refsDir = path.join(_userDataPath, 'refs');
-      const result = await visionManager.detectPhase({
-        region,
-        phases,
-        conf_threshold: 0.75,
-        refs_dir: refsDir,
+      if (runState.currentPhase === 'dungeon') runState.currentPhase = mapped;
+      const genResult = await _generateInstructionPhase(mapped, {
+        vision: { phase: payload.phase, readings: payload.readings || null },
       });
-
-      if (!result.ok || !result.phase) return;
-
-      // If shop detected and auto-generate is on, recognize items
-      if (result.phase === 'shop' && store.get('vision.autoGenerate')) {
-        const shopGrid = calibration.shopGrid;
-        if (!shopGrid) return; // not calibrated
-
-        const shopResult = await visionManager.recognizeShop({
-          region,
-          shop_grid: shopGrid,
-          reference_dir: path.join(_userDataPath, 'refs', 'relics'),
-        });
-
-        if (shopResult.ok && shopResult.items && shopResult.items.some(i => i.id)) {
-          // Build context for engine: map recognized relic IDs to their data
-          const relics = await dataLoader.load('relics');
-          const recognizedItems = shopResult.items
-            .filter(i => i.id)
-            .map(i => {
-              const relic = relics.find(r => r.id === i.id);
-              return {
-                slot: i.slot,
-                id: i.id,
-                name: relic ? relic.name : i.id,
-                confidence: i.confidence,
-                tier: relic ? relic.tier : '?',
-                price: relic ? relic.price : null,
-                tags: relic ? relic.tags : {},
-              };
-            });
-
-          if (recognizedItems.length > 0 && !pagerRequestLocked) {
-            try {
-              const genResult = await generateInstructionPhase('shop', { recognizedItems });
-              if (genResult) {
-                console.log(`[vision] Auto-generated shop instructions for ${recognizedItems.length} recognized items`);
-              }
-            } catch (e) {
-              console.error('[vision] Auto-generate shop failed:', e.message);
-            }
-          }
-        }
+      if (genResult && genResult.instructions) {
+        console.log(`[vision] 自动推进 ${payload.phase} → 指令 ${genResult.instructions.length} 条`);
       }
     } catch (e) {
-      // Silent — auto-detect failures shouldn't disrupt normal flow
-      console.log('[vision] Auto-detect error:', e.message);
+      console.log('[vision] 自动推进失败:', e.message);
+    } finally {
+      autoAdvanceBusy = false;
     }
-  }, 2000); // 2s delay to allow game UI to transition
+  });
+  console.log('[vision] 自动推进已挂载（视觉判定 → 直接生成指令）');
 }
 
 // ── Karma scare (one-time when karma first exceeds 100) ──
@@ -415,6 +422,7 @@ function createMainWindow() {
     if (hideOverlayTimeout) { clearTimeout(hideOverlayTimeout); hideOverlayTimeout = null; }
     if (overlayWindow && !overlayWindow.isDestroyed()) overlayWindow.destroy();
     if (orbWindow && !orbWindow.isDestroyed()) orbWindow.destroy();
+    if (stargazingWindow && !stargazingWindow.isDestroyed()) stargazingWindow.destroy();
     if (formationWindow && !formationWindow.isDestroyed()) formationWindow.destroy();
     if (weaverWindow && !weaverWindow.isDestroyed()) weaverWindow.destroy();
     if (historyWindow && !historyWindow.isDestroyed()) historyWindow.destroy();
@@ -466,49 +474,19 @@ function createOverlayWindow() {
   });
 }
 
-function createNonagonMask(size, cx, cy, R) {
-  // Precompute vertices (clockwise from top)
-  const verts = [];
-  for (let k = 0; k < 9; k++) {
-    const angle = -Math.PI / 2 + k * 2 * Math.PI / 9;
-    verts.push({ x: cx + R * Math.cos(angle), y: cy + R * Math.sin(angle) });
-  }
-
-  function inside(px, py) {
-    for (let i = 0; i < 9; i++) {
-      const j = (i + 1) % 9;
-      const cross = (verts[j].x - verts[i].x) * (py - verts[i].y)
-                  - (verts[j].y - verts[i].y) * (px - verts[i].x);
-      if (cross > 0) return false; // outside for clockwise polygon
-    }
-    return true;
-  }
-
-  const rects = [];
-  for (let y = 0; y < size; y++) {
-    let startX = -1;
-    for (let x = 0; x < size; x++) {
-      if (inside(x, y)) {
-        if (startX < 0) startX = x;
-      } else {
-        if (startX >= 0) {
-          rects.push({ x: startX, y, width: x - startX, height: 1 });
-          startX = -1;
-        }
-      }
-    }
-    if (startX >= 0) {
-      rects.push({ x: startX, y, width: size - startX, height: 1 });
-    }
-  }
-  return rects;
-}
+// ═══════════════════════════════════════════
+//  Orb mouse-hit handling
+// ═══════════════════════════════════════════
+//
+// The orb window uses `setShape(getOrbCircleShape())` to clip both
+// rendering AND mouse hit-testing to a circle.  Because SetWindowPos
+// (triggered by setPosition / setBounds) can drop the region on
+// WS_EX_LAYERED windows, we re-apply setShape after every move.
+//
+// setIgnoreMouseEvents(false) stays on permanently — the shape mask
+// ensures corners outside the circle pass through naturally.
 
 function createOrbWindow() {
-  const ORB_SIZE = 220;
-  const ORB_CX = ORB_SIZE / 2;
-  const ORB_CY = ORB_SIZE / 2;
-  const ORB_R = 100;
 
   orbWindow = new BrowserWindow({
     width: ORB_SIZE,
@@ -522,7 +500,6 @@ function createOrbWindow() {
     skipTaskbar: true,
     hasShadow: false,
     backgroundColor: '#00000000',
-    type: 'toolbar',
     icon: path.join(__dirname, 'resources', 'icon.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
@@ -535,11 +512,11 @@ function createOrbWindow() {
   orbWindow.setAlwaysOnTop(true, 'screen-saver');
   orbWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
 
-  // Apply nonagon shape mask
-  orbWindow.webContents.on('did-finish-load', () => {
-    const mask = createNonagonMask(ORB_SIZE, ORB_CX, ORB_CY, ORB_R);
-    orbWindow.setShape(mask);
-  });
+  // setShape clips both rendering and mouse hit-testing to the nonagon.
+  // It MUST be re-applied after every setPosition because SetWindowPos
+  // can drop the region on layered windows.
+  orbWindow.setShape(getOrbCircleShape());
+  orbWindow.setIgnoreMouseEvents(false);
 
   // Initially hidden
   orbWindow.hide();
@@ -551,6 +528,49 @@ function createOrbWindow() {
   });
 }
 
+function createStargazingWindow() {
+  if (stargazingWindow && !stargazingWindow.isDestroyed()) {
+    stargazingWindow.focus();
+    return stargazingWindow;
+  }
+
+  const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
+  const SG_W = 860, SG_H = 620;
+
+  stargazingWindow = new BrowserWindow({
+    width: SG_W,
+    height: SG_H,
+    x: Math.round((sw - SG_W) / 2),
+    y: Math.round((sh - SG_H) / 2),
+    frame: false,
+    alwaysOnTop: true,
+    resizable: false,
+    skipTaskbar: false,
+    hasShadow: true,
+    backgroundColor: '#0a0a1a',
+    icon: path.join(__dirname, 'resources', 'icon.png'),
+    webPreferences: {
+      preload: path.join(__dirname, 'preload.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+    },
+  });
+
+  stargazingWindow.loadFile(path.join(__dirname, 'renderer', 'orb.html'), {
+    query: { mode: 'stargazing' },
+  });
+  stargazingWindow.setAlwaysOnTop(true, 'screen-saver');
+  stargazingWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+
+  stargazingWindow.on('close', (e) => {
+    if (isQuitting) return;
+    e.preventDefault();
+    stargazingWindow?.hide();
+  });
+
+  return stargazingWindow;
+}
+
 function createFormationWindow() {
   if (formationWindow && !formationWindow.isDestroyed()) {
     formationWindow.focus();
@@ -560,12 +580,12 @@ function createFormationWindow() {
   const { width: sw, height: sh } = screen.getPrimaryDisplay().workAreaSize;
 
   formationWindow = new BrowserWindow({
-    width: 460,
-    height: 520,
-    minWidth: 400,
-    minHeight: 400,
-    x: sw - 480,
-    y: Math.round((sh - 520) / 2),
+    width: 560,
+    height: 460,
+    minWidth: 460,
+    minHeight: 380,
+    x: sw - 580,
+    y: Math.round((sh - 460) / 2),
     transparent: true,
     frame: false,
     alwaysOnTop: true,
@@ -723,6 +743,10 @@ async function recordInstructionHistory(instruction, result) {
 
 function registerIpcHandlers() {
 
+  // generateInstructionPhase 定义在本函数内（函数声明会提升），
+  // 把引用交给顶层的视觉自动推进逻辑用——否则顶层拿不到它。
+  _generateInstructionPhase = generateInstructionPhase;
+
   // ── Data operations ──
   ipcMain.handle('data:load', async (_event, type) => {
     try {
@@ -774,6 +798,21 @@ function registerIpcHandlers() {
     }
   });
 
+  // ── Free instruction templates (bypasses dataLoader — uses engine defaults + store) ──
+  const { DEFAULT_TEMPLATES: ENGINE_DEFAULTS } = require('./src/engine');
+  ipcMain.handle('templates:get-free', async () => {
+    const builtIn = ENGINE_DEFAULTS.free_instruction || [];
+    const custom = store.get('customFreeTemplates') || [];
+    const hidden = store.get('hiddenFreeTemplates') || [];
+    return { builtIn, custom, hidden };
+  });
+  // Save only the user's custom/hidden arrays; built-in never changes
+  ipcMain.handle('templates:save-free', async (_event, custom, hidden) => {
+    store.set('customFreeTemplates', custom || []);
+    store.set('hiddenFreeTemplates', hidden || []);
+    return { success: true };
+  });
+
   // ── Run management ──
   ipcMain.handle('run:start', async (_event, identityPoolName, egoPoolName) => {
     if (runState.active) {
@@ -821,6 +860,9 @@ function registerIpcHandlers() {
 
     // Show orb
     if (orbWindow && !orbWindow.isDestroyed()) {
+      orbWindow.setAlwaysOnTop(true, 'screen-saver');
+      orbWindow.setShape(getOrbCircleShape());
+      orbWindow.setIgnoreMouseEvents(false);
       orbWindow.show();
       orbWindow.webContents.send('orb:run-state', true);
       orbWindow.webContents.send('orb:show');
@@ -1330,21 +1372,23 @@ function registerIpcHandlers() {
   // ── Vision IPC (Phase 10) ──
 
   ipcMain.handle('vision:start', async () => {
+    if (!visionManager) return { ok: false, error: '旧视觉链路已弃用' };
     const ok = await visionManager.start();
     return { ok };
   });
 
   ipcMain.handle('vision:stop', async () => {
+    if (!visionManager) return { ok: true, deprecated: true };
     await visionManager.stop();
     return { ok: true };
   });
 
   ipcMain.handle('vision:status', () => {
-    return { available: visionManager.available };
+    return { available: false, deprecated: true, replacedBy: 'vision2' };
   });
 
   ipcMain.handle('vision:detect-phase', async () => {
-    if (!visionManager.available) return { ok: false, error: 'Vision server not running' };
+    if (!visionManager) return { ok: false, error: '旧视觉链路已弃用（vision_server.py），请用 vision2:*' };
     const calibration = store.get('vision.calibration') || {};
     const region = calibration.gameRegion || null;
     const enabledPhases = store.get('enabledPhases') || [];
@@ -1363,7 +1407,7 @@ function registerIpcHandlers() {
   });
 
   ipcMain.handle('vision:recognize-shop', async () => {
-    if (!visionManager.available) return { ok: false, error: 'Vision server not running' };
+    if (!visionManager) return { ok: false, error: '旧视觉链路已弃用（vision_server.py），请用 vision2:*' };
     const calibration = store.get('vision.calibration') || {};
     const region = calibration.gameRegion || null;
     const shopGrid = calibration.shopGrid || null;
@@ -1377,7 +1421,7 @@ function registerIpcHandlers() {
   });
 
   ipcMain.handle('vision:calibrate', async (_event, params) => {
-    if (!visionManager.available) return { ok: false, error: 'Vision server not running' };
+    if (!visionManager) return { ok: false, error: '旧视觉链路已弃用（vision_server.py），请用 vision2:*' };
     const { region, label } = params;
     return visionManager.calibrateCapture(region, label);
   });
@@ -1392,20 +1436,20 @@ function registerIpcHandlers() {
   });
 
   ipcMain.handle('vision:rebuild-icon-index', async () => {
-    if (!visionManager.available) return { ok: false, error: 'Vision server not running' };
+    if (!visionManager) return { ok: false, error: '旧视觉链路已弃用（vision_server.py），请用 vision2:*' };
     const relicsDir = path.join(__dirname, 'resources', 'relics');
     const destDir = path.join(userDataPath, 'refs', 'relics');
     return visionManager.rebuildRelicIndex(relicsDir, destDir);
   });
 
   // ── Forward vision status events to main window ──
-  visionManager.on('status-changed', (data) => {
+  if (visionManager) visionManager.on('status-changed', (data) => {
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send('vision:status-changed', data);
     }
   });
 
-  visionManager.on('error', (msg) => {
+  if (visionManager) visionManager.on('error', (msg) => {
     console.error('[vision]', msg);
     if (mainWindow && !mainWindow.isDestroyed()) {
       mainWindow.webContents.send('vision:status-changed', { available: false, error: msg });
@@ -1420,40 +1464,43 @@ function registerIpcHandlers() {
   ipcMain.handle('orb:move', (_event, x, y) => {
     if (orbWindow && !orbWindow.isDestroyed()) {
       orbWindow.setPosition(Math.round(x), Math.round(y));
+      // Re-apply shape — SetWindowPos can drop the region on layered windows,
+      // which would make the entire 220×220 rectangle interactive.
+      orbWindow.setShape(getOrbCircleShape());
     }
   });
 
-  ipcMain.handle('orb:set-size', (_event, w, h) => {
-    if (orbWindow && !orbWindow.isDestroyed()) {
-      const oldBounds = orbWindow.getBounds();
-      // Use setBounds (no animation) to avoid race conditions with setShape.
-      // Preserve the current position — renderer will move window afterwards if needed.
-      orbWindow.setBounds({
-        x: oldBounds.x,
-        y: oldBounds.y,
-        width: w,
-        height: h,
-      }, false);
-      // Delay setShape slightly so the OS has processed the resize before
-      // we apply the pixel mask. Without this, repeated expand/collapse cycles
-      // accumulate sizing errors (borders cut off, ghost transparent regions).
-      setTimeout(() => {
-        if (orbWindow && !orbWindow.isDestroyed()) {
-          if (w === 220 && h === 220) {
-            const mask = createNonagonMask(220, 110, 110, 100);
-            orbWindow.setShape(mask);
-          } else {
-            // Stargazing view: rectangular mask
-            orbWindow.setShape([{ x: 0, y: 0, width: w, height: h }]);
-          }
-        }
-      }, 80);
-    }
+  // The orb window stays 220×220 with a circular mask.  Stargazing uses
+  // a completely separate window (see orb:open-stargazing / orb:close-stargazing).
+  ipcMain.handle('orb:set-size', () => {
+    // No-op — kept for backward compatibility.  Size changes are handled
+    // by the separate stargazing window.
   });
 
   ipcMain.handle('orb:get-display', () => {
     const display = screen.getPrimaryDisplay();
     return display.workAreaSize;
+  });
+
+  // ── Stargazing window management ──
+  ipcMain.handle('orb:open-stargazing', () => {
+    if (orbWindow && !orbWindow.isDestroyed()) {
+      orbWindow.hide();
+    }
+    const sgWin = createStargazingWindow();
+    sgWin.show();
+  });
+
+  ipcMain.handle('orb:close-stargazing', () => {
+    if (stargazingWindow && !stargazingWindow.isDestroyed()) {
+      stargazingWindow.hide();
+    }
+    if (orbWindow && !orbWindow.isDestroyed()) {
+      orbWindow.setShape(getOrbCircleShape());
+      orbWindow.setIgnoreMouseEvents(false);
+      orbWindow.show();
+      orbWindow.webContents.send('orb:show');
+    }
   });
 
   // ── Pager events (fire-and-forget) ──
@@ -1663,7 +1710,7 @@ function registerIpcHandlers() {
         if (runState.pendingBatchRemaining <= 0) {
           runState.pendingBatchRemaining = 0;
           unlockPagerRequest();
-          scheduleAutoDetect();
+          ensureVisionLoop();
           if (mainWindow && !mainWindow.isDestroyed()) {
             mainWindow.webContents.send('instruction:processed', { phase: inst.phase, remaining: 0 });
           }
@@ -1737,7 +1784,7 @@ function registerIpcHandlers() {
         if (runState.pendingBatchRemaining <= 0) {
           runState.pendingBatchRemaining = 0;
           unlockPagerRequest();
-          scheduleAutoDetect();
+          ensureVisionLoop();
           if (mainWindow && !mainWindow.isDestroyed()) {
             mainWindow.webContents.send('instruction:processed', { phase: inst.phase, remaining: 0 });
           }
@@ -1945,8 +1992,38 @@ app.whenReady().then(async () => {
   engine = new InstructionEngine(dataLoader, store);
   achievements = new AchievementSystem(dataLoader, store);
   soundManager = new SoundManager(path.join(__dirname, 'resources', 'sounds'));
-  visionManager = new VisionManager(userDataPath, bundledPath);
+  // 旧的 Python 视觉链路（visionManager + vision_server.py）已弃用，改用纯 JS 管线
+  visionManager = null;
   queueManager = new QueueManager();
+
+  // Phase 0: window-level capture tool (F7 opens the panel)
+  captureController = new CaptureController();
+  captureController.init();
+
+  // 纯 JS 视觉管线：采集器取帧 -> 锚点打分 -> 状态机
+  liveVision = new LiveVision(captureController, {
+    difficulty: store.get('vision.difficulty', 'normal'),
+    persist: (k, v) => store.set(k, v),
+  });
+  liveVision.init();
+  liveVision.setWindow(overlayWindow);
+  setupVisionAuto();
+
+  // 开发开关：自动连上窗口后跑一段时间实时识别，把帧数/环节打到 stdout。
+  // 用于在没有游戏的情况下验证「真窗口取帧 → 分类」这条链路是否通。
+  if (process.env.VISION2_LIVE === '1') {
+    setTimeout(() => {
+      if (!liveVision) return;
+      liveVision.start();
+      console.log('[vision][dev] 实时识别已启动');
+    }, 6000);
+    const devTimer = setInterval(() => {
+      if (!liveVision) return;
+      const s = liveVision.status();
+      console.log(`[vision][dev] running=${s.running} frames=${s.frames} phase=${s.phase} interval=${s.interval}`);
+    }, 4000);
+    setTimeout(() => clearInterval(devTimer), 30000);
+  }
 
   // Give soundManager access to both windows for playback
   soundManager.setOverlay(overlayWindow);
@@ -1985,8 +2062,15 @@ app.on('before-quit', () => {
     clearTimeout(hideOverlayTimeout);
     hideOverlayTimeout = null;
   }
+  if (liveVision) {
+    liveVision.destroy();
+  }
   if (visionManager) {
     visionManager.stop().catch(() => {});
+  }
+  if (captureController) {
+    captureController.destroy();
+    captureController = null;
   }
   if (autoDetectTimer) {
     clearTimeout(autoDetectTimer);

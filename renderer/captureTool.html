@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>视觉采集</title>
+<link rel="stylesheet" href="css/captureTool.css">
+</head>
+<body>
+
+<header class="titlebar">
+  <span class="tb-dot"></span>
+  <span class="tb-title">视觉采集</span>
+  <span class="tb-sub">Phase 0 · 样本采集</span>
+  <button id="btnDir" class="tb-btn" title="打开数据集目录">📁</button>
+  <button id="btnClose" class="tb-close" title="关闭">✕</button>
+</header>
+
+<main class="body">
+
+  <section class="card">
+    <div class="row">
+      <select id="winSelect" class="grow"><option>正在扫描窗口…</option></select>
+      <button id="btnRefresh" class="icon" title="重新扫描窗口">⟳</button>
+    </div>
+    <div class="row">
+      <button id="btnAttach" class="primary grow">连接此窗口</button>
+      <span id="connDot" class="dot"></span>
+      <span id="connState" class="state">未连接</span>
+    </div>
+  </section>
+
+  <section class="preview">
+    <video id="video" muted playsinline autoplay></video>
+    <div id="previewEmpty" class="empty">未连接<br><small>连接后此处显示实时预览</small></div>
+    <div id="sizeBadge" class="badge"></div>
+  </section>
+
+  <section class="card">
+    <div class="card-label">当前环节 <span class="muted">（F8 保存到此目录）</span></div>
+    <div id="phaseGrid" class="grid"></div>
+    <div id="phaseHint" class="hint"></div>
+  </section>
+
+  <section class="card">
+    <button id="btnSave" class="primary big">保存一帧 <kbd>F8</kbd></button>
+    <div class="row tight">
+      <button id="btnAuto" class="grow">自动连拍</button>
+      <input id="interval" type="number" min="600" step="100" value="1500">
+      <span class="unit">ms</span>
+    </div>
+    <div id="status" class="status">已保存 0 张</div>
+  </section>
+
+  <section class="card">
+    <div class="row tight">
+      <button id="btnLive" class="grow primary">开始实时识别</button>
+      <input id="liveInterval" type="number" min="150" step="50" value="400">
+      <span class="unit">ms</span>
+    </div>
+    <div class="row tight">
+      <span class="hint" style="flex:0 0 auto">本次难度</span>
+      <button id="btnNormal" class="grow diff active" data-diff="normal">普通（三选一）</button>
+      <button id="btnHard" class="grow diff" data-diff="hard">困难（四选二）</button>
+    </div>
+    <div id="livePhase" class="livephase">当前环节：—</div>
+    <div id="liveScores" class="hint mono">等待启动</div>
+  </section>
+
+</main>
+
+<script src="js/captureTool.js"></script>
+</body>
+</html>
