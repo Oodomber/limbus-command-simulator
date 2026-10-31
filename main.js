@@ -2276,6 +2276,7 @@ app.whenReady().then(async () => {
   // 只要要显示内容，就保证传呼机窗口真的在屏幕上。
   // 之前这里只 send 不 show：窗口被收起/从没显示过时，指令安安静静地写进 DOM，
   // 玩家什么都看不到（实测 overlay.isVisible() === false 就是这种情况）。
+  let pagerTopPulse = null;
   const showPagerWindow = () => {
     if (!overlayWindow || overlayWindow.isDestroyed()) return false;
     if (overlayWindow.isMinimized()) overlayWindow.restore();
@@ -2284,6 +2285,21 @@ app.whenReady().then(async () => {
     // alwaysOnTop 只是设置层级；在已经有别的窗口时还需要显式提到最前，
     // 否则传呼机会被主窗口（乃至游戏）压在下面——玩家就"看不到指令"。
     try { overlayWindow.moveTop(); } catch (_e) { /* 某些平台不支持 */ }
+    // 无边框全屏的游戏会在自己的进程里反复抢回前台，单次置顶可能被顶掉。
+    // 这里在一秒内再补几次置顶（只调层级不下沉，不影响玩家点击）。
+    if (pagerTopPulse) { clearInterval(pagerTopPulse); pagerTopPulse = null; }
+    let pulses = 0;
+    pagerTopPulse = setInterval(() => {
+      pulses += 1;
+      if (pulses > 4 || !overlayWindow || overlayWindow.isDestroyed()) {
+        clearInterval(pagerTopPulse);
+        pagerTopPulse = null;
+        return;
+      }
+      if (!overlayWindow.isVisible()) return;
+      overlayWindow.setAlwaysOnTop(true, 'screen-saver');
+      try { overlayWindow.moveTop(); } catch (_e) { /* ignore */ }
+    }, 250);
     return true;
   };
 
