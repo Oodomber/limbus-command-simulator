@@ -2277,8 +2277,10 @@ app.whenReady().then(async () => {
     }
   };
 
+  // 注意：「待机」事件只更新内容，不主动把窗口弹出来。
+  // 否则软件一启动就会出现传呼机（玩家没有请求任何指令）。
   queueManager._onShowWaiting = () => {
-    if (showPagerWindow()) {
+    if (overlayWindow && !overlayWindow.isDestroyed()) {
       overlayWindow.webContents.send('pager:show-waiting');
     }
   };
