@@ -250,6 +250,13 @@ const VISION_TO_ENGINE_PHASE = {
 let autoAdvanceBusy = false;
 /** 最近一次没自动出指令的原因，会透到采集面板上（玩家看不到控制台） */
 let visionGateReason = '';
+/**
+ * 是否已经真正进入地牢。
+ * 开局前的那些页面（选人格/编队/星光/初始饰品）不需要出指令——那时候编队和层数
+ * 都还没定下来，出的指令一定是错的。所以只有在「第一次识别到卡包页」之后才认为
+ * 进了地牢，从那之后才开始识别环节并发放指令。
+ */
+let dungeonStarted = false;
 /** 由 registerIpcHandlers 填入：generateInstructionPhase 定义在那个函数作用域里 */
 let _generateInstructionPhase = null;
 
@@ -271,9 +278,21 @@ function setupVisionAuto() {
     if (!store) why = 'store 未就绪';
     else if (!store.get('vision.autoDetect')) why = '自动识别未开启（采集面板点「开始实时识别」）';
     else if (!runState.active) why = '尚未开始一局';
-    else if (!Object.prototype.hasOwnProperty.call(VISION_TO_ENGINE_PHASE, payload.phase)) why = `未知环节 ${payload.phase}`;
-    else if (!VISION_TO_ENGINE_PHASE[payload.phase]) why = `${payload.phase} 不出指令`;
-    else if (pagerRequestLocked) why = '传呼机上还有指令没确认';
+    else if (!dungeonStarted) {
+      // 开局前的页面不发放指令：此时编队/星光/层数都还没定，出了也是错的。
+      // 「第一次识别到卡包页」= 已经进了地牢，从这一刻起才开始正式识别与发指令。
+      if (payload.phase === 'cardpack') {
+        dungeonStarted = true;
+        console.log('[vision] 识别到卡包页 → 判定已进入地牢，开始自动发放指令');
+      } else {
+        why = '尚未进入地牢（等第一次识别到卡包页）';
+      }
+    }
+    if (!why) {
+      if (!Object.prototype.hasOwnProperty.call(VISION_TO_ENGINE_PHASE, payload.phase)) why = `未知环节 ${payload.phase}`;
+      else if (!VISION_TO_ENGINE_PHASE[payload.phase]) why = `${payload.phase} 不出指令`;
+      else if (pagerRequestLocked) why = '传呼机上还有指令没确认';
+    }
     if (why) {
       visionGateReason = why;
       if (liveVision) liveVision.gateReason = why;
@@ -860,6 +879,26 @@ function registerIpcHandlers() {
     runState.currentFloor = 1;
     runState.coreMechanics = [];
     runState.usedCardpackRerolls = 0;
+    dungeonStarted = false;  // 等第一次识别到卡包页才认为真正进了地牢
+    // 点「开始一局」就把视觉采集和识别拉起来，玩家不用再按 F7 开面板手动连接。
+    // 开局前的页面照样会被识别，但闸门会拦住不出指令。
+    if (captureController && liveVision) {
+      Promise.resolve()
+        .then(() => captureController.autoAttachGame())
+        .then((r) => {
+          if (!r || !r.ok) {
+            console.log('[vision] 自动开启视觉失败：' + ((r && r.error) || '未知原因'));
+            return;
+          }
+          console.log(`[vision] 已自动连接窗口「${r.name}」（${r.transport}）`);
+          if (!liveVision.running) {
+            const st = liveVision.start();
+            console.log('[vision] 已自动开始实时识别：' + JSON.stringify(st));
+          }
+          if (store && !store.get('vision.autoDetect')) store.set('vision.autoDetect', true);
+        })
+        .catch((e) => console.log('[vision] 自动开启视觉异常：' + e.message));
+    }
     karmaScareTriggered = false;
     runState.karmaScareThreshold = store.get('settings.karmaScareThreshold') ?? 100;
     queueManager.clear();

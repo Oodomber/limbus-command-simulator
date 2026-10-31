@@ -323,6 +323,68 @@ class CaptureController {
     this._broadcast({ transport: this.transport, width: payload.width, height: payload.height });
   }
 
+  /** 面板窗口是否已经加载完（loadFile 是异步的，早发 IPC 会丢） */
+  _waitPanelReady(timeoutMs = 8000) {
+    return new Promise((resolve) => {
+      const wc = this.window && !this.window.isDestroyed() ? this.window.webContents : null;
+      if (!wc) return resolve(false);
+      if (!wc.isLoading()) return resolve(true);
+      let done = false;
+      const finish = () => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        resolve(true);
+      };
+      const timer = setTimeout(finish, timeoutMs);
+      wc.once('did-finish-load', finish);
+    });
+  }
+
+  /** 等渲染进程把 MediaStream 接上（transport 从 none 变 stream/thumb） */
+  _waitTransport(timeoutMs = 12000) {
+    return new Promise((resolve) => {
+      if (this.transport === 'stream' || this.transport === 'thumb') return resolve(true);
+      const startedAt = Date.now();
+      const tick = setInterval(() => {
+        if (this.transport === 'stream' || this.transport === 'thumb') {
+          clearInterval(tick);
+          resolve(true);
+        } else if (Date.now() - startedAt > timeoutMs) {
+          clearInterval(tick);
+          resolve(false);
+        }
+      }, 120);
+    });
+  }
+
+  /**
+   * 自动连接游戏窗口：没有面板就先开面板，挑「疑似游戏且画面不空」的窗口连上，
+   * 并等到画面流真的就绪。用于「点开始一局后自动开启视觉」，玩家不需要按 F7。
+   */
+  async autoAttachGame({ timeoutMs = 12000 } = {}) {
+    try {
+      if (!this.window || this.window.isDestroyed()) this.open();
+      const ready = await this._waitPanelReady(8000);
+      if (!ready) return { ok: false, error: '采集面板未能加载' };
+
+      const wins = await this.listWindows();
+      const target = wins.find((w) => w.isGame && !w.blank) || wins.find((w) => !w.blank);
+      if (!target) return { ok: false, error: '没找到可捕获的游戏窗口（游戏可能还没启动或处于空白/最小化）' };
+
+      this.attach(target.id, target.name);
+      const connected = await this._waitTransport(timeoutMs);
+      return {
+        ok: connected,
+        name: target.name,
+        transport: this.transport,
+        error: connected ? null : '窗口已选中但画面流没有建立，请确认游戏不是独占全屏',
+      };
+    } catch (e) {
+      return { ok: false, error: e.message };
+    }
+  }
+
   _onCaptureError(payload = {}) {
     const { reqId, error, fatal } = payload || {};
     if (reqId && this._pending.has(reqId)) {
