@@ -22,6 +22,45 @@ const { SoundManager } = require('./src/soundManager');
 const { LiveVision } = require('./src/vision/liveVision');
 const { CaptureController } = require('./src/vision/captureController');
 
+/**
+ * 把控制台日志同时写一份到 userData/logs/main.log（UTF-8）。
+ * Windows 控制台默认 GBK，Node 输出 UTF-8，中文会显示成「鑷姩鎺ㄨ繘」这种乱码；
+ * 有了这个文件就能直接用记事本/VS Code 打开看正常中文，也方便把日志发给别人排查。
+ */
+(function setupLogFile() {
+  try {
+    const fs = require('fs');
+    const dir = path.join(app.getPath('userData'), 'logs');
+    fs.mkdirSync(dir, { recursive: true });
+    const file = path.join(dir, 'main.log');
+    // 超过 4MB 就先清空，避免无限增长
+    try {
+      if (fs.statSync(file).size > 4 * 1024 * 1024) fs.writeFileSync(file, '');
+    } catch (_e) { /* 文件还不存在 */ }
+    const stream = fs.createWriteStream(file, { flags: 'a', encoding: 'utf8' });
+    const origLog = console.log.bind(console);
+    const origErr = console.error.bind(console);
+    const fmt = (a) => a.map((x) => (typeof x === 'string' ? x : JSON.stringify(x))).join(' ');
+    const stamp = () => {
+      const d = new Date();
+      const p = (n) => String(n).padStart(2, '0');
+      return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`;
+    };
+    console.log = (...args) => {
+      origLog(...args);
+      try { stream.write(`[${stamp()}] ${fmt(args)}\n`); } catch (_e) { /* 忽略 */ }
+    };
+    console.error = (...args) => {
+      origErr(...args);
+      try { stream.write(`[${stamp()}] [error] ${fmt(args)}\n`); } catch (_e) { /* 忽略 */ }
+    };
+    origLog(`[main] 日志文件：${file}`);
+  } catch (_e) {
+    /* 写不了日志文件就算了，不影响功能 */
+  }
+})();
+
+
 // Bump this when bundled data/ files change — auto-clears stale userData on next launch
 const DATA_VERSION = 2;
 
