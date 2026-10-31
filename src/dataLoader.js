@@ -62,6 +62,14 @@ class DataLoader {
       this._cache.set(type, data);
       return data;
     } catch (e) {
+      // 文件不存在 / 读不了 → 静默用空默认（正常情况，比如用户从没改过）
+      // 但「文件在、JSON 坏了」绝不能静默：v1.2.1 就是 templates.json 少了个转义引号，
+      // 整份解析失败后被兜底成 {}，模板改动一直没生效而没有任何提示。
+      if (e instanceof SyntaxError) {
+        console.error(`[dataLoader] ${fileName} 解析失败，已回退到空默认值：`, e.message);
+      } else if (e.code !== 'ENOENT') {
+        console.error(`[dataLoader] 读取 ${fileName} 失败：`, e.message);
+      }
       // Priority 3: empty default
       const def = EMPTY_DEFAULTS[type] !== undefined
         ? structuredClone(EMPTY_DEFAULTS[type])
