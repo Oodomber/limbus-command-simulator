@@ -48,6 +48,7 @@ const PHASE_LABEL = {
   event_reward: '奖励卡',
   shop: '商店',
   boss_reward: '关底奖励',
+  combat_reward: '关卡饰品奖励',
 };
 
 let liveOn = false;

@@ -243,6 +243,8 @@ const VISION_TO_ENGINE_PHASE = {
   event_reward: 'event_reward',
   shop: 'shop',
   boss_reward: 'boss_reward',
+  // 视觉侧把关卡饰品奖励单独报一个环节，但生成仍走关底那套逻辑
+  combat_reward: 'boss_reward',
 };
 
 let autoAdvanceBusy = false;

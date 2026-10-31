@@ -115,19 +115,26 @@ class LiveVision {
       }
       this.lastReadings = readings;
 
+      // 「关卡饰品奖励」与「关底奖励」共用同一个锚点（底部都有「拒绝饰品」），
+      // 靠卡片上有没有「追加的苦难」分开：有=关底，没有=关卡。
+      // 这里只把对外报的环节名改掉，生成逻辑仍走 boss_reward。
+      const reported = (res.phase === 'boss_reward' && readings && readings.rewardType === 'node')
+        ? 'combat_reward'
+        : res.phase;
+
       let changed = false;
-      if (confident && res.phase && res.phase !== this.lastPhase) {
+      if (confident && reported && reported !== this.lastPhase) {
         const from = this.lastPhase;
-        this.lastPhase = res.phase;
+        this.lastPhase = reported;
         changed = true;
-        this.history.push({ from, to: res.phase, at: Date.now() });
+        this.history.push({ from, to: reported, at: Date.now() });
         if (this.history.length > 200) this.history.shift();
-        this._emit({ phase: res.phase, from, scores: this._round(res.scores), readings });
+        this._emit({ phase: reported, from, scores: this._round(res.scores), readings });
       }
 
       return {
         ok: true,
-        phase: res.phase,
+        phase: reported,
         changed,
         confident,
         reason: res.reason,
