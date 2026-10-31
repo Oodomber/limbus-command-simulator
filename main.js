@@ -275,9 +275,18 @@ async function autoStartVision(attempt = 1) {
   const MAX = 6;
   if (!captureController || !liveVision) return;
 
-  if (liveVision.running) {
+  // 已经连着并且连的是游戏窗口 → 什么都不用做。
+  // 但如果连的是别的窗口（比如误连到资源管理器），必须断开重连，否则识别全是垃圾。
+  const curName = captureController.sourceName || '';
+  const curIsGame = /limbus|边狱|巴士|company/i.test(curName);
+  if (liveVision.running && curIsGame) {
     if (store && !store.get('vision.autoDetect')) store.set('vision.autoDetect', true);
     return;
+  }
+  if (liveVision.running && !curIsGame) {
+    console.log(`[vision] 当前连接的是「${curName || '未知窗口'}」不是游戏窗口，断开重连`);
+    liveVision.stop();
+    captureController.detach();
   }
 
   const r = await captureController.autoAttachGame();

@@ -249,7 +249,7 @@ class CaptureController {
         name: s.name,
         thumbnail: thumb,
         blank,
-        isGame: /limbus|边狱|巴士|company/i.test(s.name),
+        isGame: this._isGameWindow(s.name),
       });
     }
 
@@ -259,6 +259,21 @@ class CaptureController {
       return Number(b.isGame) - Number(a.isGame);
     });
     return out;
+  }
+
+  /**
+   * 判断一个窗口是不是「边狱巴士」游戏本体。
+   *
+   * 这里不能只用「名字里含 limbus」——机器上同时装着 Ahab Assistant Limbus Company
+   * 这类第三方工具，标题里同样带 Limbus Company，会被误抓（实测就把它的窗口抓了进来，
+   * 识别得分全在 0 附近）。游戏本体标题是 `LimbusCompany`，所以改成「以游戏名开头 +
+   * 不命中黑名单」。
+   */
+  _isGameWindow(name) {
+    if (!name) return false;
+    const n = String(name).trim();
+    if (/assistant|ahab|overlay|harness|deepseek|explorer|资源管理器|文件管理器|electron/i.test(n)) return false;
+    return /^limbus\s*company\b/i.test(n) || /^limbuscompany\b/i.test(n) || /^边狱公司|^边狱巴士/.test(n);
   }
 
   /** 缩略图是否近全黑/全透明 —— 用来提前排除不可捕获的窗口 */
@@ -369,8 +384,22 @@ class CaptureController {
       if (!ready) return { ok: false, error: '采集面板未能加载' };
 
       const wins = await this.listWindows();
-      const target = wins.find((w) => w.isGame && !w.blank) || wins.find((w) => !w.blank);
-      if (!target) return { ok: false, error: '没找到可捕获的游戏窗口（游戏可能还没启动或处于空白/最小化）' };
+      // 只认游戏窗口。之前这里是「找不到游戏就退回第一个非空窗口」，
+      // 结果把资源管理器/浏览器抓了进来——识别全错而且看不出原因。
+      const games = wins.filter((w) => w.isGame);
+      // 缩略图空白通常意味着独占全屏/最小化；独占全屏下 getUserMedia 反而可能成功，
+      // 所以「名字对得上」就先用，缩略图是否空白只用来决定优先级。
+      const target = games.find((w) => !w.blank) || games[0];
+      if (!target) {
+        const seen = wins.filter((w) => w.name).slice(0, 5).map((w) => w.name).join(' / ') || '（无）';
+        return {
+          ok: false,
+          error: `没找到 LimbusCompany 游戏窗口（当前可捕获窗口：${seen}）`,
+        };
+      }
+      if (target.blank) {
+        console.log('[vision] 游戏窗口缩略图为空（可能独占全屏/最小化），仍尝试连接');
+      }
 
       this.attach(target.id, target.name);
       const connected = await this._waitTransport(timeoutMs);
