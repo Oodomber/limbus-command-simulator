@@ -74,8 +74,17 @@ class LiveVision {
       this.timer = null;
       try {
         await this.classifyOnce();
+        this._failStreak = 0;
       } catch (e) {
         this.errors++;
+        // 连续取帧失败通常意味着游戏窗口关了/最小化了。再继续空转只会
+        // 每 400ms 报一次超时，所以到这里就停下来等用户重新连接。
+        this._failStreak = (this._failStreak || 0) + 1;
+        if (this._failStreak >= 5) {
+          this.stop();
+          this._emit({ phase: null, from: this.lastPhase, stopped: true, reason: '连续取帧失败，已停止实时识别' });
+          return;
+        }
       }
       this._loop();
     }, this.interval);
@@ -216,9 +225,11 @@ class LiveVision {
     // 主进程内部监听（自动推进指令用）
     for (const fn of this._subs) {
       try {
-        fn(payload);
-      } catch (e) {
-        this.errors.push(`listener: ${e.message}`);
+        // 订阅方可能是 async，同步 try/catch 接不住它的 rejection，得单独兜
+        const r = fn(payload);
+        if (r && typeof r.catch === 'function') r.catch(() => {});
+      } catch (_e) {
+        // 订阅方抛错不能影响环节切换本身，也不要把它算进 this.errors（那是数字计数）
       }
     }
   }

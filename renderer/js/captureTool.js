@@ -201,6 +201,19 @@ function waitForVideoSize(timeoutMs = 3000) {
   });
 }
 
+function onStreamLost() {
+  if (state.mode !== 'stream') return;
+  const prev = state.sourceName || '游戏窗口';
+  stopStream();
+  state.mode = 'none';
+  els.preview.classList.remove('live');
+  els.sizeBadge.textContent = '—';
+  setConn('err', '画面中断');
+  setStatus(`${prev} 的画面中断了（窗口被关闭或最小化），请重新连接`, 'err');
+  // 让主进程立刻停掉实时循环，别拿着最后一帧继续判环节
+  api.vision2CaptureError({ fatal: true, error: '视频流已中断' });
+}
+
 async function doAttach(sourceId, name) {
   stopStream();
   state.mode = 'none';
@@ -224,6 +237,15 @@ async function doAttach(sourceId, name) {
     els.video.srcObject = stream;
     await els.video.play();
     await waitForVideoSize();
+
+    // 游戏窗口关掉/最小化后，video 会停在最后一帧继续给 drawImage 送旧画面，
+    // 分类器就会永远报同一个环节而且不报错。这里必须主动发现「流断了」。
+    const track = stream.getVideoTracks()[0];
+    if (track) {
+      track.addEventListener('ended', onStreamLost);
+      track.addEventListener('mute', onStreamLost);
+    }
+    els.video.addEventListener('error', onStreamLost, { once: true });
 
     state.mode = 'stream';
     state.sourceId = sourceId;
