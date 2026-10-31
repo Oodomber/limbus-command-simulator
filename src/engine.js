@@ -31,7 +31,6 @@ const PHASES = {
   SHOP:             'shop',
   HIDDEN_BOSS:      'hidden_boss',
   BOSS_REWARD:      'boss_reward',
-  COMBAT_REWARD:    'combat_reward',
   FREE:             'free',
 };
 
@@ -252,13 +251,6 @@ const DEFAULT_TEMPLATES = {
   boss_reward: [
     '致：从关底奖励中选择第{option}个。',
   ],
-  combat_reward: [
-    '致：这些饰品里，取第{option}个收下。',
-    '致：从这一排里挑第{option}个。',
-  ],
-  combat_reward_single: [
-    '致：收下这件饰品。',
-  ],
 
   free_instruction: [
     '致：做三个俄式挺身俯卧撑。',
@@ -449,8 +441,8 @@ class InstructionEngine {
       case PHASES.CARDPACK:         result = await this._genCardpack(context); break;
       case PHASES.ROUTE:            result = await this._genRoute(); break;
       case PHASES.COMBAT:           result = await this._genCombat(rawRationality, context); break;
-      case PHASES.EVENT:            result = await this._genEvent(infoCompleteness, context); break;
-      case PHASES.EVENT_REWARD:     result = await this._genEventReward(context); break;
+      case PHASES.EVENT:            result = await this._genEvent(infoCompleteness); break;
+      case PHASES.EVENT_REWARD:     result = await this._genEventReward(); break;
       case PHASES.SHOP:             result = await this._genShop(rawRationality, context); break;
       case PHASES.JUDGMENT:         result = await this._genJudgment(rawRationality, context); break;
       case PHASES.HIDDEN_BOSS:      result = await this._genHiddenBoss(); break;
@@ -874,11 +866,7 @@ class InstructionEngine {
     const cardpacks = await this.dataLoader.load('cardpacks');
     const templates = await this._getTemplates();
     const effects = context.starlightEffects || {};
-    // 卡包个数：识别读数优先（画面实测 3/4/5），没有读数才用星光公式推算
-    const visionPackCount = Number(context?.vision?.readings?.packs);
-    const packCount = (Number.isInteger(visionPackCount) && visionPackCount >= 2 && visionPackCount <= 6)
-      ? visionPackCount
-      : this._getCardpackCount(effects);
+    const packCount = this._getCardpackCount(effects);
     const rerollCount = this._getCardpackRerollCount(effects);
 
     // Track used rerolls to avoid exceeding limit
@@ -1128,7 +1116,7 @@ class InstructionEngine {
   //  Phase 8: Event
   // ═══════════════════════════════════════════
 
-  async _genEvent(infoCompleteness, context) {
+  async _genEvent(infoCompleteness) {
     const templates = await this._getTemplates();
 
     if (infoCompleteness < 0.25) {
@@ -1139,11 +1127,7 @@ class InstructionEngine {
       };
     }
 
-    // 事件选项数：识别读数优先（画面实测 2~4），没有读数才退回随机
-    const visionCount = Number(context?.vision?.readings?.options);
-    const optionCount = (Number.isInteger(visionCount) && visionCount >= 2 && visionCount <= 5)
-      ? visionCount
-      : Math.floor(Math.random() * 3) + 2; // 2~4
+    const optionCount = Math.floor(Math.random() * 3) + 2; // 2~4
     const optionNum = Math.floor(Math.random() * optionCount) + 1;
 
     // Describe option position without repetition
@@ -1181,12 +1165,9 @@ class InstructionEngine {
   //  Phase 9: Event Reward (position only)
   // ═══════════════════════════════════════════
 
-  async _genEventReward(context) {
+  async _genEventReward() {
     const templates = await this._getTemplates();
-    // 奖励卡张数：识别读数优先（画面实测 2~5），没有读数才退回随机
-    const visionCount = Number(context?.vision?.readings?.cardCount);    const cardCount = (Number.isInteger(visionCount) && visionCount >= 2 && visionCount <= 5)
-      ? visionCount
-      : Math.floor(Math.random() * 3) + 2; // 2~4
+    const cardCount = Math.floor(Math.random() * 3) + 2; // 2~4
     const pickIndex = Math.floor(Math.random() * cardCount);
 
     const position = pickIndex === 0 ? '最左边'
@@ -1490,13 +1471,6 @@ class InstructionEngine {
     const templates = await this._getTemplates();
     const isHardMode = context.isHardMode || false;
 
-    // 视觉已经能区分两种奖励页：带「追加的苦难」= 关底（三选一/四选二），
-    // 不带 = 路径上的关卡饰品奖励（多选一）。两者措辞不同，所以先分流。
-    const rewardType = context?.vision?.readings?.rewardType;
-    if (rewardType === 'node') {
-      return this._genCombatReward(context);
-    }
-
     if (isHardMode) {
       // Hard mode: 4 options, pick 2 — generate TWO separate instructions
       const first = Math.floor(Math.random() * 4) + 1;
@@ -1531,36 +1505,6 @@ class InstructionEngine {
   // ═══════════════════════════════════════════
   //  Template loading
   // ═══════════════════════════════════════════
-
-  // 关卡饰品奖励：路径上打完一场后给的饰品，多选一（也可以拒绝）
-  async _genCombatReward(context) {
-    const templates = await this._getTemplates();
-    const visionCount = Number(context?.vision?.readings?.cards);
-    const total = (Number.isInteger(visionCount) && visionCount >= 1 && visionCount <= 6)
-      ? visionCount
-      : Math.floor(Math.random() * 3) + 1; // 1~3
-
-    if (total <= 1) {
-      const tpl = this._pickTieredTemplate(templates, 'combat_reward_single', 'combat_reward');
-      const text = this._fillTemplate(tpl, { option: '1' });
-      return {
-        instructions: [this._makeInstruction(PHASES.COMBAT_REWARD, text, false, {
-          totalOptions: total, pick: 1, rewardType: 'node',
-        })],
-        phase: PHASES.COMBAT_REWARD, isGuidance: false,
-      };
-    }
-
-    const pick = Math.floor(Math.random() * total) + 1;
-    const tpl = this._pickTieredTemplate(templates, 'combat_reward', 'boss_reward');
-    const text = this._fillTemplate(tpl, { option: String(pick) });
-    return {
-      instructions: [this._makeInstruction(PHASES.COMBAT_REWARD, text, false, {
-        totalOptions: total, pick, rewardType: 'node',
-      })],
-      phase: PHASES.COMBAT_REWARD, isGuidance: false,
-    };
-  }
 
   // ═══════════════════════════════════════════
   //  Free instruction (random idle trigger)
