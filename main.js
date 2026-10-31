@@ -1121,6 +1121,15 @@ function registerIpcHandlers() {
         runState.usedCardpackRerolls = 0;  // reset per floor
       }
 
+      // 自动推进（context.vision 存在）意味着游戏已经换到新环节了，
+      // 上一条没确认的指令已经作废。不先清队列的话，queueManager 会因为
+      // _current 还占着位而只把新指令塞进队列，传呼机界面永远不会更新——
+      // 这就是「识别到了、指令也生成了、但传呼机上什么都没有」的直接原因。
+      if (context && context.vision) {
+        queueManager.clear();
+        unlockPagerRequest();
+      }
+
       const enqueued = queueManager.enqueue(result.instructions);
       soundManager.play('bibi_long');
       lockPagerRequest();
