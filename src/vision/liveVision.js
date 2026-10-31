@@ -256,6 +256,7 @@ class LiveVision {
       lastReadings: this.lastReadings || null,
       difficulty: this.difficulty,
       minScore: MIN_CONFIDENT,
+      gate: this.gateReason || '',
     };
   }
 

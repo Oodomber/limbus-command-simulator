@@ -248,6 +248,8 @@ const VISION_TO_ENGINE_PHASE = {
 };
 
 let autoAdvanceBusy = false;
+/** 最近一次没自动出指令的原因，会透到采集面板上（玩家看不到控制台） */
+let visionGateReason = '';
 /** 由 registerIpcHandlers 填入：generateInstructionPhase 定义在那个函数作用域里 */
 let _generateInstructionPhase = null;
 
@@ -273,9 +275,13 @@ function setupVisionAuto() {
     else if (!VISION_TO_ENGINE_PHASE[payload.phase]) why = `${payload.phase} 不出指令`;
     else if (pagerRequestLocked) why = '传呼机上还有指令没确认';
     if (why) {
+      visionGateReason = why;
+      if (liveVision) liveVision.gateReason = why;
       console.log(`[vision] 跳过自动推进（${payload.phase}）：${why}`);
       return;
     }
+    visionGateReason = '';
+    if (liveVision) liveVision.gateReason = '';
 
     const mapped = VISION_TO_ENGINE_PHASE[payload.phase];
     autoAdvanceBusy = true;

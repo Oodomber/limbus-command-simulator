@@ -238,13 +238,12 @@ async function doAttach(sourceId, name) {
     await els.video.play();
     await waitForVideoSize();
 
-    // 游戏窗口关掉/最小化后，video 会停在最后一帧继续给 drawImage 送旧画面，
-    // 分类器就会永远报同一个环节而且不报错。这里必须主动发现「流断了」。
+    // 游戏窗口关掉后，video 会停在最后一帧继续给 drawImage 送旧画面，
+    // 分类器就会永远报同一个环节而且不报错。只认 ended（真的没了）。
+    // 不要监听 mute：窗口被遮挡/最小化/调整大小时 Electron 会瞬时 mute，
+    // 那是可恢复的，绑上来会导致「采集窗口莫名其妙自己断掉」。
     const track = stream.getVideoTracks()[0];
-    if (track) {
-      track.addEventListener('ended', onStreamLost);
-      track.addEventListener('mute', onStreamLost);
-    }
+    if (track) track.addEventListener('ended', onStreamLost);
     els.video.addEventListener('error', onStreamLost, { once: true });
 
     state.mode = 'stream';
@@ -474,9 +473,13 @@ async function pollLive() {
     const cur = s.phase ? PHASE_LABEL[s.phase] || s.phase : '未定格';
     els.livePhase.textContent = `当前环节：${cur}　已处理 ${s.frames} 帧`;
     const rtxt = readingsText(s.lastReadings);
-    els.liveScores.textContent = [rtxt, top.length ? top.map(([k, v]) => `${k} ${v.toFixed(2)}`).join('  ') : '']
-      .filter(Boolean)
-      .join('　|　') || '等待首帧…';
+    // 闸门原因直接显示在面板上——玩家看不到控制台，卡住时必须能自己看出来
+    const gate = s.gate ? `　⚠ ${s.gate}` : '';
+    els.liveScores.textContent = (gate ? gate.trim() + '　|　' : '')
+      + [rtxt, top.length ? top.map(([k, v]) => `${k} ${v.toFixed(2)}`).join('  ') : '']
+        .filter(Boolean)
+        .join('　|　')
+      || '等待首帧…';
   } catch (e) {
     els.liveScores.textContent = '状态查询失败：' + e.message;
   }
