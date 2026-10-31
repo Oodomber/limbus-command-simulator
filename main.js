@@ -1166,6 +1166,34 @@ function registerIpcHandlers() {
       }
     }
 
+    // ── 自动推进路径：生成完必须自己把指令送到传呼机 ──
+    // 这个函数只负责「生成」，手动请求的调用方会自己 enqueue（instruction:generate
+    // 处理器、环节选择器、卡包快捷入口都是这样）。但视觉自动推进的调用方
+    // （setupVisionAuto / run:start 的首条指令）**不会**——之前正是这里漏了，
+    // 于是日志天天打「自动推进 cardpack → 指令 1 条」，传呼机却永远是空的。
+    if (context && context.vision && result && Array.isArray(result.instructions) && result.instructions.length > 0) {
+      queueManager.clear();
+      unlockPagerRequest();
+      const enqueued = queueManager.enqueue(result.instructions);
+      soundManager.play('bibi_long');
+      lockPagerRequest();
+      if (overlayWindow && !overlayWindow.isDestroyed() && !overlayWindow.isVisible()) {
+        if (overlayWindow.isMinimized()) overlayWindow.restore();
+        overlayWindow.show();
+        overlayWindow.setAlwaysOnTop(true, 'screen-saver');
+      }
+      const _vis = overlayWindow && !overlayWindow.isDestroyed() ? overlayWindow.isVisible() : '无窗口';
+      const _txt = (Array.isArray(enqueued) ? enqueued : []).map((i) => (i && i.text) || '(空文本)');
+      console.log(`[vision] 已入队 ${_txt.length} 条 · 传呼机可见=${_vis} · 文本=${_txt.join(' / ') || '(无)'}`);
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('instruction:new', {
+          phase: result.phase, count: _txt.length, isGuidance: result.isGuidance,
+        });
+        mainWindow.webContents.send('instruction:queue-update', queueManager.getState());
+      }
+      result.delivered = true;
+    }
+
     return result;
   }
 
@@ -2231,6 +2259,48 @@ app.whenReady().then(async () => {
     }, 4000);
   }
 
+  // 开发期自检：VISION2_FAKE_AUTO=1 时走「视觉自动推进」那条真路径
+  // （_generateInstructionPhase + context.vision），验证生成完有没有真的送进传呼机。
+  if (!app.isPackaged && process.env.VISION2_FAKE_AUTO === '1') {
+    setTimeout(async () => {
+      try {
+        runState.active = true;
+        const enabled = store.get('enabledPhases') || [];
+        if (!enabled.includes('cardpack')) {
+          enabled.push('cardpack');
+          store.set('enabledPhases', enabled);
+        }
+        runState.currentPhase = 'cardpack';
+        const r = await _generateInstructionPhase('cardpack', {
+          vision: { phase: 'cardpack', readings: { packs: 5 } },
+        });
+        console.log('[vision2/fake-auto] result =', JSON.stringify({
+          delivered: r && r.delivered,
+          count: r && r.instructions ? r.instructions.length : 0,
+          text: r && r.instructions && r.instructions[0] ? r.instructions[0].text : '',
+        }));
+        const ov = overlayWindow && !overlayWindow.isDestroyed() ? overlayWindow : null;
+        if (ov) {
+          setTimeout(() => {
+            ov.webContents.executeJavaScript(
+              'JSON.stringify({visible:true,text:(document.getElementById("pager-text")||{}).innerText||""})'
+            ).then((d) => console.log('[vision2/fake-auto] dom =', d)).catch((e) => console.log('[vision2/fake-auto] dom 失败:', e.message));
+            ov.webContents.capturePage().then((img) => {
+              const out = path.join(app.getPath('userData'), 'logs', 'pager-auto.png');
+              require('fs').writeFileSync(out, img.toPNG());
+              const bmp = img.toBitmap();
+              let opaque = 0;
+              for (let i = 3; i < bmp.length; i += 4) if (bmp[i] > 8) opaque++;
+              console.log('[vision2/fake-auto] capture =', JSON.stringify({ out, opaqueRatio: +(opaque / (bmp.length / 4)).toFixed(4) }));
+            }).catch((e) => console.log('[vision2/fake-auto] capture 失败:', e.message));
+          }, 1600);
+        }
+      } catch (e) {
+        console.log('[vision2/fake-auto] 失败:', e.message);
+      }
+    }, 4000);
+  }
+
   // 开发期自检：VISION2_AUTOSTART=1 时走一遍「点开始一局」的自动视觉路径，
   // 用来在没有开局的情况下验证 autoAttachGame + liveVision.start 是否通。
   if (!app.isPackaged && process.env.VISION2_AUTOSTART === '1') {
@@ -2334,7 +2404,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-10-31-r5（开局自动连窗口+自动识别；进地牢前不发指令）');
+  console.log('[main] 视觉链路构建 2026-10-31-r6（自动推进的指令会真的送进传呼机）');
 });
 
 app.on('before-quit', () => {
