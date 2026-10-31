@@ -923,11 +923,23 @@ class InstructionEngine {
     // Reroll: only if rerolls remain, and probability decreases as rerolls are used
     const rerollChance = remainingRerolls > 0 ? Math.min(0.35, remainingRerolls * 0.12) : 0;
     if (Math.random() < rerollChance) {
-      const tpl = this._pickTieredTemplate(templates, 'cardpack_reroll');
+      // 刷新之后玩家还要再选一次卡包，所以这里必须一次给两条：
+      // 第一条让他刷新，第二条告诉他刷新后选第几个。只给刷新的话，
+      // 玩家刷完就卡在卡包页等不到下一条指令。
+      const rerollTpl = this._pickTieredTemplate(templates, 'cardpack_reroll');
+      const rerollText = this._fillTemplate(rerollTpl, {});
+      const rerollPosition = Math.floor(Math.random() * packCount) + 1;
+      const afterTpl = this._pickTieredTemplate(templates, 'cardpack_position');
+      const afterText = this._fillTemplate(afterTpl, { position: String(rerollPosition) });
       return {
-        instructions: [this._makeInstruction(PHASES.CARDPACK, tpl, false, {
-          isReroll: true, remainingRerolls: remainingRerolls - 1,
-        })],
+        instructions: [
+          this._makeInstruction(PHASES.CARDPACK, rerollText, false, {
+            isReroll: true, remainingRerolls: remainingRerolls - 1,
+          }),
+          this._makeInstruction(PHASES.CARDPACK, afterText, false, {
+            cardpackNum: rerollPosition, afterReroll: true,
+          }),
+        ],
         phase: PHASES.CARDPACK, isGuidance: false,
       };
     }
