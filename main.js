@@ -2143,6 +2143,39 @@ app.whenReady().then(async () => {
   liveVision.init();
   setupVisionAuto();
 
+  // 开发期自检：VISION2_FAKE_PAGER=1 时直接往队列里塞一条假指令，
+  // 用来单独验证「指令 → 传呼机显示」这一段有没有问题（不需要开局、不需要游戏）。
+  if (!app.isPackaged && process.env.VISION2_FAKE_PAGER === '1') {
+    setTimeout(() => {
+      try {
+        // 先走一遍真实流程里 run:start 会发的「待机」事件，再看指令能不能出来
+        if (overlayWindow && !overlayWindow.isDestroyed()) {
+          overlayWindow.webContents.send('pager:show-waiting');
+        }
+        const inst = queueManager.enqueue([{
+          id: 'dev-fake-1',
+          text: '（自检）这条指令只用来确认传呼机能不能显示',
+          phase: 'cardpack',
+          isGuidance: false,
+        }]);
+        const ov = overlayWindow && !overlayWindow.isDestroyed() ? overlayWindow : null;
+        console.log('[vision2/fake-pager] enqueued =', JSON.stringify(inst && inst.length));
+        console.log('[vision2/fake-pager] overlay 存在 =', !!ov,
+          '可见 =', ov ? ov.isVisible() : 'n/a',
+          'bounds =', ov ? JSON.stringify(ov.getBounds()) : 'n/a',
+          'opacity =', ov ? ov.getOpacity() : 'n/a');
+        console.log('[vision2/fake-pager] queue =', JSON.stringify(queueManager.getState()));
+        if (ov) {
+          ov.webContents.executeJavaScript(
+            'JSON.stringify({loading:document.readyState,hasPager:!!document.getElementById("pager"),bodyBg:getComputedStyle(document.body).backgroundColor,pagerH:document.getElementById("pager")?document.getElementById("pager").getBoundingClientRect().height:0,text:(document.getElementById("pager-text")||{}).innerText||""})'
+          ).then((r) => console.log('[vision2/fake-pager] dom =', r)).catch((e) => console.log('[vision2/fake-pager] dom 失败:', e.message));
+        }
+      } catch (e) {
+        console.log('[vision2/fake-pager] 失败:', e.message);
+      }
+    }, 4000);
+  }
+
   // 开发期自检：VISION2_AUTOSTART=1 时走一遍「点开始一局」的自动视觉路径，
   // 用来在没有开局的情况下验证 autoAttachGame + liveVision.start 是否通。
   if (!app.isPackaged && process.env.VISION2_AUTOSTART === '1') {
@@ -2185,14 +2218,28 @@ app.whenReady().then(async () => {
   // Give soundManager access to both windows for playback
 
   // Wire up queue manager callbacks
+  // 只要要显示内容，就保证传呼机窗口真的在屏幕上。
+  // 之前这里只 send 不 show：窗口被收起/从没显示过时，指令安安静静地写进 DOM，
+  // 玩家什么都看不到（实测 overlay.isVisible() === false 就是这种情况）。
+  const showPagerWindow = () => {
+    if (!overlayWindow || overlayWindow.isDestroyed()) return false;
+    if (overlayWindow.isMinimized()) overlayWindow.restore();
+    if (!overlayWindow.isVisible()) overlayWindow.show();
+    overlayWindow.setAlwaysOnTop(true, 'screen-saver');
+    // alwaysOnTop 只是设置层级；在已经有别的窗口时还需要显式提到最前，
+    // 否则传呼机会被主窗口（乃至游戏）压在下面——玩家就"看不到指令"。
+    try { overlayWindow.moveTop(); } catch (_e) { /* 某些平台不支持 */ }
+    return true;
+  };
+
   queueManager._onShowInstruction = (data) => {
-    if (overlayWindow && !overlayWindow.isDestroyed()) {
+    if (showPagerWindow()) {
       overlayWindow.webContents.send('pager:show-instruction', data);
     }
   };
 
   queueManager._onShowWaiting = () => {
-    if (overlayWindow && !overlayWindow.isDestroyed()) {
+    if (showPagerWindow()) {
       overlayWindow.webContents.send('pager:show-waiting');
     }
   };
