@@ -1529,8 +1529,12 @@ class InstructionEngine {
       ? context.formation.length
       : 12;
     const p1 = Math.floor(Math.random() * formationSize) + 1;
-    let p2 = Math.floor(Math.random() * formationSize) + 1;
-    while (p2 === p1) p2 = Math.floor(Math.random() * formationSize) + 1;
+    // 编队只有 1 人时不存在「和 p1 不同的位置」，原来的 while 会死循环卡死主进程
+    let p2 = p1;
+    if (formationSize > 1) {
+      p2 = Math.floor(Math.random() * (formationSize - 1)) + 1;
+      if (p2 >= p1) p2 += 1; // 映射到「除 p1 之外的某个位置」，O(1) 且必然不同
+    }
     const randSinner = this._pickRandom(SINNERS);
     const text = this._fillTemplate(tpl, {
       pos1: String(p1),
