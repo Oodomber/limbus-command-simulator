@@ -1125,6 +1125,14 @@ function registerIpcHandlers() {
       soundManager.play('bibi_long');
       lockPagerRequest();
 
+      // 自动推进时传呼机可能是隐藏的（局内手动收起来过、或从没被 show 过），
+      // 此时指令虽然入队但玩家看不见。这里保证它真的在屏幕上。
+      if (overlayWindow && !overlayWindow.isDestroyed() && !overlayWindow.isVisible()) {
+        if (overlayWindow.isMinimized()) overlayWindow.restore();
+        overlayWindow.show();
+        overlayWindow.setAlwaysOnTop(true, 'screen-saver');
+      }
+
       // 诊断：确认指令真的生成出了文字、传呼机窗口真的在屏幕上
       const _vis = overlayWindow && !overlayWindow.isDestroyed() ? overlayWindow.isVisible() : '无窗口';
       const _txt = (Array.isArray(enqueued) ? enqueued : []).map((i) => (i && i.text) || '(空文本)');
