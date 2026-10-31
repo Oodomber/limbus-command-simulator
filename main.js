@@ -907,6 +907,11 @@ function registerIpcHandlers() {
     queueManager.clear();
     stopFreeInstructionTimer();
 
+    // 局结束就把视觉循环停掉：否则 captureController 还在每 400ms 抓帧，
+    // 玩家回到主菜单后仍然在烧 CPU 判环节。
+    if (liveVision) liveVision.stop();
+    if (captureController) captureController.setAuto(false);
+
     // Deactivate global shortcuts when run ends
     _registeredShortcuts.forEach(accel => {
       try { globalShortcut.unregister(accel); } catch (e) { /* ignore */ }
