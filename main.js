@@ -2126,6 +2126,8 @@ app.whenReady().then(async () => {
   registerIpcHandlers();
 
   console.log('[main] 谨遵指令 started');
+  // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
+  console.log('[main] 视觉链路构建 2026-10-31-r4（自动推进清队列 + 传呼机置顶）');
 });
 
 app.on('before-quit', () => {
