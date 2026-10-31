@@ -262,14 +262,22 @@ function setupVisionAuto() {
   if (!liveVision) return;
   liveVision.onPhase(async (payload) => {
     if (autoAdvanceBusy) return;
-    if (!store || !store.get('vision.autoDetect')) return;
-    if (!runState.active) return;
-    if (!Object.prototype.hasOwnProperty.call(VISION_TO_ENGINE_PHASE, payload.phase)) return;
+
+    // 每一道闸门都报出来。之前这些 return 全是静默的，导致「面板明明识别出了环节
+    // 但传呼机不动」根本没法定位——现在日志里会直接写清是哪一条拦下的。
+    let why = null;
+    if (!store) why = 'store 未就绪';
+    else if (!store.get('vision.autoDetect')) why = '自动识别未开启（采集面板点「开始实时识别」）';
+    else if (!runState.active) why = '尚未开始一局';
+    else if (!Object.prototype.hasOwnProperty.call(VISION_TO_ENGINE_PHASE, payload.phase)) why = `未知环节 ${payload.phase}`;
+    else if (!VISION_TO_ENGINE_PHASE[payload.phase]) why = `${payload.phase} 不出指令`;
+    else if (pagerRequestLocked) why = '传呼机上还有指令没确认';
+    if (why) {
+      console.log(`[vision] 跳过自动推进（${payload.phase}）：${why}`);
+      return;
+    }
 
     const mapped = VISION_TO_ENGINE_PHASE[payload.phase];
-    if (!mapped) return; // combat_battle：不生成
-    if (pagerRequestLocked) return; // 玩家正在看一条指令，别插队
-
     autoAdvanceBusy = true;
     try {
       if (!_generateInstructionPhase) {
@@ -850,6 +858,29 @@ function registerIpcHandlers() {
     runState.karmaScareThreshold = store.get('settings.karmaScareThreshold') ?? 100;
     queueManager.clear();
     scheduleFreeInstruction();
+
+    // 开局时如果实时识别已经在跑，画面多半已经停在某个环节上了；
+    // 但「环节变化」事件早在开局前就发过了，不会再来一次。这里补一次立即判定，
+    // 让玩家点完「开始一局」就能收到第一条指令，而不是干等画面切页。
+    if (liveVision && liveVision.running) {
+      setTimeout(() => {
+        if (!runState.active || pagerRequestLocked || autoAdvanceBusy) return;
+        const cur = liveVision.lastPhase;
+        if (!cur) return;
+        const mapped = VISION_TO_ENGINE_PHASE[cur];
+        if (!mapped) return;
+        autoAdvanceBusy = true;
+        Promise.resolve()
+          .then(() => {
+            if (runState.currentPhase === 'dungeon') runState.currentPhase = mapped;
+            return _generateInstructionPhase && _generateInstructionPhase(mapped, {
+              vision: { phase: cur, readings: liveVision.lastReadings || null },
+            });
+          })
+          .catch((e) => console.log('[vision] 开局首条指令失败:', e.message))
+          .finally(() => { autoAdvanceBusy = false; });
+      }, 600);
+    }
 
     broadcastRunState();
     broadcastPagerStats();
