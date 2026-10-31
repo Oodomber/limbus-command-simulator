@@ -533,6 +533,14 @@ class CaptureController {
     this._saveHotkeyOk = false;
   }
 
+  /** 供外部（如 dev:enable-shortcuts）在被全局注销后重新注册 F7/F8。
+   *  不这么做的话，开发面板开关一次快捷键就会把采集热键弄丢到重启为止。 */
+  reregisterHotkeys() {
+    this._registerOpenHotkey();
+    this._registerSaveHotkey();
+    return { open: !!this._openHotkeyOk, save: !!this._saveHotkeyOk };
+  }
+
   _broadcast(payload) {
     if (this.window && !this.window.isDestroyed()) {
       this.window.webContents.send('vision2:state', payload);

@@ -309,6 +309,8 @@ async function checkKarmaScare() {
       webPreferences: { contextIsolation: true, nodeIntegration: false, webSecurity: false },
     });
     scareWin.setAlwaysOnTop(true, 'screen-saver');
+    // 全屏透明且置顶：必须穿透鼠标，否则这 10 秒里整块屏幕点不动
+    scareWin.setIgnoreMouseEvents(true, { forward: true });
     scareWin.loadFile(path.join(__dirname, 'renderer', 'scare.html'));
     scareWin.webContents.on('dom-ready', () => {
       scareWin.webContents.executeJavaScript(
@@ -1317,6 +1319,9 @@ function registerIpcHandlers() {
     if (runState.active) {
       registerShortcuts();
     }
+    // F7/F8 是采集器自己注册的，registerShortcuts() 不管它们，
+    // 上面 disable 时被一起注销了，这里必须补回来。
+    if (captureController) captureController.reregisterHotkeys();
     _shortcutsDisabled = false;
   });
 
