@@ -430,6 +430,10 @@ async function toggleLive() {
     liveOn = true;
     els.btnLive.textContent = '停止实时识别';
     els.btnLive.classList.add('on');
+    // 这一步是「识别 → 生成指令」的总开关：
+    // 旧设置页那个 checkbox 绑定在已废弃的 Python 视觉链路上，永远是 disabled，
+    // 所以 vision.autoDetect 恒为 false，自动推进从来没触发过。开始实时识别 = 开启它。
+    try { await api.setConfig('vision.autoDetect', true); } catch (_e) { /* 老版本 preload 没有这个 API */ }
     pollLive();
   } else {
     await api.vision2LiveStop();
@@ -437,6 +441,7 @@ async function toggleLive() {
     els.btnLive.textContent = '开始实时识别';
     els.btnLive.classList.remove('on');
     els.liveScores.textContent = '已停止';
+    try { await api.setConfig('vision.autoDetect', false); } catch (_e) { /* ignore */ }
   }
 }
 
