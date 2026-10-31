@@ -11,12 +11,12 @@
     "fix-data": "node tools/fix-data.js"
   },
   "dependencies": {
-    "electron-store": "^8.2.0",
-    "playwright": "^1.61.1"
+    "electron-store": "^8.2.0"
   },
   "devDependencies": {
     "electron": "^33.4.11",
-    "electron-builder": "^25.0.0"
+    "electron-builder": "^25.0.0",
+    "playwright": "^1.61.1"
   },
   "build": {
     "appId": "com.limbus.command-simulator",
