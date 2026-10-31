@@ -2008,7 +2008,6 @@ app.whenReady().then(async () => {
     persist: (k, v) => store.set(k, v),
   });
   liveVision.init();
-  liveVision.setWindow(overlayWindow);
   setupVisionAuto();
 
   // 开发开关：自动连上窗口后跑一段时间实时识别，把帧数/环节打到 stdout。
@@ -2028,8 +2027,6 @@ app.whenReady().then(async () => {
   }
 
   // Give soundManager access to both windows for playback
-  soundManager.setOverlay(overlayWindow);
-  soundManager.setMain(mainWindow);
 
   // Wire up queue manager callbacks
   queueManager._onShowInstruction = (data) => {
@@ -2048,6 +2045,11 @@ app.whenReady().then(async () => {
   createMainWindow();
   createOverlayWindow();
   createOrbWindow();
+  // 窗口对象就位后再接线：实时识别与音效都需要拿到真实的窗口，
+  // 提前接线时 overlayWindow 还是 null，会被静默丢弃（识别结果发不到传呼机、音效全哑）。
+  liveVision.setWindow(overlayWindow);
+  soundManager.setOverlay(overlayWindow);
+  soundManager.setMain(mainWindow);
   // Hide pager at startup — it only appears when 谨遵指令 is clicked
   overlayWindow.hide();
 
