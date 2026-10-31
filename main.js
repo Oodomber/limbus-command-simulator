@@ -913,7 +913,8 @@ function registerIpcHandlers() {
     dungeonStarted = false;  // 等第一次识别到卡包页才认为真正进了地牢
     // 点「开始一局」就把视觉采集和识别拉起来，玩家不用再按 F7 开面板手动连接。
     // 开局前的页面照样会被识别，但闸门会拦住不出指令。
-    autoStartVision();
+    // 注意：必须放在 runState.active = true 之后，否则重试逻辑会以为还没开局。
+    setTimeout(() => { autoStartVision(); }, 0);
     karmaScareTriggered = false;
     runState.karmaScareThreshold = store.get('settings.karmaScareThreshold') ?? 100;
     queueManager.clear();
@@ -2204,7 +2205,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-10-31-r4（自动推进清队列 + 传呼机置顶）');
+  console.log('[main] 视觉链路构建 2026-10-31-r5（开局自动连窗口+自动识别；进地牢前不发指令）');
 });
 
 app.on('before-quit', () => {
