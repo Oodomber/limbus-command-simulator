@@ -17,7 +17,7 @@ const PHASES = [
 // 允许「自环」（同一页多帧）与少量合理回退（比如误触返回）。
 const LEGAL = {
   cardpack: ['route', 'cardpack', 'combat', 'event', 'shop'],
-  route: ['cardpack', 'route', 'combat', 'event', 'shop', 'boss_reward'],
+  route: ['cardpack', 'route', 'combat', 'event', 'shop', 'boss_reward', 'judgment'],
   combat: ['combat_battle', 'combat', 'route', 'boss_reward'],
   combat_battle: ['combat', 'combat_battle', 'route', 'boss_reward'],
   event: ['judgment', 'event_reward', 'event', 'route'],
@@ -30,7 +30,8 @@ const LEGAL = {
 const DEFAULTS = {
   holdFrames: 3, // 合法转移：连续多少帧一致才切换
   illegalHoldFrames: 4, // 图上没画的转移：多要一帧证据才认（不直接丢，避免死锁）
-  leadRatio: 1.15, // 候选得分要比当前高多少才算「真的换了」
+  leadRatio: 1.15, // 候选得分要比当前高多少才算「真的换了」（比例门槛）
+  leadAbs: 0.06, // 绝对领先门槛：只要拉开这么多就够，避免比例门槛在小分差时死锁
   minScore: 0.45, // 低于这个分数视为「认不出来」
 };
 
@@ -100,8 +101,12 @@ class VisionStateMachine {
       return { phase: this.phase, changed: false, confident, reason: 'hold' };
     }
 
-    // 切换需要足够领先，否则当作抖动
-    if (!confident || topScore < currentScore * this.cfg.leadRatio) {
+    // 切换需要足够领先，否则当作抖动。
+    // 用「绝对差 + 比例」双门槛：单纯乘系数时，旧页残留 0.48 / 新页 0.50 永远达不到 1.15 倍，
+    // 会每帧清空候选、死锁在旧环节；而旧页得分为负时比例门槛又会完全失效。
+    const lead = topScore - currentScore;
+    const enoughLead = lead >= this.cfg.leadAbs || topScore >= currentScore * this.cfg.leadRatio;
+    if (!confident || !enoughLead) {
       this.candidate = null;
       this.candidateCount = 0;
       return { phase: this.phase, changed: false, confident, reason: 'weak' };

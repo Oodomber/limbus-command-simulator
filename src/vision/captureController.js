@@ -345,7 +345,7 @@ class CaptureController {
   }
 
   // ── 向渲染进程要一帧 ──
-  _requestFrame(timeoutMs = 6000) {
+  _requestFrame(timeoutMs = 6000, opts = {}) {
     return new Promise((resolve, reject) => {
       if (!this.window || this.window.isDestroyed()) {
         return reject(new Error('采集面板未打开'));
@@ -359,7 +359,10 @@ class CaptureController {
       }, timeoutMs);
 
       this._pending.set(reqId, { resolve, reject, timer });
-      this.window.webContents.send('vision2:grab', { reqId });
+      // live=true 用于实时识别：只要 1280 宽的 JPEG，编码耗时从 ~200ms 降到 ~10ms。
+      // 存数据集时仍是原分辨率 PNG。
+      const live = !!opts.live;
+      this.window.webContents.send('vision2:grab', { reqId, live });
     });
   }
 

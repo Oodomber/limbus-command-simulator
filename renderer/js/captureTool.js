@@ -53,6 +53,10 @@ const PHASE_LABEL = {
 
 let liveOn = false;
 
+// 实时识别专用画布：缩到 1280 宽再编 JPEG，避免每帧全尺寸 PNG 拖死渲染进程
+const liveCanvas = document.createElement('canvas');
+const liveCtx = liveCanvas.getContext('2d', { alpha: false });
+
 // 离屏画布：只在取帧时使用，不插入 DOM
 const scratch = document.createElement('canvas');
 const scratchCtx = scratch.getContext('2d', { alpha: false });
@@ -62,6 +66,10 @@ const probe = document.createElement('canvas');
 probe.width = 64;
 probe.height = 36;
 const probeCtx = probe.getContext('2d', { alpha: false, willReadFrequently: true });
+
+function looksBlankFrom(source) {
+  return looksBlank(source);
+}
 
 /** 判断一帧是不是「空白」——全黑/全透明/单色，说明窗口根本没被真正抓到
  *  注意不能只看 max-min：鼠标指针就是一个高亮像素，会把差值拉到 255。 */
@@ -258,11 +266,27 @@ async function connectSelected() {
 
 // ── 取帧 ──
 
-async function grabToDataURL() {
+async function grabToDataURL(live) {
   if (state.mode === 'stream') {
     const w = els.video.videoWidth;
     const h = els.video.videoHeight;
     if (!w || !h) throw new Error('尚未收到画面');
+
+    // 实时识别：缩到 1280 宽再编 JPEG。锚点全是归一化坐标，缩放不掉精度；
+    // 原来每帧全尺寸 PNG 要 100~250ms，直接把采样率拖到 1~1.5fps。
+    if (live) {
+      const scale = Math.min(1, 1280 / w);
+      const lw = Math.max(1, Math.round(w * scale));
+      const lh = Math.max(1, Math.round(h * scale));
+      if (liveCanvas.width !== lw || liveCanvas.height !== lh) {
+        liveCanvas.width = lw;
+        liveCanvas.height = lh;
+      }
+      liveCtx.drawImage(els.video, 0, 0, lw, lh);
+      const blank = looksBlankFrom(liveCanvas);
+      return { dataURL: liveCanvas.toDataURL('image/jpeg', 0.82), width: lw, height: lh, blank };
+    }
+
     if (scratch.width !== w || scratch.height !== h) {
       scratch.width = w;
       scratch.height = h;
@@ -282,9 +306,9 @@ async function grabToDataURL() {
   throw new Error('尚未连接游戏窗口');
 }
 
-async function handleGrab(reqId) {
+async function handleGrab(reqId, live) {
   try {
-    const frame = await grabToDataURL();
+    const frame = await grabToDataURL(!!live);
     api.vision2Frame({ reqId, ...frame });
   } catch (e) {
     api.vision2CaptureError({ reqId, error: e.message });
@@ -347,7 +371,7 @@ function subscribe() {
     setStatus('已断开');
   });
 
-  api.onVision2Grab((payload) => handleGrab(payload.reqId));
+  api.onVision2Grab((payload) => handleGrab(payload.reqId, payload.live));
 
   api.onVision2State((payload = {}) => {
     if (payload.phase) {

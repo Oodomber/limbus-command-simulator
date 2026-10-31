@@ -563,6 +563,17 @@ class InstructionEngine {
 
   _pickRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 
+  /** 不放回地随机取 n 个（Fisher-Yates 局部洗牌，避免 sort(Math.random) 的非均匀偏差） */
+  _pickRandomN(arr, n) {
+    const a = arr.slice();
+    const k = Math.min(n, a.length);
+    for (let i = 0; i < k; i++) {
+      const j = i + Math.floor(Math.random() * (a.length - i));
+      const t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a.slice(0, k);
+  }
+
   /**
    * Pick a template with 3-tier probability: 40% 明示, 40% 暗示, 20% 谜语.
    * Falls back gracefully if a tier has no templates defined.
@@ -1200,7 +1211,7 @@ class InstructionEngine {
       const instructions = [];
       const validItems = recognizedItems.filter(i => i.id && i.name);
       // Pick up to 3 random recognized items for instructions
-      const picked = this._shuffle([...validItems]).slice(0, 3);
+      const picked = this._pickRandomN([...validItems], 3);
       for (const item of picked) {
         const tpl = this._pickRandom(templates.shop_buy_specific || DEFAULT_TEMPLATES.shop_buy_specific);
         const tags = (item.tags?.effect || []).join('、') || '未知';

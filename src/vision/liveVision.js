@@ -87,7 +87,7 @@ class LiveVision {
     if (!this.cc || !this.cc.sourceId) return { ok: false, error: '尚未连接游戏窗口' };
     this.busy = true;
     try {
-      const frame = await this.cc._requestFrame(4000);
+      const frame = await this.cc._requestFrame(4000, { live: true });
       if (!frame || frame.blank) return { ok: false, error: '取到空白帧' };
 
       const img = nativeImage.createFromDataURL(frame.dataURL);
