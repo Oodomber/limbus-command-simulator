@@ -719,10 +719,25 @@ function broadcastSlot(text) {
 
 /** 依次播报一批指令，返回条数。（不阻塞、不需要确认） */
 function broadcastInstructions(instructions) {
-  const items = (Array.isArray(instructions) ? instructions : [])
-    .map((i) => (i && i.text) || '')
-    .filter(Boolean);
+  const list = (Array.isArray(instructions) ? instructions : []).filter((i) => i && i.text);
+  const items = list.map((i) => i.text);
   if (items.length === 0) return 0;
+
+  // 广播模式下，开局饰品（starting_relic）这一步是开局流程的最后一步。
+  // 它的指令一播出去，传呼机和悬浮球就再没有被用到的机会了——立刻收起，
+  // 不要等「识别到地牢页面」（那中间隔着卡包/路线的加载，玩家会看到浮窗赖着不走）。
+  if (list.some((i) => i.phase === 'starting_relic')) {
+    let hid = false;
+    if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
+      overlayWindow.hide();
+      hid = true;
+    }
+    if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) {
+      orbWindow.hide();
+      hid = true;
+    }
+    if (hid) console.log('[vision] 广播模式 → 开局饰品指令已发出，收起传呼机与悬浮球');
+  }
 
   if (broadcastHideTimer) { clearTimeout(broadcastHideTimer); broadcastHideTimer = null; }
 
@@ -2716,7 +2731,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-02-r16（进地牢即收浮窗 / 编队快捷键修复）');
+  console.log('[main] 视觉链路构建 2026-11-02-r17（开局饰品指令一发出即收浮窗）');
 });
 
 app.on('before-quit', () => {
