@@ -117,7 +117,9 @@ let _userDataPath = null;  // set in app.whenReady() — needed by scheduleAutoD
 // deploy_identity → deploy_ego → starlight → starting_relic → dungeon(free)
 // (formation window auto-opens after EGO, not a phase)
 const PHASE_ORDER = ['deploy_identity', 'deploy_ego', 'starlight', 'starting_relic', 'dungeon'];
-const DUNGEON_PHASES = ['cardpack', 'route', 'combat', 'event', 'event_reward', 'judgment', 'shop', 'hidden_boss', 'boss_reward'];
+// 地牢内可启用的环节（喂「环节启用」UI 与 request 的 availablePhases）。
+// 隐藏BOSS 环节已取消；战斗拆成「指令选择」与「交战进行中」两个；关卡饰品奖励单列。
+const DUNGEON_PHASES = ['cardpack', 'route', 'combat', 'combat_battle', 'event', 'judgment', 'event_reward', 'shop', 'boss_reward', 'combat_reward'];
 
 const PHASE_LABELS = {
   deploy_identity: '编队（人格）',
@@ -295,10 +297,16 @@ let visionGateReason = '';
 /**
  * 是否已经真正进入地牢。
  * 开局前的那些页面（选人格/编队/星光/初始饰品）不需要出指令——那时候编队和层数
- * 都还没定下来，出的指令一定是错的。所以只有在「第一次识别到卡包页」之后才认为
- * 进了地牢，从那之后才开始识别环节并发放指令。
+ * 都还没定下来，出的指令一定是错的。所以只有在「第一次识别到地牢内的页面」之后
+ * 才认为进了地牢，从那之后才开始识别环节并发放指令。
  */
 let dungeonStarted = false;
+
+/** 判定「已经在地牢里」的环节集合（9 个地牢环节 + 由 boss_reward 派生的关卡饰品奖励） */
+const IN_DUNGEON_PHASES = new Set([
+  'cardpack', 'route', 'combat', 'combat_battle', 'event',
+  'judgment', 'event_reward', 'shop', 'boss_reward', 'combat_reward',
+]);
 /** 由 registerIpcHandlers 填入：generateInstructionPhase 定义在那个函数作用域里 */
 let _generateInstructionPhase = null;
 
@@ -362,19 +370,20 @@ function setupVisionAuto() {
     else if (!runState.active) why = '尚未开始一局';
     else if (!dungeonStarted) {
       // 开局前的页面不发放指令：此时编队/星光/层数都还没定，出了也是错的。
-      // 「第一次识别到卡包页」= 已经进了地牢，从这一刻起才开始正式识别与发指令。
-      if (payload.phase === 'cardpack') {
+      // 「第一次识别到地牢内的页面」= 开局（含初始饰品）已经结束，从这一刻起才开始正式识别与发指令。
+      // 不能只认 cardpack：初始饰品选完可能先落到路线页，只等卡包页会晚好几秒，
+      // 表现就是「已经进地牢了传呼机和悬浮球还挂在屏幕上」。
+      if (IN_DUNGEON_PHASES.has(payload.phase)) {
         dungeonStarted = true;
-        console.log('[vision] 识别到卡包页 → 判定已进入地牢，开始自动发放指令');
-        // 兜底：若玩家没启用「初始饰品」环节，上面的收起逻辑不会触发，
-        // 那就在确认进入地牢这一刻把两个窗口收掉（广播模式本来也不该有两个浮窗）。
+        console.log(`[vision] 识别到 ${payload.phase} → 判定已进入地牢，开始自动发放指令`);
+        // 广播模式：进入地牢这一刻就把两个浮窗收掉（广播本来也不该有它们）。
         if (isBroadcastMode() && overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
           overlayWindow.hide();
           if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) orbWindow.hide();
-          console.log('[vision] 广播模式 → 已收起传呼机与悬浮球（兜底）');
+          console.log('[vision] 广播模式 → 已收起传呼机与悬浮球');
         }
       } else {
-        why = '尚未进入地牢（等第一次识别到卡包页）';
+        why = '尚未进入地牢（等第一次识别到地牢内的页面）';
       }
     }
     if (!why) {
@@ -2219,16 +2228,41 @@ function registerIpcHandlers() {
 // ── Global shortcuts ──
 let _registeredShortcuts = []; // track accelerators for unregister
 
+const HOTKEY_DEFAULTS = {
+  hotkeyRequest: 'F9',
+  hotkeyToggleOverlay: 'F10',
+  hotkeyVetoDanmaku: 'F11',
+  hotkeyComplete: 'F2',
+  hotkeyFail: 'F3',
+  hotkeyFormation: 'F4',
+};
+
+/** 把无法注册的鼠标类绑定清掉，回落到默认键盘键（幂等，可在启动和注册前各调一次） */
+function sanitizeHotkeys() {
+  if (!store) return;
+  for (const [key, def] of Object.entries(HOTKEY_DEFAULTS)) {
+    const cur = store.get(`settings.${key}`);
+    if (!cur) continue;
+    if (/^Mouse/i.test(String(cur).trim())) {
+      store.set(`settings.${key}`, def);
+      console.warn(`[shortcut] ${key} 原值 "${cur}" 是鼠标按键，无法作为全局快捷键，已回落到 ${def}`);
+    }
+  }
+}
+
 /**
  * Register all global shortcuts from current store settings.
  * Called on startup and whenever shortcut bindings change.
  */
-function registerShortcuts() {
-  // Unregister all existing shortcuts
+function registerShortcuts() {  // Unregister all existing shortcuts
   _registeredShortcuts.forEach(accel => {
     try { globalShortcut.unregister(accel); } catch (e) { /* ignore */ }
   });
   _registeredShortcuts = [];
+
+  // 鼠标侧键（Mouse4/Mouse5/MouseMiddle…）不是 Electron 全局快捷键能注册的东西，
+  // 存进配置只会静默失效——注册前清掉，回落到默认键盘键。
+  sanitizeHotkeys();
 
   const hotkeys = {
     request:        store.get('settings.hotkeyRequest')        || 'F9',
@@ -2307,11 +2341,17 @@ function registerShortcuts() {
 
   // ── Handler: 编队窗口（广播模式下传呼机/悬浮球都收起，编队只能靠快捷键）──
   function handleFormation() {
-    if (formationWindow && !formationWindow.isDestroyed() && formationWindow.isVisible()) {
-      formationWindow.close();
-    } else {
-      createFormationWindow();
+    if (formationWindow && !formationWindow.isDestroyed()) {
+      if (formationWindow.isVisible()) {
+        formationWindow.hide();
+      } else {
+        if (formationWindow.isMinimized()) formationWindow.restore();
+        formationWindow.show();
+        formationWindow.focus();
+      }
+      return;
     }
+    createFormationWindow();
   }
 
   const handlers = {
@@ -2376,6 +2416,7 @@ app.whenReady().then(async () => {
 
   // ── Store must init first so we can read dataVersion ──
   store = new Store({ defaults: getConfigDefaults() });
+  sanitizeHotkeys();
 
   // ── Data version check: clear stale userData when bundled data is newer ──
   const storedDataVersion = store.get('dataVersion') || 0;
@@ -2675,7 +2716,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-02-r15（镜牢难度默认困难 / 显示默认广播 / 编队快捷键可改 / 开局饰品选完才收浮窗）');
+  console.log('[main] 视觉链路构建 2026-11-02-r16（进地牢即收浮窗 / 编队快捷键修复）');
 });
 
 app.on('before-quit', () => {

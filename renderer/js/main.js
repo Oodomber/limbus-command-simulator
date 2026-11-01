@@ -1646,7 +1646,7 @@ function setupHotkeySettings() {
     listeningBtn = btn;
     listeningKey = key;
     btn.dataset.prevText = btn.textContent;
-    btn.textContent = '按下按键或鼠标侧键...';
+    btn.textContent = '按下键盘按键（Esc 取消）';
     btn.classList.add('listening');
   }
 
@@ -1709,11 +1709,18 @@ function setupHotkeySettings() {
     e.preventDefault();
     e.stopPropagation();
 
-    // Map mouse button values to accelerator names
-    const MOUSE_NAMES = { 1: 'MouseMiddle', 2: 'MouseRight', 3: 'Mouse4', 4: 'Mouse5' };
-    const name = MOUSE_NAMES[e.button];
-    if (!name) return; // Left click (0) ignored — too easy to trigger accidentally
-    finishBinding(name);
+    // 鼠标侧键无法作为 Electron 全局快捷键（register 会静默失败），
+    // 所以这里不提交绑定，只提示玩家改用键盘键。
+    if (e.button !== 0) {
+      listeningBtn.textContent = '鼠标侧键不支持，请按键盘键';
+      listeningBtn.classList.add('rejected');
+      setTimeout(() => {
+        if (listeningBtn) {
+          listeningBtn.classList.remove('rejected');
+          listeningBtn.textContent = '按下键盘按键（Esc 取消）';
+        }
+      }, 1600);
+    }
   }
 
   document.addEventListener('keydown', handleKeyCapture, true);
