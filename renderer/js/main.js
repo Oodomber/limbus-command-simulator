@@ -2158,6 +2158,7 @@ async function showDevMenu() {
     <h3 style="color:#ffd700;margin:0 0 16px;">🔧 开发者菜单</h3>
     <div style="display:flex;flex-direction:column;gap:8px;">
       <button class="dev-menu-btn" data-action="editor">✏️ 数据编辑器 (人格/EGO/饰品)</button>
+      <button class="dev-menu-btn" data-action="capture-panel">🎥 视觉采集面板（截图/样本/实时识别）</button>
       <button class="dev-menu-btn" data-action="weaver">🕸 编织器 (指令生成调试)</button>
       <button class="dev-menu-btn" data-action="reload">🔄 重新加载数据</button>
       <button class="dev-menu-btn" data-action="stats">📊 查看数据统计</button>
@@ -2193,6 +2194,11 @@ async function showDevMenu() {
   });
 
   box.querySelector('[data-action="editor"]').addEventListener('click', () => { overlay.remove(); showDataEditor(); });
+  box.querySelector('[data-action="capture-panel"]').addEventListener('click', async () => {
+    // 采集面板默认是隐藏的（识别不需要它），这里只是把它显示出来
+    await window.electronAPI.vision2Open();
+    showToast('🎥', '视觉采集面板已打开');
+  });
   box.querySelector('[data-action="weaver"]').addEventListener('click', async () => {
     await window.electronAPI.openWeaver();
     overlay.remove();

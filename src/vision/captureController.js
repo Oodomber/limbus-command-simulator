@@ -122,16 +122,42 @@ class CaptureController {
     if (!app.isPackaged && process.env.VISION2_AUTOPEN === '1') {
       setTimeout(() => this.open(), 1200);
     }
+    // 开发期自检：VISION2_AUTOCONNECT=1 时静默创建隐藏采集窗口，
+    // 由 _createWindow 里的自检块连接窗口并落一张帧，用来验证
+    // 「面板不显示也能取到画面」。
+    if (!app.isPackaged && process.env.VISION2_AUTOCONNECT === '1') {
+      setTimeout(() => this.ensure(), 1200);
+    }
   }
 
   // ── 面板窗口 ──
+  /**
+   * 确保采集窗口存在。
+   *
+   * 采集必须能在「面板没打开」的情况下工作：截图流由这个窗口的渲染进程持有，
+   * 所以它默认是隐藏的（show:false + skipTaskbar），只有玩家主动打开面板时才显示。
+   * 隐藏窗口里 video 仍然解码（backgroundThrottling:false），取帧走 drawImage。
+   */
+  ensure() {
+    if (this.window && !this.window.isDestroyed()) return this.window;
+    this._createWindow(false);
+    return this.window;
+  }
+
   open() {
     if (this.window && !this.window.isDestroyed()) {
+      this.window.setSkipTaskbar(false);
+      this.window.setAlwaysOnTop(true, 'screen-saver');
+      this.window.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
       this.window.show();
       this.window.focus();
       return { ok: true, reopened: true };
     }
+    this._createWindow(true);
+    return { ok: true };
+  }
 
+  _createWindow(visible) {
     // 固定停在副屏/主屏右侧，避免每次打开位置漂移或掉出屏幕底边
     const PANEL_W = 384;
     const PANEL_H = 744;
@@ -151,13 +177,14 @@ class CaptureController {
       height: PANEL_H,
       x: px,
       y: py,
+      show: !!visible,
       minWidth: 340,
       minHeight: 520,
       frame: false,
       hasShadow: true,
       resizable: true,
-      skipTaskbar: false,
-      alwaysOnTop: true,
+      skipTaskbar: !visible,
+      alwaysOnTop: !!visible,
       backgroundColor: '#14121a',
       title: '视觉采集',
       webPreferences: {
@@ -177,9 +204,20 @@ class CaptureController {
         console.log('[vision2/renderer]', message);
       });
     }
-    // 'screen-saver' 层级可压在无边框全屏的游戏之上
-    this.window.setAlwaysOnTop(true, 'screen-saver');
-    this.window.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+    // 'screen-saver' 层级可压在无边框全屏的游戏之上（只在可见时才有意义）
+    if (visible) {
+      this.window.setAlwaysOnTop(true, 'screen-saver');
+      this.window.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+    }
+
+    // 关闭面板只隐藏，不销毁——采集流活在这个窗口里，
+    // 真销毁会导致「关掉面板后识别就停了」。
+    this.window.on('close', (e) => {
+      if (!this._destroying) {
+        e.preventDefault();
+        this.window.hide();
+      }
+    });
 
     this.window.on('closed', () => {
       this.window = null;
@@ -209,8 +247,6 @@ class CaptureController {
         }
       });
     }
-
-    return { ok: true };
   }
 
   // ── 枚举可捕获的窗口 ──
@@ -312,7 +348,8 @@ class CaptureController {
     this.sourceName = name || '';
     this.transport = 'none';
 
-    if (!this.window || this.window.isDestroyed()) return { ok: false, error: '采集面板未打开' };
+    if (!this.window || this.window.isDestroyed()) this.ensure();
+    if (!this.window || this.window.isDestroyed()) return { ok: false, error: '采集窗口创建失败' };
 
     // 渲染进程负责 getUserMedia，主进程只下发目标
     this.window.webContents.send('vision2:do-attach', {
@@ -379,9 +416,10 @@ class CaptureController {
    */
   async autoAttachGame({ timeoutMs = 12000 } = {}) {
     try {
-      if (!this.window || this.window.isDestroyed()) this.open();
+      // 只用隐藏的采集窗口，不弹面板
+      this.ensure();
       const ready = await this._waitPanelReady(8000);
-      if (!ready) return { ok: false, error: '采集面板未能加载' };
+      if (!ready) return { ok: false, error: '采集窗口未能加载' };
 
       const wins = await this.listWindows();
       // 只认游戏窗口。之前这里是「找不到游戏就退回第一个非空窗口」，
@@ -439,7 +477,10 @@ class CaptureController {
   _requestFrame(timeoutMs = 6000, opts = {}) {
     return new Promise((resolve, reject) => {
       if (!this.window || this.window.isDestroyed()) {
-        return reject(new Error('采集面板未打开'));
+        this.ensure();
+        if (!this.window || this.window.isDestroyed()) {
+          return reject(new Error('采集窗口不可用'));
+        }
       }
       if (!this.sourceId) return reject(new Error('尚未连接游戏窗口'));
 
@@ -642,6 +683,7 @@ class CaptureController {
     this.setAuto(false);
     this._unregisterSaveHotkey();
     try { globalShortcut.unregister(OPEN_HOTKEY); } catch (_e) { /* ignore */ }
+    this._destroying = true;
     if (this.window && !this.window.isDestroyed()) this.window.destroy();
     this.window = null;
   }
