@@ -151,6 +151,32 @@ function getNextPhase(current) {
   return 'dungeon';
 }
 
+/**
+ * 推进到下一个环节。
+ *
+ * 开局（选人格 / EGO / 编队 / 星光 / 初始饰品）走完、currentPhase 变成 'dungeon'
+ * 的那一瞬间，就是「开局全部结束」。广播模式下玩家此时已经不再需要传呼机和悬浮球，
+ * 必须在这里立刻收掉——不能等视觉识别到地牢页面，那中间隔着页面加载，玩家会看到
+ * 浮窗赖着不走。也不能只看 starting_relic 那条指令，因为玩家可以关掉这个环节。
+ */
+function advancePhase() {
+  const before = runState.currentPhase;
+  advancePhase();
+  if (runState.currentPhase === 'dungeon' && before !== 'dungeon' && isBroadcastMode()) {
+    let hid = false;
+    if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
+      overlayWindow.hide();
+      hid = true;
+    }
+    if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) {
+      orbWindow.hide();
+      hid = true;
+    }
+    if (hid) console.log('[vision] 开局结束（进入地牢）→ 广播模式，收起传呼机与悬浮球');
+  }
+  return runState.currentPhase;
+}
+
 function sendPhaseChanged() {
   if (mainWindow && !mainWindow.isDestroyed()) {
     mainWindow.webContents.send('run:phase-changed', {
@@ -1287,7 +1313,7 @@ function registerIpcHandlers() {
     if (!isPreDungeon && !isEnabled(phase)) return null;
     // If pre-dungeon phase is disabled, auto-advance
     if (isPreDungeon && !enabledPhases.includes(phase)) {
-      runState.currentPhase = getNextPhase(runState.currentPhase);
+      advancePhase();
       sendPhaseChanged();
       return null;
     }
@@ -1525,15 +1551,6 @@ function registerIpcHandlers() {
     const inst = queueManager.handleComplete();
     if (!inst) return { success: false, error: '没有待确认的指令' };
 
-    // 广播模式：开局饰品选完（starting_relic 确认）就把传呼机和悬浮球收起来，
-    // 之后整个自由环节只看横幅。放在这里而不是「第一次识别到卡包页」，
-    // 是因为开局流程本身还要用传呼机指路。
-    if (isBroadcastMode() && inst.phase === 'starting_relic') {
-      if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) overlayWindow.hide();
-      if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) orbWindow.hide();
-      console.log('[vision] 广播模式 → 开局饰品已选完，收起传呼机与悬浮球');
-    }
-
     runState.currentRunBlessing += 1;
     const global = store.get('globalStats');
     global.totalBlessing = (global.totalBlessing || 0) + 1;
@@ -1597,7 +1614,7 @@ function registerIpcHandlers() {
   });
 
   ipcMain.handle('run:advance-phase', () => {
-    runState.currentPhase = getNextPhase(runState.currentPhase);
+    advancePhase();
     // Notify main window of phase change
     sendPhaseChanged();
     return { currentPhase: runState.currentPhase };
@@ -1607,7 +1624,7 @@ function registerIpcHandlers() {
     // Allow skipping starlight, starting_relic, and cardpack
     const skippable = ['starlight', 'starting_relic'];
     if (skippable.includes(runState.currentPhase)) {
-      runState.currentPhase = getNextPhase(runState.currentPhase);
+      advancePhase();
       sendPhaseChanged();
       return { success: true, currentPhase: runState.currentPhase };
     }
@@ -1968,7 +1985,7 @@ function registerIpcHandlers() {
         if (enabledPhases.includes(cp)) {
           phases = [{ id: cp, label: PHASE_LABELS[cp] || cp }];
         } else {
-          runState.currentPhase = getNextPhase(runState.currentPhase);
+          advancePhase();
           sendPhaseChanged();
           return;
         }
@@ -2044,7 +2061,7 @@ function registerIpcHandlers() {
   ipcMain.on('pager:skip-phase', () => {
     const skippable = ['starlight', 'starting_relic'];
     if (skippable.includes(runState.currentPhase)) {
-      runState.currentPhase = getNextPhase(runState.currentPhase);
+      advancePhase();
       sendPhaseChanged();
     }
   });
@@ -2078,14 +2095,14 @@ function registerIpcHandlers() {
       if (orbWindow && !orbWindow.isDestroyed()) {
         orbWindow.webContents.send('orb:phase-complete', { phase: 'deploy_identity' });
       }
-      runState.currentPhase = getNextPhase(runState.currentPhase);
+      advancePhase();
       unlockPagerRequest();
       sendPhaseChanged();
     } else if (completedPhase === 'deploy_ego') {
       // Auto-open formation window after EGO completed
       createFormationWindow();
       // Advance to starlight
-      runState.currentPhase = getNextPhase(runState.currentPhase);
+      advancePhase();
       unlockPagerRequest();
       sendPhaseChanged();
     }
@@ -2141,7 +2158,7 @@ function registerIpcHandlers() {
       if (PHASE_ORDER.includes(runState.currentPhase) && runState.currentPhase !== 'dungeon') {
         if (runState.pendingBatchRemaining <= 0) {
           runState.pendingBatchRemaining = 0;
-          runState.currentPhase = getNextPhase(runState.currentPhase);
+          advancePhase();
           unlockPagerRequest();
           sendPhaseChanged();
         }
@@ -2215,7 +2232,7 @@ function registerIpcHandlers() {
       if (PHASE_ORDER.includes(runState.currentPhase) && runState.currentPhase !== 'dungeon') {
         if (runState.pendingBatchRemaining <= 0) {
           runState.pendingBatchRemaining = 0;
-          runState.currentPhase = getNextPhase(runState.currentPhase);
+          advancePhase();
           unlockPagerRequest();
           sendPhaseChanged();
         }
@@ -2304,7 +2321,7 @@ function registerShortcuts() {  // Unregister all existing shortcuts
       if (enabledPhases.includes(cp)) {
         phases = [{ id: cp, label: PHASE_LABELS[cp] || cp }];
       } else {
-        runState.currentPhase = getNextPhase(runState.currentPhase);
+        advancePhase();
         sendPhaseChanged();
         return;
       }
@@ -2733,7 +2750,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-02-r18（开局走传呼机确认 / 进地牢才切广播）');
+  console.log('[main] 视觉链路构建 2026-11-02-r19（开局环节推进到 dungeon 的那一刻立刻收浮窗）');
 });
 
 app.on('before-quit', () => {
