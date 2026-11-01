@@ -4471,7 +4471,7 @@
     "special": ""
   },
   {
-    "name": "流浪乐队头目",
+    "name": "流浪乐队老大",
     "sinner": "辛克莱",
     "rarity": "二灯",
     "tags": {
@@ -5854,6 +5854,76 @@
     ],
     "id": "gregor_lcex5fex2egx2eox3aaedd",
     "faction": "LCE、E.G.O装备、边狱公司",
+    "special": ""
+  },
+  {
+    "name": "黎明事务所收尾人",
+    "sinner": "浮士德",
+    "rarity": "三灯",
+    "tags": {
+      "faction": [
+        "收尾人",
+        "黎明事务所"
+      ],
+      "effect": [
+        "烧伤",
+        "震颤",
+        "炎蝶之棺",
+        "震颤-灼热",
+        "广域乱射",
+        "威力降低",
+        "过热的棺",
+        "战斗直觉"
+      ],
+      "damageType": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "暴怒",
+        "暴食",
+        "傲慢"
+      ]
+    },
+    "coreMechanic": [
+      "烧伤",
+      "震颤"
+    ],
+    "id": "faust_limingshiwusuoshouweiren",
+    "faction": "黎明事务所收尾人、收尾人、黎明事务所",
+    "special": ""
+  },
+  {
+    "name": "黎明事务所代表",
+    "sinner": "格里高尔",
+    "rarity": "三灯",
+    "tags": {
+      "faction": [
+        "收尾人",
+        "黎明事务所"
+      ],
+      "sinAffinity": [
+        "暴怒",
+        "傲慢",
+        "色欲"
+      ],
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "烧伤",
+        "震颤",
+        "黎明之火",
+        "守护",
+        "迎接黎明",
+        "援护防御"
+      ]
+    },
+    "coreMechanic": [
+      "烧伤",
+      "震颤"
+    ],
+    "id": "gregor_limingshiwusuodaibiao",
+    "faction": "黎明事务所代表、收尾人、黎明事务所",
     "special": ""
   }
 ]
