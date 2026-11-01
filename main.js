@@ -14,6 +14,13 @@ app.commandLine.appendSwitch('disable-background-timer-throttling');
 // 本地页面自动播放音效（传呼机 / 广播横幅）不需要用户手势
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
+// 游戏跑独占全屏时，Windows Graphics Capture 偶尔抓不到新帧，Chromium 会往 stderr
+// 刷 `wgc_capture_session.cc(228) ProcessFrame failed, using existing frame: -2147467259`。
+// 这是底层 C++ 打的日志，console.log 拦不住，只能关掉 Chromium 自己的日志输出。
+// 我们的业务日志走 setupLogFile()（写 userData/logs/main.log），不受影响。
+app.commandLine.appendSwitch('disable-logging');
+app.commandLine.appendSwitch('log-level', '3');
+
 const path = require('path');
 const Store = require('electron-store');
 const { DataLoader, DATA_TYPES } = require('./src/dataLoader');
@@ -159,22 +166,35 @@ function getNextPhase(current) {
  * 必须在这里立刻收掉——不能等视觉识别到地牢页面，那中间隔着页面加载，玩家会看到
  * 浮窗赖着不走。也不能只看 starting_relic 那条指令，因为玩家可以关掉这个环节。
  */
+let advancingPhase = false;
+
 function advancePhase() {
-  const before = runState.currentPhase;
-  advancePhase();
-  if (runState.currentPhase === 'dungeon' && before !== 'dungeon' && isBroadcastMode()) {
-    let hid = false;
-    if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
-      overlayWindow.hide();
-      hid = true;
-    }
-    if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) {
-      orbWindow.hide();
-      hid = true;
-    }
-    if (hid) console.log('[vision] 开局结束（进入地牢）→ 广播模式，收起传呼机与悬浮球');
+  // 防递归兜底：这个函数以前被一次批量替换误改成自调用，直接把主进程栈打爆
+  // （RangeError: Maximum call stack size exceeded，传呼机再也确认不了）。
+  if (advancingPhase) {
+    console.error('[phase] advancePhase 被重入，已忽略（防止死循环）');
+    return runState.currentPhase;
   }
-  return runState.currentPhase;
+  advancingPhase = true;
+  try {
+    const before = runState.currentPhase;
+    runState.currentPhase = getNextPhase(runState.currentPhase);
+    if (runState.currentPhase === 'dungeon' && before !== 'dungeon' && isBroadcastMode()) {
+      let hid = false;
+      if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
+        overlayWindow.hide();
+        hid = true;
+      }
+      if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) {
+        orbWindow.hide();
+        hid = true;
+      }
+      if (hid) console.log('[vision] 开局结束（进入地牢）→ 广播模式，收起传呼机与悬浮球');
+    }
+    return runState.currentPhase;
+  } finally {
+    advancingPhase = false;
+  }
 }
 
 function sendPhaseChanged() {
@@ -2750,7 +2770,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-02-r19（开局环节推进到 dungeon 的那一刻立刻收浮窗）');
+  console.log('[main] 视觉链路构建 2026-11-02-r20（修 advancePhase 自递归崩溃 / 关掉 WGC 刷屏日志）');
 });
 
 app.on('before-quit', () => {
