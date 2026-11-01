@@ -64,3 +64,14 @@ function hide() {
 
 window.broadcastAPI.onShow((data) => show(data && data.text, data && data.duration));
 window.broadcastAPI.onHide(() => hide());
+
+// 音效：和传呼机一样，用 <audio id="sfx-xxx">，名字里的下划线换成连字符
+window.broadcastAPI.onPlaySound((name) => {
+  const id = 'sfx-' + String(name || '').replace(/_/g, '-');
+  const el = document.getElementById(id);
+  if (!el) return;
+  try {
+    el.currentTime = 0;
+    el.play().catch(() => {});
+  } catch {}
+});

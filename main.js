@@ -11,6 +11,8 @@ const {
 // This is critical for the typewriter animation to remain smooth when the
 // user is playing the game (game window has focus, overlay is "background").
 app.commandLine.appendSwitch('disable-background-timer-throttling');
+// 本地页面自动播放音效（传呼机 / 广播横幅）不需要用户手势
+app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
 const path = require('path');
 const Store = require('electron-store');
@@ -679,6 +681,10 @@ function showBroadcastText(text) {
   const send = () => {
     if (!bw || bw.isDestroyed()) return;
     bw.webContents.send('broadcast:show', { text, duration });
+    // 音效由横幅窗口自己播，和传呼机一样是「窗口自带的 <audio>」
+    if (store.get('settings.soundEnabled') !== false) {
+      bw.webContents.send('broadcast:play-sound', 'bibi_long');
+    }
     if (!bw.isVisible()) bw.showInactive();
   };
 
@@ -1331,7 +1337,6 @@ function registerIpcHandlers() {
         queueManager.clear();
         unlockPagerRequest();
         const n = broadcastInstructions(result.instructions);
-        soundManager.play('bibi_long');
         if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) overlayWindow.hide();
         console.log(`[vision] 广播 ${n} 条 · 文本=${result.instructions.map((i) => i.text).join(' / ')}`);
         result.delivered = true;
@@ -1431,7 +1436,6 @@ function registerIpcHandlers() {
       // 广播模式：横幅播报，不排队、不锁传呼机、不需要确认
       if (isBroadcastMode()) {
         const n = broadcastInstructions(result.instructions);
-        soundManager.play('bibi_long');
         if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) overlayWindow.hide();
         console.log(`[vision] 广播 ${n} 条 · 文本=${result.instructions.map((i) => i.text).join(' / ')}`);
         if (mainWindow && !mainWindow.isDestroyed()) {
@@ -2477,6 +2481,12 @@ app.whenReady().then(async () => {
             const out = path.join(app.getPath('userData'), 'logs', 'broadcast-settled.png');
             require('fs').writeFileSync(out, img.toPNG());
             console.log('[vision2/fake-broadcast] settled = ', out);
+            bw2.webContents.executeJavaScript(
+              'JSON.stringify((() => { const el = document.getElementById("sfx-bibi-long");' +
+              ' return el ? { readyState: el.readyState, paused: el.paused, currentTime: +el.currentTime.toFixed(2),' +
+              ' vol: el.volume, err: el.error ? el.error.code : null } : { missing: true }; })())'
+            ).then((d) => console.log('[vision2/fake-broadcast] audio = ', d))
+             .catch((e) => console.log('[vision2/fake-broadcast] audio 失败:', e.message));
           }).catch(() => {});
         }, 3000);
       } catch (e) {
@@ -2630,7 +2640,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-02-r12（广播打字机效果）');
+  console.log('[main] 视觉链路构建 2026-11-02-r13（广播音效）');
 });
 
 app.on('before-quit', () => {

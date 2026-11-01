@@ -2,10 +2,14 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; media-src 'self'">
   <link rel="stylesheet" href="css/broadcast.css">
 </head>
 <body>
+  <audio id="sfx-bibi-long" src="../resources/sounds/bibi_long.mp3" preload="auto"></audio>
+  <audio id="sfx-bibi-short" src="../resources/sounds/bibi_short.mp3" preload="auto"></audio>
+  <audio id="sfx-stage-change" src="../resources/sounds/stage_change.mp3" preload="auto"></audio>
+
   <div id="banner" class="hidden">
     <div class="plate">
       <span class="corner l"></span>
