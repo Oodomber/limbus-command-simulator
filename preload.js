@@ -240,8 +240,7 @@ if (isFormation || isWeaver) {
     },
 
     // ── Phase management ──
-    getRunPhase: () => ipcRenderer.invoke('run:get-phase'),
-    advancePhase: () => ipcRenderer.invoke('run:advance-phase'),
+    getRunPhase: () => ipcRenderer.invoke('run:get-phase'),    advancePhase: () => ipcRenderer.invoke('run:advance-phase'),
     skipPhase: () => ipcRenderer.invoke('run:skip-phase'),
     onPhaseChanged: (callback) => {
       const handler = (_event, data) => callback(data);
@@ -254,6 +253,10 @@ if (isFormation || isWeaver) {
 
     // ── Window focus ──
     focusWindow: () => ipcRenderer.invoke('window:focus-main'),
+
+    // ── App info ──
+    // 版本号从 package.json 读，不要在页面里写死（写死就会像 1.2.4 那样忘记改）
+    getAppVersion: () => ipcRenderer.invoke('app:get-version'),
 
     // ── Vision (Phase 10) ──
     visionStart: () => ipcRenderer.invoke('vision:start'),

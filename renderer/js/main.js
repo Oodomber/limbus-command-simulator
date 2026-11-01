@@ -36,6 +36,7 @@ const fingerLogo = document.getElementById('finger-logo');
 
 // ── Init ──
 document.addEventListener('DOMContentLoaded', async () => {
+  setupVersionLabel();
   await loadInitialData();
   setupNavigation();
   setupRunControls();
@@ -45,6 +46,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupAchievementListener();
   setupMainSound();
 });
+
+// 左下角版本号：从主进程拿 app.getVersion()，页面里不写死版本
+function setupVersionLabel() {
+  const el = document.getElementById('nav-version');
+  if (!el || !window.electronAPI.getAppVersion) return;
+  window.electronAPI.getAppVersion()
+    .then((v) => { if (v) el.textContent = 'v' + v; })
+    .catch(() => {});
+}
 
 // ── Main window sound playback ──
 function setupMainSound() {

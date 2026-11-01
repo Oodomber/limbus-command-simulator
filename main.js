@@ -75,6 +75,9 @@ const DATA_VERSION = 2;
 
 // ── Window references ──
 let mainWindow = null;
+let splashWindow = null;
+let splashWatchdog = null;
+let splashShownAt = 0;
 let overlayWindow = null;
 let orbWindow = null;
 let stargazingWindow = null;   // separate window for stargazing (rectangular)
@@ -583,12 +586,57 @@ function getConfigDefaults() {
 
 // ── Window creation ──
 
+/**
+ * 启动画面。
+ *
+ * 便携版双击后要先解压到临时目录（几秒到十几秒），那段时间由打包器的
+ * `portable.splashImage` 顶着；解压完 Electron 起来、到主窗口 ready-to-show
+ * 之间还有一两秒（读数据、建窗口），这一段由这个窗口顶着，玩家不会看到白板。
+ */
+function createSplashWindow() {
+  if (splashWindow && !splashWindow.isDestroyed()) return splashWindow;
+  splashWindow = new BrowserWindow({
+    width: 420,
+    height: 240,
+    frame: false,
+    resizable: false,
+    movable: false,
+    skipTaskbar: true,
+    alwaysOnTop: true,
+    show: true,
+    backgroundColor: '#0a0a1a',
+    icon: path.join(__dirname, 'resources', 'icon.png'),
+    webPreferences: { contextIsolation: true, nodeIntegration: false },
+  });
+  splashWindow.loadFile(path.join(__dirname, 'renderer', 'splash.html'));
+  splashShownAt = Date.now();
+  splashWindow.setAlwaysOnTop(true, 'screen-saver');
+  splashWindow.center();
+  // 兜底：主窗口万一卡住不 ready，也不能让启动画面一直挂着
+  if (splashWatchdog) clearTimeout(splashWatchdog);
+  splashWatchdog = setTimeout(() => closeSplashWindow(), 20000);
+  return splashWindow;
+}
+
+function closeSplashWindow() {
+  if (splashWatchdog) { clearTimeout(splashWatchdog); splashWatchdog = null; }
+  if (splashWindow && !splashWindow.isDestroyed()) {
+    // 至少显示 500ms，避免一闪而过反而像闪屏
+    const age = Date.now() - splashShownAt;
+    const wait = Math.max(0, 500 - age);
+    const w = splashWindow;
+    splashWindow = null;
+    setTimeout(() => { if (w && !w.isDestroyed()) w.destroy(); }, wait);
+  }
+}
+
 function createMainWindow() {
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 750,
     minWidth: 900,
     minHeight: 600,
+    backgroundColor: '#14121a',
     title: '谨遵指令 - 控制面板',
     icon: path.join(__dirname, 'resources', 'icon.png'),
     webPreferences: {
@@ -599,6 +647,19 @@ function createMainWindow() {
   });
 
   mainWindow.loadFile(path.join(__dirname, 'renderer', 'main.html'));
+
+  // 关掉启动画面的时机：页面加载完（did-finish-load）就够——此时界面已经画出来，
+  // 启动画面一直是置顶的，所以它盖着主窗口直到这一刻。
+  // 不用 ready-to-show：隐藏窗口偶尔等不到首帧绘制，会把主窗口永远藏着。
+  let splashClosed = false;
+  const revealMain = () => {
+    if (splashClosed) return;
+    splashClosed = true;
+    console.log('[main] 主窗口已就绪，关闭启动画面');
+    closeSplashWindow();
+  };
+  mainWindow.webContents.once('did-finish-load', revealMain);
+  setTimeout(revealMain, 8000);
 
   // When main window is closed, force-close all child windows
   // so the app can fully exit (overlay prevents close → minimize)
@@ -1826,6 +1887,8 @@ function registerIpcHandlers() {
     focusMainWindow();
   });
 
+  ipcMain.handle('app:get-version', () => app.getVersion());
+
   // ── Sound ──
   ipcMain.handle('sound:play', (_event, name) => {
     soundManager.play(name);
@@ -2754,6 +2817,7 @@ app.whenReady().then(async () => {
   };
 
   // Create windows (pager starts hidden, shown only when run starts)
+  createSplashWindow();
   createMainWindow();
   createOverlayWindow();
   createOrbWindow();
@@ -2770,7 +2834,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-02-r20（修 advancePhase 自递归崩溃 / 关掉 WGC 刷屏日志）');
+  console.log('[main] 视觉链路构建 2026-11-02-r21（启动画面 + 版本号读取 + 打包修正）');
 });
 
 app.on('before-quit', () => {

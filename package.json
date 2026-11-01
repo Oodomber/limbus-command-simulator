@@ -38,6 +38,9 @@
       "icon": "resources/icon.png",
       "sign": null,
       "signAndEditExecutable": false
+    },
+    "portable": {
+      "splashImage": "resources/splash.bmp"
     }
   }
 }
