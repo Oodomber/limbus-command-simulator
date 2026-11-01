@@ -366,15 +366,12 @@ function setupVisionAuto() {
       if (payload.phase === 'cardpack') {
         dungeonStarted = true;
         console.log('[vision] 识别到卡包页 → 判定已进入地牢，开始自动发放指令');
-        // 广播模式：自由环节开始就把传呼机和悬浮球收起来，别挡画面
-        if (isBroadcastMode()) {
-          if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
-            overlayWindow.hide();
-          }
-          if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) {
-            orbWindow.hide();
-          }
-          console.log('[vision] 广播模式 → 已收起传呼机与悬浮球');
+        // 兜底：若玩家没启用「初始饰品」环节，上面的收起逻辑不会触发，
+        // 那就在确认进入地牢这一刻把两个窗口收掉（广播模式本来也不该有两个浮窗）。
+        if (isBroadcastMode() && overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
+          overlayWindow.hide();
+          if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) orbWindow.hide();
+          console.log('[vision] 广播模式 → 已收起传呼机与悬浮球（兜底）');
         }
       } else {
         why = '尚未进入地牢（等第一次识别到卡包页）';
@@ -491,13 +488,14 @@ function getConfigDefaults() {
       hotkeyToggleOverlay: 'F10',
       hotkeyComplete: 'F2',
       hotkeyFail: 'F3',
+      hotkeyFormation: 'F4',
       overlayOpacity: 0.9,
       overlayScale: 1.0,
       soundEnabled: true,
       achievementNotify: true,
       currentGameMode: 'hard',
       // 指令显示方式：pager（传呼机，需确认）/ broadcast（广播横幅，自动消失）
-      displayMode: 'pager',
+      displayMode: 'broadcast',
       danmakuEnabled: false,
       danmakuRoomId: '',
       danmakuVoteWindow: 15,
@@ -621,7 +619,7 @@ let broadcastWindow = null;
 let broadcastHideTimer = null;
 
 function isBroadcastMode() {
-  return store.get('settings.displayMode', 'pager') === 'broadcast';
+  return store.get('settings.displayMode', 'broadcast') === 'broadcast';
 }
 
 /** 一条指令该播多久：基础 5 秒，多一行多 1.5 秒，最多 12 秒 */
@@ -1500,6 +1498,15 @@ function registerIpcHandlers() {
   ipcMain.handle('instruction:complete', async () => {
     const inst = queueManager.handleComplete();
     if (!inst) return { success: false, error: '没有待确认的指令' };
+
+    // 广播模式：开局饰品选完（starting_relic 确认）就把传呼机和悬浮球收起来，
+    // 之后整个自由环节只看横幅。放在这里而不是「第一次识别到卡包页」，
+    // 是因为开局流程本身还要用传呼机指路。
+    if (isBroadcastMode() && inst.phase === 'starting_relic') {
+      if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) overlayWindow.hide();
+      if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) orbWindow.hide();
+      console.log('[vision] 广播模式 → 开局饰品已选完，收起传呼机与悬浮球');
+    }
 
     runState.currentRunBlessing += 1;
     const global = store.get('globalStats');
@@ -2668,7 +2675,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-02-r14（多指令批次序号 / 广播收起悬浮球 / 开局弹窗选难度与模式 / 编队快捷键）');
+  console.log('[main] 视觉链路构建 2026-11-02-r15（镜牢难度默认困难 / 显示默认广播 / 编队快捷键可改 / 开局饰品选完才收浮窗）');
 });
 
 app.on('before-quit', () => {

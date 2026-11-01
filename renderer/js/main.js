@@ -976,17 +976,17 @@ async function showRunStartModal() {
 
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
       <div>
-        <label style="color:#ccc;font-weight:bold;display:block;margin-bottom:6px;">难度</label>
+        <label style="color:#ccc;font-weight:bold;display:block;margin-bottom:6px;">镜牢难度</label>
         <select id="run-difficulty-select" style="width:100%;padding:8px;background:#0f0f23;color:#e0e0e0;border:1px solid #3a3a5a;border-radius:6px;font-size:14px;">
-          <option value="normal">普通（关底三选一）</option>
-          <option value="hard">困难（关底四选二）</option>
+          <option value="hard">困难</option>
+          <option value="normal">普通</option>
         </select>
       </div>
       <div>
         <label style="color:#ccc;font-weight:bold;display:block;margin-bottom:6px;">指令显示</label>
         <select id="run-display-select" style="width:100%;padding:8px;background:#0f0f23;color:#e0e0e0;border:1px solid #3a3a5a;border-radius:6px;font-size:14px;">
-          <option value="pager">传呼机（点完成/失败）</option>
           <option value="broadcast">广播（自动消失）</option>
+          <option value="pager">传呼机（点完成/失败）</option>
         </select>
       </div>
     </div>
@@ -1610,6 +1610,7 @@ function setupHotkeySettings() {
     'settings.hotkeyFail',
     'settings.hotkeyRequest',
     'settings.hotkeyToggleOverlay',
+    'settings.hotkeyFormation',
   ];
 
   const buttons = {};
