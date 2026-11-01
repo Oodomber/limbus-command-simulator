@@ -688,6 +688,15 @@ function showBroadcastText(text) {
   return duration;
 }
 
+/** 一条指令「打字」要花多久：每字 35ms，与广播窗口里的 TYPE_SPEED 对齐 */
+const BROADCAST_TYPE_MS_PER_CHAR = 35;
+
+/** 一条指令在屏幕上总共占多久：打字耗时 + 停留时长 + 一点收尾余量 */
+function broadcastSlot(text) {
+  const len = String(text || '').length;
+  return len * BROADCAST_TYPE_MS_PER_CHAR + broadcastDuration(text) + 500;
+}
+
 /** 依次播报一批指令，返回条数。（不阻塞、不需要确认） */
 function broadcastInstructions(instructions) {
   const items = (Array.isArray(instructions) ? instructions : [])
@@ -701,7 +710,7 @@ function broadcastInstructions(instructions) {
   for (const text of items) {
     const at = offset;
     setTimeout(() => showBroadcastText(text), at);
-    offset += broadcastDuration(text);
+    offset += broadcastSlot(text);
   }
 
   broadcastHideTimer = setTimeout(() => {
@@ -2460,7 +2469,16 @@ app.whenReady().then(async () => {
               width, height, opaqueRatio: +(opaque / (width * height)).toFixed(3), file: out,
             }));
           }).catch((e) => console.log('[vision2/fake-broadcast] capture 失败:', e.message));
-        }, 900);
+        }, 700);
+        setTimeout(() => {
+          const bw2 = broadcastWindow;
+          if (!bw2 || bw2.isDestroyed()) return;
+          bw2.webContents.capturePage().then((img) => {
+            const out = path.join(app.getPath('userData'), 'logs', 'broadcast-settled.png');
+            require('fs').writeFileSync(out, img.toPNG());
+            console.log('[vision2/fake-broadcast] settled = ', out);
+          }).catch(() => {});
+        }, 3000);
       } catch (e) {
         console.log('[vision2/fake-broadcast] 失败:', e.message);
       }
@@ -2612,7 +2630,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-01-r11（广播横幅：黑/蓝/金三色）');
+  console.log('[main] 视觉链路构建 2026-11-02-r12（广播打字机效果）');
 });
 
 app.on('before-quit', () => {
