@@ -2408,7 +2408,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-01-r7（关卡奖励独立文案 / 战斗按队伍顺序 / 饰品奖励去重）');
+  console.log('[main] 视觉链路构建 2026-11-01-r8（关卡奖励文案 / 战斗点名最多3条且合并显示 / 饰品奖励去重）');
 });
 
 app.on('before-quit', () => {

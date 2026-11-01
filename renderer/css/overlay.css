@@ -130,6 +130,8 @@ body {
   text-align: center;
   line-height: 1.6;
   word-break: break-all;
+  /* 战斗里点名的多条指令合并成一条、用换行分隔，这里要保留换行 */
+  white-space: pre-line;
   text-shadow: 0 0 8px rgba(74, 240, 255, 0.3);
   max-width: 100%;
 }

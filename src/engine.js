@@ -249,8 +249,8 @@ const DEFAULT_TEMPLATES = {
   ],
 
   combat_reward: [
-    '致：这一战的饰品里，取走第{option}个。',
-    '致：从战斗奖励中挑第{option}个。',
+    '致：从这些饰品里，取走第{option}个。',
+    '致：从奖励中挑第{option}个。',
   ],
 
   free_instruction: [
@@ -1057,8 +1057,11 @@ class InstructionEngine {
       instructions.push(this._makeInstruction(PHASES.COMBAT, text, false, { category: key }));
 
     } else {
-      // ── Individual instructions (1~fieldSinners.length, max 7) ──
-      const count = Math.max(1, Math.floor(Math.random() * Math.min(fieldSinners.length, 7)) + 1);
+      // ── Individual instructions ──
+      // 战斗中行动顺序由「速度」决定，速度是每回合在范围内滚动的随机数，
+      // 所以无法保证「从前往后」下达。为避免玩家在链条式战斗里连不上，
+      // 点名罪人的指令一次最多 3 条，且作为同一批一起弹出。
+      const count = Math.max(1, Math.floor(Math.random() * Math.min(fieldSinners.length, 3)) + 1);
       const shuffled = [...fieldSinners].sort(() => Math.random() - 0.5);
       const selected = shuffled.slice(0, Math.min(count, shuffled.length));
 
@@ -1156,16 +1159,21 @@ class InstructionEngine {
       }
     }
 
-    // 链条式战斗里技能只能从左往右连（分散式才可自由指定目标）。
-    // 所以多罪人指令必须按队伍顺序（第1位 → 第7位）下发，
-    // 否则「先点名后排罪人」会让玩家在链条上接不下去。
-    if (instructions.length > 1 && fieldSinners.length > 0) {
-      const order = new Map(fieldSinners.map((s, i) => [s, i]));
-      const posOf = (inst) => {
-        const s = inst && inst.meta && inst.meta.sinner;
-        return order.has(s) ? order.get(s) : Number.MAX_SAFE_INTEGER;
+    // 点名的罪人指令要「一起出现」：多条合并成一条，用换行分隔，
+    // 玩家在同一屏里能同时看到所有人该做什么（传呼机 1/3 那种逐条翻页
+    // 在链条式战斗里很难用）。
+    if (instructions.length > 1 && instructions.every((x) => x.meta && x.meta.sinner)) {
+      const merged = {
+        ...instructions[0],
+        text: instructions.map((x) => x.text).join('\n'),
+        meta: {
+          ...instructions[0].meta,
+          sinners: instructions.map((x) => x.meta.sinner),
+          parts: instructions.length,
+        },
       };
-      instructions.sort((a, b) => posOf(a) - posOf(b));
+      instructions.length = 0;
+      instructions.push(merged);
     }
 
     return { instructions, phase: PHASES.COMBAT, isGuidance: false };
