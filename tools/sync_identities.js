@@ -58,6 +58,8 @@ const CHAR_PINYIN = {
   宣: 'xuan', 告: 'gao', 空: 'kong', 洞: 'dong', 焰: 'yan', 火: 'huo', 柴: 'chai', 根: 'gen',
   第: 'di', 四: 'si', 知: 'zhi', 识: 'shi', 树: 'shu', 枝: 'zhi', 青: 'qing', 智: 'zhi',
   慧: 'hui', 苦: 'ku', 难: 'nan', 致: 'zhi', 与: 'yu', 提: 'ti', 灯: 'deng', 脑: 'nao',
+  我: 'wo', 出: 'chu', 剪: 'jian', 刀: 'dao', 你: 'ni', 呢: 'ne',
+  迁: 'qian', 居: 'ju', 申: 'shen', 请: 'qing',
   叶: 'ye', 公: 'gong', 司: 'si', 边: 'bian', 狱: 'yu', 城: 'cheng', 保: 'bao', 安: 'an',
   六: 'liu', 协: 'xie', 七: 'qi', 八: 'ba', 十: 'shi', 二: 'er', 三: 'san', 一: 'yi',
 };
@@ -67,6 +69,7 @@ function slugify(text) {
   for (const ch of String(text || '')) {
     if (/[0-9]/.test(ch)) out.push(ch);
     else if (CHAR_PINYIN[ch]) out.push(CHAR_PINYIN[ch]);
+    else if (/[\u4e00-\u9fff]/.test(ch)) out.push('u' + ch.codePointAt(0).toString(16));
   }
   return out.join('_') || 'unknown';
 }

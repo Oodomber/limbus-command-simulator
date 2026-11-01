@@ -3609,5 +3609,64 @@
     },
     "attackCapacity": 1,
     "coinCount": 1
+  },
+  {
+    "id": "don_quixote_wo_chu_jian_dao_ni_ne",
+    "name": "我出剪刀，你呢？",
+    "sinner": "堂吉诃德",
+    "level": "ZAYIN",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 0,
+      "色欲": 0,
+      "怠惰": 0,
+      "暴食": 0,
+      "忧郁": 0,
+      "傲慢": 0,
+      "嫉妒": 5
+    },
+    "tags": {
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "流血",
+        "威力降低",
+        "恢复体力",
+        "恢复理智"
+      ],
+      "special": []
+    },
+    "attackCapacity": 0,
+    "coinCount": 0
+  },
+  {
+    "id": "gregor_qian_ju_shen_qing",
+    "name": "迁居申请",
+    "sinner": "格里高尔",
+    "level": "TETH",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 1,
+      "色欲": 0,
+      "怠惰": 0,
+      "暴食": 0,
+      "忧郁": 0,
+      "傲慢": 0,
+      "嫉妒": 5
+    },
+    "tags": {
+      "damageType": [
+        "打击"
+      ],
+      "effect": [
+        "烧伤",
+        "充能",
+        "束缚"
+      ],
+      "special": []
+    },
+    "attackCapacity": 0,
+    "coinCount": 0
   }
 ]
