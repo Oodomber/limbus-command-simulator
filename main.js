@@ -2692,7 +2692,7 @@ app.whenReady().then(async () => {
 
   // 开发开关：自动连上窗口后跑一段时间实时识别，把帧数/环节打到 stdout。
   // 用于在没有游戏的情况下验证「真窗口取帧 → 分类」这条链路是否通。
-  if (process.env.VISION2_LIVE === '1') {
+  if (!app.isPackaged && process.env.VISION2_LIVE === '1') {
     setTimeout(() => {
       if (!liveVision) return;
       liveVision.start();
