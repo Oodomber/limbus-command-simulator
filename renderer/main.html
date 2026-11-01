@@ -284,28 +284,17 @@
           </div>
 
           <div class="setting-group">
-            <h3>视觉识别 (Vision) — 实验功能</h3>
-            <p style="color:#888;font-size:0.8em;margin-bottom:6px;">需要安装 Python 3.9+ 及 opencv-python, mss, numpy 库</p>
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-              <span id="vision-status-dot" style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#666;"></span>
-              <span id="vision-status-text" style="font-size:0.85em;">未启动</span>
-            </div>
-            <div style="display:flex;gap:6px;margin-bottom:8px;">
-              <button id="btn-vision-start" class="btn-small">启动视觉服务</button>
-              <button id="btn-vision-stop" class="btn-small" disabled>停止</button>
-            </div>
-            <label style="display:block;margin-top:6px;">
-              <input type="checkbox" id="setting-vision-auto-detect" disabled>
-              自动检测游戏阶段
+            <h3>指令显示方式</h3>
+            <label>
+              模式:
+              <select id="setting-display-mode">
+                <option value="pager">传呼机（面板式，需要点完成/失败）</option>
+                <option value="broadcast">广播（横幅式，自动消失，不需要确认）</option>
+              </select>
             </label>
-            <label style="display:block;">
-              <input type="checkbox" id="setting-vision-auto-generate" disabled>
-              检测到商店时自动生成指令
-            </label>
-            <div style="display:flex;gap:6px;margin-top:8px;">
-              <button id="btn-vision-calibrate" class="btn-small" disabled>📷 校准屏幕区域</button>
-              <button id="btn-vision-rebuild-icons" class="btn-small" disabled>🔄 重建图标索引</button>
-            </div>
+            <p style="color:#888;font-size:0.8em;margin-top:6px;">
+              广播模式在进入地牢后会自动收起传呼机，指令以屏幕上方横幅播报，每条 5 秒，多条指令的横幅停留更久。
+            </p>
           </div>
 
           <div class="setting-group">

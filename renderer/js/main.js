@@ -1402,6 +1402,8 @@ async function loadSettings(config) {
   const settings = config.settings || {};
 
   document.getElementById('setting-game-mode').value = settings.currentGameMode || 'hard';
+  const modeSel = document.getElementById('setting-display-mode');
+  if (modeSel) modeSel.value = settings.displayMode || 'pager';
   document.getElementById('setting-opacity').value = (settings.overlayOpacity || 0.9) * 100;
   document.getElementById('setting-scale').value = (settings.overlayScale || 1.0) * 100;
   document.getElementById('setting-sound').checked = settings.soundEnabled !== false;
@@ -1413,9 +1415,7 @@ async function loadSettings(config) {
 
   // Vision config
   const vision = config.vision || {};
-  const chkAutoDetect = document.getElementById('setting-vision-auto-detect');
   const chkAutoGenerate = document.getElementById('setting-vision-auto-generate');
-  if (chkAutoDetect) chkAutoDetect.checked = vision.autoDetect === true;
   if (chkAutoGenerate) chkAutoGenerate.checked = vision.autoGenerate === true;
 }
 
@@ -1423,6 +1423,13 @@ function setupSettings() {
   document.getElementById('setting-game-mode').addEventListener('change', async (e) => {
     await window.electronAPI.setConfig('settings.currentGameMode', e.target.value);
   });
+
+  const modeSel = document.getElementById('setting-display-mode');
+  if (modeSel) {
+    modeSel.addEventListener('change', async (e) => {
+      await window.electronAPI.setConfig('settings.displayMode', e.target.value);
+    });
+  }
 
   document.getElementById('setting-opacity').addEventListener('input', async (e) => {
     const val = parseInt(e.target.value) / 100;
@@ -1491,8 +1498,6 @@ function setupSettings() {
   // ── Hotkey settings ──
   setupHotkeySettings();
 
-  // ── Vision settings ──
-  setupVisionSettings();
 
   // ── Free instruction templates ──
   setupFreeTemplates();
@@ -1720,112 +1725,6 @@ function setupHotkeySettings() {
   });
 }
 
-// ── Vision (Phase 10) ──
-function setupVisionSettings() {
-  const api = window.electronAPI;
-  if (!api || !api.visionStart) return; // vision API not available
-
-  const btnStart = document.getElementById('btn-vision-start');
-  const btnStop = document.getElementById('btn-vision-stop');
-  const statusDot = document.getElementById('vision-status-dot');
-  const statusText = document.getElementById('vision-status-text');
-  const chkAutoDetect = document.getElementById('setting-vision-auto-detect');
-  const chkAutoGenerate = document.getElementById('setting-vision-auto-generate');
-  const btnCalibrate = document.getElementById('btn-vision-calibrate');
-  const btnRebuildIcons = document.getElementById('btn-vision-rebuild-icons');
-
-  function setUIState(available) {
-    if (available) {
-      statusDot.style.background = '#4c8';
-      statusText.textContent = '运行中';
-      btnStart.disabled = true;
-      btnStop.disabled = false;
-      chkAutoDetect.disabled = false;
-      chkAutoGenerate.disabled = false;
-      btnCalibrate.disabled = false;
-      btnRebuildIcons.disabled = false;
-    } else {
-      statusDot.style.background = '#666';
-      statusText.textContent = '未启动';
-      btnStart.disabled = false;
-      btnStop.disabled = true;
-      chkAutoDetect.disabled = true;
-      chkAutoDetect.checked = false;
-      chkAutoGenerate.disabled = true;
-      chkAutoGenerate.checked = false;
-      btnCalibrate.disabled = true;
-      btnRebuildIcons.disabled = true;
-    }
-  }
-
-  // Check initial status
-  api.visionStatus().then(s => setUIState(s.available));
-
-  // Listen for status changes
-  if (api.onVisionStatusChanged) {
-    api.onVisionStatusChanged((data) => setUIState(data.available));
-  }
-
-  // Start
-  btnStart.addEventListener('click', async () => {
-    statusText.textContent = '启动中…';
-    statusDot.style.background = '#ca4';
-    btnStart.disabled = true;
-    try {
-      const result = await api.visionStart();
-      setUIState(result.ok);
-      if (!result.ok) {
-        showToast('⚠️', '视觉服务启动失败。请确认已安装 Python 3.9+ 及 opencv-python, mss, numpy。');
-      } else {
-        showToast('👁', '视觉服务已启动');
-      }
-    } catch (e) {
-      setUIState(false);
-      showToast('⚠️', '启动异常: ' + e.message);
-    }
-  });
-
-  // Stop
-  btnStop.addEventListener('click', async () => {
-    await api.visionStop();
-    setUIState(false);
-    showToast('👁', '视觉服务已停止');
-  });
-
-  // Auto-detect toggle
-  chkAutoDetect.addEventListener('change', async () => {
-    await api.setConfig('vision.autoDetect', chkAutoDetect.checked);
-  });
-
-  // Auto-generate toggle
-  chkAutoGenerate.addEventListener('change', async () => {
-    await api.setConfig('vision.autoGenerate', chkAutoGenerate.checked);
-  });
-
-  // Calibrate
-  btnCalibrate.addEventListener('click', () => {
-    showCalibrationModal();
-  });
-
-  // Rebuild icon index
-  btnRebuildIcons.addEventListener('click', async () => {
-    btnRebuildIcons.disabled = true;
-    btnRebuildIcons.textContent = '⌛ 处理中…';
-    try {
-      const result = await api.visionRebuildIconIndex();
-      if (result.ok) {
-        showToast('📦', `图标索引已重建 (${result.indexed} 张)`);
-      } else {
-        showToast('⚠️', '重建失败: ' + (result.error || 'unknown'));
-      }
-    } catch (e) {
-      showToast('⚠️', '重建异常: ' + e.message);
-    }
-    btnRebuildIcons.disabled = false;
-    btnRebuildIcons.textContent = '🔄 重建图标索引';
-  });
-}
-
 // ── Achievements ──
 async function renderAchievements() {
   const list = document.getElementById('achievement-list');
@@ -2006,134 +1905,6 @@ function showDevAuthModal() {
     if (e.key === 'Escape') _closeModal();
   });
   overlay.addEventListener('click', (e) => { if (e.target === overlay) _closeModal(); });
-}
-
-// ── Vision Calibration Modal (Phase 10) ──
-async function showCalibrationModal() {
-  const api = window.electronAPI;
-  if (!api || !api.visionCalibrate) return;
-
-  const overlay = document.createElement('div');
-  overlay.className = 'modal-overlay';
-  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:2000;display:flex;align-items:center;justify-content:center;';
-  overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.remove(); });
-
-  const box = document.createElement('div');
-  box.style.cssText = 'background:#0a0a1a;border:2px solid #c9a84c;border-radius:8px;padding:24px;width:560px;max-height:70vh;overflow-y:auto;color:#ccc;font-size:13px;';
-
-  const existing = await api.visionGetCalibration() || {};
-  const gameRegion = existing.gameRegion || null;
-  const shopGrid = existing.shopGrid || null;
-
-  box.innerHTML = `
-    <h3 style="color:#c9a84c;margin:0 0 16px;">📷 视觉校准</h3>
-    <div style="margin-bottom:16px;padding:12px;background:#141428;border-radius:4px;">
-      <strong>步骤 1：游戏画面区域</strong>
-      <p style="color:#888;font-size:11px;margin:4px 0;">将游戏窗口置于前台，输入游戏画面的屏幕坐标（左上X, 左上Y, 宽度, 高度）。</p>
-      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;">
-        <input id="cal-game-x" type="number" placeholder="X" value="${gameRegion?.x || 0}" style="width:70px;">
-        <input id="cal-game-y" type="number" placeholder="Y" value="${gameRegion?.y || 0}" style="width:70px;">
-        <input id="cal-game-w" type="number" placeholder="宽" value="${gameRegion?.width || 1920}" style="width:80px;">
-        <input id="cal-game-h" type="number" placeholder="高" value="${gameRegion?.height || 1080}" style="width:80px;">
-      </div>
-      <button id="cal-btn-test-capture" class="btn-small" style="margin-top:6px;">📸 测试截取</button>
-      <span id="cal-test-result" style="font-size:11px;color:#888;margin-left:8px;"></span>
-    </div>
-    <div style="margin-bottom:16px;padding:12px;background:#141428;border-radius:4px;">
-      <strong>步骤 2：商店网格标定</strong>
-      <p style="color:#888;font-size:11px;margin:4px 0;">进入商店界面后，输入饰品网格的坐标和行列数（通常是5列2行）。</p>
-      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap;align-items:center;">
-        <input id="cal-shop-x" type="number" placeholder="格子X" value="${shopGrid?.x || 260}" style="width:70px;">
-        <input id="cal-shop-y" type="number" placeholder="格子Y" value="${shopGrid?.y || 420}" style="width:70px;">
-        <input id="cal-shop-w" type="number" placeholder="格子宽" value="${shopGrid?.width || 1400}" style="width:80px;">
-        <input id="cal-shop-h" type="number" placeholder="格子高" value="${shopGrid?.height || 480}" style="width:80px;">
-        <span style="color:#888;">列</span><input id="cal-shop-cols" type="number" value="${shopGrid?.cols || 5}" style="width:50px;">
-        <span style="color:#888;">行</span><input id="cal-shop-rows" type="number" value="${shopGrid?.rows || 2}" style="width:50px;">
-      </div>
-    </div>
-    <div style="margin-bottom:16px;padding:12px;background:#141428;border-radius:4px;">
-      <strong>步骤 3：阶段参考图</strong>
-      <p style="color:#888;font-size:11px;margin:4px 0;">进入各游戏界面后，点击按钮截取特色UI元素作为阶段识别参考。</p>
-      <div id="cal-phase-refs" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;"></div>
-    </div>
-    <div style="display:flex;gap:8px;justify-content:flex-end;">
-      <button id="cal-btn-cancel" class="btn-small" style="background:#333;">取消</button>
-      <button id="cal-btn-save" class="btn-small" style="background:#c9a84c;color:#000;">💾 保存校准</button>
-    </div>
-  `;
-
-  overlay.appendChild(box);
-  document.body.appendChild(overlay);
-
-  // Phase reference capture buttons
-  const phaseLabels = { shop: '商店', combat: '战斗', cardpack: '卡包', route: '路线', boss_reward: '关底奖励' };
-  const refsEl = box.querySelector('#cal-phase-refs');
-  for (const [phase, label] of Object.entries(phaseLabels)) {
-    const btn = document.createElement('button');
-    btn.className = 'btn-small';
-    btn.textContent = `截取${label}参考`;
-    btn.addEventListener('click', async () => {
-      btn.disabled = true;
-      btn.textContent = '截取中…';
-      try {
-        const gr = readGameRegion(box);
-        await api.visionCalibrate({ region: gr, label: `${phase}_ref` });
-        btn.textContent = `✅ ${label}`;
-      } catch (e) {
-        btn.textContent = `❌ 失败`;
-        btn.disabled = false;
-      }
-    });
-    refsEl.appendChild(btn);
-  }
-
-  function readGameRegion(el) {
-    return {
-      x: parseInt(el.querySelector('#cal-game-x').value) || 0,
-      y: parseInt(el.querySelector('#cal-game-y').value) || 0,
-      width: parseInt(el.querySelector('#cal-game-w').value) || 1920,
-      height: parseInt(el.querySelector('#cal-game-h').value) || 1080,
-    };
-  }
-
-  box.querySelector('#cal-btn-test-capture').addEventListener('click', async () => {
-    const btn = box.querySelector('#cal-btn-test-capture');
-    const result = box.querySelector('#cal-test-result');
-    btn.disabled = true;
-    result.textContent = '截取中…';
-    try {
-      const gr = readGameRegion(box);
-      const resp = await api.visionCalibrate({ region: gr, label: 'test_capture' });
-      result.textContent = resp.ok ? `✅ 成功 (${resp.size[0]}×${resp.size[1]})` : `❌ ${resp.error || '失败'}`;
-      result.style.color = resp.ok ? '#4c8' : '#c44';
-    } catch (e) {
-      result.textContent = '❌ 服务未启动';
-      result.style.color = '#c44';
-    }
-    btn.disabled = false;
-  });
-
-  box.querySelector('#cal-btn-save').addEventListener('click', async () => {
-    const calibration = {
-      gameRegion: readGameRegion(box),
-      shopGrid: {
-        x: parseInt(box.querySelector('#cal-shop-x').value) || 0,
-        y: parseInt(box.querySelector('#cal-shop-y').value) || 0,
-        width: parseInt(box.querySelector('#cal-shop-w').value) || 0,
-        height: parseInt(box.querySelector('#cal-shop-h').value) || 0,
-        cols: parseInt(box.querySelector('#cal-shop-cols').value) || 5,
-        rows: parseInt(box.querySelector('#cal-shop-rows').value) || 2,
-      },
-    };
-    await api.visionSaveCalibration(calibration);
-    showToast('📷', '校准已保存');
-    overlay.remove();
-  });
-
-  box.querySelector('#cal-btn-cancel').addEventListener('click', () => overlay.remove());
-  document.addEventListener('keydown', function escHandler(e) {
-    if (e.key === 'Escape') { overlay.remove(); document.removeEventListener('keydown', escHandler); }
-  });
 }
 
 async function showDevMenu() {

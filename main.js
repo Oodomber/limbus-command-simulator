@@ -364,6 +364,11 @@ function setupVisionAuto() {
       if (payload.phase === 'cardpack') {
         dungeonStarted = true;
         console.log('[vision] 识别到卡包页 → 判定已进入地牢，开始自动发放指令');
+        // 广播模式：自由环节开始就把传呼机收起来，别挡画面
+        if (isBroadcastMode() && overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
+          overlayWindow.hide();
+          console.log('[vision] 广播模式 → 已收起传呼机');
+        }
       } else {
         why = '尚未进入地牢（等第一次识别到卡包页）';
       }
@@ -484,6 +489,8 @@ function getConfigDefaults() {
       soundEnabled: true,
       achievementNotify: true,
       currentGameMode: 'hard',
+      // 指令显示方式：pager（传呼机，需确认）/ broadcast（广播横幅，自动消失）
+      displayMode: 'pager',
       danmakuEnabled: false,
       danmakuRoomId: '',
       danmakuVoteWindow: 15,
@@ -589,6 +596,120 @@ function createOverlayWindow() {
     e.preventDefault();
     overlayWindow?.minimize();
   });
+}
+
+// ═══════════════════════════════════════════
+//  指令广播（broadcast）横幅
+// ═══════════════════════════════════════════
+//
+// 与传呼机的区别：传呼机是「抽屉式面板 + 必须点完成/失败」，
+// 广播是一条自动消失的横幅、不参与确认流程。
+// 两种显示方式在设置页里切换（settings.displayMode = 'pager' | 'broadcast'）。
+
+const BROADCAST_BASE_MS = 5000;      // 单条播报时长
+const BROADCAST_LINE_MS = 1500;      // 每多一行加的时间（战斗里合并的多条指令）
+const BROADCAST_MAX_MS = 12000;
+
+let broadcastWindow = null;
+let broadcastHideTimer = null;
+
+function isBroadcastMode() {
+  return store.get('settings.displayMode', 'pager') === 'broadcast';
+}
+
+/** 一条指令该播多久：基础 5 秒，多一行多 1.5 秒，最多 12 秒 */
+function broadcastDuration(text) {
+  const lines = String(text || '').split('\n').filter((s) => s.trim()).length || 1;
+  return Math.min(BROADCAST_MAX_MS, BROADCAST_BASE_MS + (lines - 1) * BROADCAST_LINE_MS);
+}
+
+function createBroadcastWindow() {
+  const wa = screen.getPrimaryDisplay().workArea;
+  const w = Math.round(wa.width * 0.66);
+  const h = 230;
+
+  broadcastWindow = new BrowserWindow({
+    width: w,
+    height: h,
+    x: wa.x + Math.round((wa.width - w) / 2),
+    y: wa.y + Math.round(wa.height * 0.13),
+    transparent: true,
+    frame: false,
+    resizable: false,
+    movable: false,
+    minimizable: false,
+    maximizable: false,
+    fullscreenable: false,
+    skipTaskbar: true,
+    focusable: false,
+    show: false,
+    hasShadow: false,
+    alwaysOnTop: true,
+    webPreferences: {
+      preload: path.join(__dirname, 'preload-broadcast.js'),
+      contextIsolation: true,
+      nodeIntegration: false,
+      backgroundThrottling: false,
+    },
+  });
+
+  broadcastWindow.setAlwaysOnTop(true, 'screen-saver');
+  broadcastWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  broadcastWindow.setIgnoreMouseEvents(true, { forward: false });
+  broadcastWindow.loadFile(path.join(__dirname, 'renderer', 'broadcast.html'));
+
+  broadcastWindow.on('closed', () => { broadcastWindow = null; });
+}
+
+/** 把一条文字推给横幅（窗口没建就建，还没加载完就等加载完） */
+function showBroadcastText(text) {
+  if (!text) return 0;
+  if (!broadcastWindow || broadcastWindow.isDestroyed()) createBroadcastWindow();
+  const bw = broadcastWindow;
+  const duration = broadcastDuration(text);
+
+  const send = () => {
+    if (!bw || bw.isDestroyed()) return;
+    bw.webContents.send('broadcast:show', { text, duration });
+    if (!bw.isVisible()) bw.showInactive();
+  };
+
+  if (bw.webContents.isLoading()) bw.webContents.once('did-finish-load', send);
+  else send();
+
+  return duration;
+}
+
+/** 依次播报一批指令，返回条数。（不阻塞、不需要确认） */
+function broadcastInstructions(instructions) {
+  const items = (Array.isArray(instructions) ? instructions : [])
+    .map((i) => (i && i.text) || '')
+    .filter(Boolean);
+  if (items.length === 0) return 0;
+
+  if (broadcastHideTimer) { clearTimeout(broadcastHideTimer); broadcastHideTimer = null; }
+
+  let offset = 0;
+  for (const text of items) {
+    const at = offset;
+    setTimeout(() => showBroadcastText(text), at);
+    offset += broadcastDuration(text);
+  }
+
+  broadcastHideTimer = setTimeout(() => {
+    if (broadcastWindow && !broadcastWindow.isDestroyed()) {
+      broadcastWindow.webContents.send('broadcast:hide');
+    }
+    broadcastHideTimer = null;
+  }, offset + 400);
+
+  return items.length;
+}
+
+function destroyBroadcastWindow() {
+  if (broadcastHideTimer) { clearTimeout(broadcastHideTimer); broadcastHideTimer = null; }
+  if (broadcastWindow && !broadcastWindow.isDestroyed()) broadcastWindow.destroy();
+  broadcastWindow = null;
 }
 
 // ═══════════════════════════════════════════
@@ -899,6 +1020,18 @@ function registerIpcHandlers() {
       runState.karmaScareThreshold = value;
     }
     store.set(keyPath, value);
+
+    // 难度：设置页这一个开关就是唯一真相，视觉侧跟着它走
+    if (keyPath === 'settings.currentGameMode') {
+      runState.isHardMode = value === 'hard';
+      if (liveVision && typeof liveVision.setDifficulty === 'function') {
+        liveVision.setDifficulty(value === 'hard' ? 'hard' : 'normal');
+      }
+    }
+    // 显示方式：切到广播时先收起传呼机
+    if (keyPath === 'settings.displayMode' && value === 'broadcast') {
+      if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) overlayWindow.hide();
+    }
     // If a hotkey setting changed, re-register all shortcuts
     if (keyPath && keyPath.startsWith('settings.hotkey')) {
       registerShortcuts();
@@ -1176,6 +1309,17 @@ function registerIpcHandlers() {
     // （setupVisionAuto / run:start 的首条指令）**不会**——之前正是这里漏了，
     // 于是日志天天打「自动推进 cardpack → 指令 1 条」，传呼机却永远是空的。
     if (context && context.vision && result && Array.isArray(result.instructions) && result.instructions.length > 0) {
+      if (isBroadcastMode()) {
+        // 广播模式：不排队、不占用传呼机、不需要确认
+        queueManager.clear();
+        unlockPagerRequest();
+        const n = broadcastInstructions(result.instructions);
+        soundManager.play('bibi_long');
+        if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) overlayWindow.hide();
+        console.log(`[vision] 广播 ${n} 条 · 文本=${result.instructions.map((i) => i.text).join(' / ')}`);
+        result.delivered = true;
+        result.mode = 'broadcast';
+      } else {
       queueManager.clear();
       unlockPagerRequest();
       const enqueued = queueManager.enqueue(result.instructions);
@@ -1196,6 +1340,8 @@ function registerIpcHandlers() {
         mainWindow.webContents.send('instruction:queue-update', queueManager.getState());
       }
       result.delivered = true;
+      result.mode = 'pager';
+      }
     }
 
     return result;
@@ -1263,6 +1409,23 @@ function registerIpcHandlers() {
       if (context && context.vision) {
         queueManager.clear();
         unlockPagerRequest();
+      }
+
+      // 广播模式：横幅播报，不排队、不锁传呼机、不需要确认
+      if (isBroadcastMode()) {
+        const n = broadcastInstructions(result.instructions);
+        soundManager.play('bibi_long');
+        if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) overlayWindow.hide();
+        console.log(`[vision] 广播 ${n} 条 · 文本=${result.instructions.map((i) => i.text).join(' / ')}`);
+        if (mainWindow && !mainWindow.isDestroyed()) {
+          mainWindow.webContents.send('instruction:new', {
+            phase: result.phase, count: n, isGuidance: result.isGuidance,
+          });
+        }
+        return {
+          success: true, instructions: result.instructions, phase: result.phase,
+          isGuidance: result.isGuidance, mode: 'broadcast',
+        };
       }
 
       const enqueued = queueManager.enqueue(result.instructions);
@@ -2208,7 +2371,8 @@ app.whenReady().then(async () => {
 
   // 纯 JS 视觉管线：采集器取帧 -> 锚点打分 -> 状态机
   liveVision = new LiveVision(captureController, {
-    difficulty: store.get('vision.difficulty', 'normal'),
+    // 难度统一取设置页的「游戏模式」，不再单独维护一份 vision.difficulty
+    difficulty: store.get('settings.currentGameMode') === 'hard' ? 'hard' : 'normal',
     persist: (k, v) => store.set(k, v),
   });
   liveVision.init();
@@ -2259,6 +2423,38 @@ app.whenReady().then(async () => {
         }
       } catch (e) {
         console.log('[vision2/fake-pager] 失败:', e.message);
+      }
+    }, 4000);
+  }
+
+  // 开发期自检：VISION2_FAKE_BROADCAST=1 时强制广播模式播一条假指令，
+  // 并把横幅窗口本身截下来（transparent 窗口用屏幕截图是看不到的）。
+  if (!app.isPackaged && process.env.VISION2_FAKE_BROADCAST === '1') {
+    setTimeout(() => {
+      try {
+        store.set('settings.displayMode', 'broadcast');
+        const fake = [
+          { text: '致：良秀必须使用HE级EGO。\n致：唐吉诃德使用上方技能。\n致：默尔索使用下方技能。' },
+        ];
+        const n = broadcastInstructions(fake);
+        console.log('[vision2/fake-broadcast] 播报', n, '条');
+        setTimeout(() => {
+          const bw = broadcastWindow;
+          if (!bw || bw.isDestroyed()) { console.log('[vision2/fake-broadcast] 没有横幅窗口'); return; }
+          bw.webContents.capturePage().then((img) => {
+            const out = path.join(app.getPath('userData'), 'logs', 'broadcast.png');
+            require('fs').writeFileSync(out, img.toPNG());
+            const { width, height } = img.getSize();
+            const bmp = img.toBitmap();
+            let opaque = 0;
+            for (let i = 3; i < bmp.length; i += 4) if (bmp[i] > 8) opaque++;
+            console.log('[vision2/fake-broadcast] capture =', JSON.stringify({
+              width, height, opaqueRatio: +(opaque / (width * height)).toFixed(3), file: out,
+            }));
+          }).catch((e) => console.log('[vision2/fake-broadcast] capture 失败:', e.message));
+        }, 900);
+      } catch (e) {
+        console.log('[vision2/fake-broadcast] 失败:', e.message);
       }
     }, 4000);
   }
@@ -2414,6 +2610,7 @@ app.whenReady().then(async () => {
 app.on('before-quit', () => {
   isQuitting = true;
   stopFreeInstructionTimer();
+  destroyBroadcastWindow();
   if (hideOverlayTimeout) {
     clearTimeout(hideOverlayTimeout);
     hideOverlayTimeout = null;

@@ -1,0 +1,123 @@
+/* 指令广播横幅
+   设计意图：不抢游戏画面，但一眼能读到。
+   —— 深色半透明底 + 上下两道金线勾边，中间是发光的冷白字，
+      左侧一颗呼吸的铜色信号灯，模拟「电台播报」的感觉。 */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  overflow: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+}
+
+#banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  display: flex;
+  justify-content: center;
+  transition: opacity 260ms ease, transform 260ms ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#banner.hidden {
+  opacity: 0;
+  transform: translateY(-14px);
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  padding: 14px 34px 18px;
+  background: linear-gradient(180deg,
+    rgba(10, 10, 16, 0.94) 0%,
+    rgba(16, 15, 24, 0.90) 55%,
+    rgba(10, 10, 16, 0.86) 100%);
+  border-top: 2px solid rgba(201, 169, 78, 0.85);
+  border-bottom: 1px solid rgba(201, 169, 78, 0.45);
+  box-shadow:
+    0 10px 34px rgba(0, 0, 0, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+/* 两端的斜切角，呼应游戏里那些金属牌匾 */
+.frame::before,
+.frame::after {
+  content: "";
+  position: absolute;
+  top: -2px;
+  width: 22px;
+  height: calc(100% + 2px);
+  background: linear-gradient(180deg, rgba(201, 169, 78, 0.85), rgba(201, 169, 78, 0.25));
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  opacity: 0.35;
+}
+.frame::before { left: 0; }
+.frame::after { right: 0; }
+
+.tag {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: rgba(201, 169, 78, 0.92);
+  margin-bottom: 8px;
+}
+
+.tag .dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #d8b25a;
+  box-shadow: 0 0 8px rgba(216, 178, 90, 0.9);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.35; transform: scale(0.85); }
+  50%      { opacity: 1;    transform: scale(1.12); }
+}
+
+#banner-text {
+  font-size: clamp(20px, 2.1vw, 30px);
+  line-height: 1.55;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: #eaf4ff;
+  text-align: center;
+  white-space: pre-line;
+  text-shadow:
+    0 0 12px rgba(120, 200, 255, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.rule {
+  margin: 12px auto 0;
+  width: 86%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(201, 169, 78, 0.55) 22%,
+    rgba(201, 169, 78, 0.85) 50%,
+    rgba(201, 169, 78, 0.55) 78%,
+    transparent 100%);
+}
+
+/* 播报时轻微的一次「扫描」高光 */
+#banner.flash .frame {
+  animation: flash 620ms ease-out 1;
+}
+
+@keyframes flash {
+  0%   { box-shadow: 0 10px 34px rgba(0,0,0,.55), inset 0 0 0 rgba(120,200,255,0); }
+  35%  { box-shadow: 0 10px 34px rgba(0,0,0,.55), inset 0 0 60px rgba(120,200,255,.16); }
+  100% { box-shadow: 0 10px 34px rgba(0,0,0,.55), inset 0 0 0 rgba(120,200,255,0); }
+}
