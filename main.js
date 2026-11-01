@@ -376,8 +376,10 @@ function setupVisionAuto() {
       if (IN_DUNGEON_PHASES.has(payload.phase)) {
         dungeonStarted = true;
         console.log(`[vision] 识别到 ${payload.phase} → 判定已进入地牢，开始自动发放指令`);
-        // 广播模式：进入地牢这一刻就把两个浮窗收掉（广播本来也不该有它们）。
-        if (isBroadcastMode() && overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
+        // 广播模式：走到这一步说明画面已经在地牢里了，把两个浮窗收掉（广播本来也不该有它们）。
+        // 但如果开局环节还没确认完（currentPhase 仍在开局阶段），先留着——那些指令还要确认。
+        const runInDungeon = runState.currentPhase === 'dungeon' || IN_DUNGEON_PHASES.has(runState.currentPhase);
+        if (isBroadcastMode() && runInDungeon && overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
           overlayWindow.hide();
           if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) orbWindow.hide();
           console.log('[vision] 广播模式 → 已收起传呼机与悬浮球');
@@ -631,6 +633,20 @@ function isBroadcastMode() {
   return store.get('settings.displayMode', 'broadcast') === 'broadcast';
 }
 
+/**
+ * 当前这一条指令该不该走广播。
+ *
+ * 广播只服务于地牢内的自由环节。开局（选人格/EGO/编队/星光/初始饰品）仍然走传呼机，
+ * 因为那几步必须由玩家确认才能推进，广播播完就消失、没有确认动作，流程会卡住。
+ * 所以开局饰品确认完（runState.currentPhase 变成 'dungeon'）之后才开始广播，
+ * 同时把传呼机和悬浮球收起来。
+ */
+function useBroadcastNow() {
+  if (!isBroadcastMode()) return false;
+  const ph = runState.currentPhase;
+  return ph === 'dungeon' || IN_DUNGEON_PHASES.has(ph);
+}
+
 /** 一条指令该播多久：基础 5 秒，多一行多 1.5 秒，最多 12 秒 */
 function broadcastDuration(text) {
   const lines = String(text || '').split('\n').filter((s) => s.trim()).length || 1;
@@ -722,22 +738,6 @@ function broadcastInstructions(instructions) {
   const list = (Array.isArray(instructions) ? instructions : []).filter((i) => i && i.text);
   const items = list.map((i) => i.text);
   if (items.length === 0) return 0;
-
-  // 广播模式下，开局饰品（starting_relic）这一步是开局流程的最后一步。
-  // 它的指令一播出去，传呼机和悬浮球就再没有被用到的机会了——立刻收起，
-  // 不要等「识别到地牢页面」（那中间隔着卡包/路线的加载，玩家会看到浮窗赖着不走）。
-  if (list.some((i) => i.phase === 'starting_relic')) {
-    let hid = false;
-    if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
-      overlayWindow.hide();
-      hid = true;
-    }
-    if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) {
-      orbWindow.hide();
-      hid = true;
-    }
-    if (hid) console.log('[vision] 广播模式 → 开局饰品指令已发出，收起传呼机与悬浮球');
-  }
 
   if (broadcastHideTimer) { clearTimeout(broadcastHideTimer); broadcastHideTimer = null; }
 
@@ -1151,12 +1151,13 @@ function registerIpcHandlers() {
     // 注意：必须放在 runState.active = true 之后，否则重试逻辑会以为还没开局。
     setTimeout(() => { autoStartVision(); }, 0);
 
-    // 广播模式：开局就把「编队快捷键」这条提醒播出去（传呼机/悬浮球都不再显示，
-    // 编队的改动只能靠这个快捷键，玩家不知道就永远改不了编队）
+    // 广播模式：开局先提醒一次——开局这几个环节仍然用传呼机逐条确认，
+    // 等开局饰品确认完、传呼机收起之后，地牢内才改成横幅播报（不用确认）。
+    // 编队的改动在地牢里只能靠这个快捷键，玩家不知道就永远改不了编队。
     if (isBroadcastMode()) {
       const accel = store.get('settings.hotkeyFormation') || 'F4';
       setTimeout(() => {
-        showBroadcastText(`广播模式：指令以横幅播报，不需要确认。\n调整编队请按 ${accel}。`);
+        showBroadcastText(`开局阶段仍用传呼机，逐条确认。\n进入地牢后改用横幅播报、不需要确认。\n调整编队请按 ${accel}。`);
       }, 800);
     }
     karmaScareTriggered = false;
@@ -1371,7 +1372,7 @@ function registerIpcHandlers() {
     // （setupVisionAuto / run:start 的首条指令）**不会**——之前正是这里漏了，
     // 于是日志天天打「自动推进 cardpack → 指令 1 条」，传呼机却永远是空的。
     if (context && context.vision && result && Array.isArray(result.instructions) && result.instructions.length > 0) {
-      if (isBroadcastMode()) {
+      if (useBroadcastNow()) {
         // 广播模式：不排队、不占用传呼机、不需要确认
         queueManager.clear();
         unlockPagerRequest();
@@ -1473,7 +1474,8 @@ function registerIpcHandlers() {
       }
 
       // 广播模式：横幅播报，不排队、不锁传呼机、不需要确认
-      if (isBroadcastMode()) {
+      // 但只在地牢内这么做——开局几个环节（人格/EGO/编队/星光/初始饰品）必须走传呼机确认。
+      if (useBroadcastNow()) {
         const n = broadcastInstructions(result.instructions);
         if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) overlayWindow.hide();
         console.log(`[vision] 广播 ${n} 条 · 文本=${result.instructions.map((i) => i.text).join(' / ')}`);
@@ -2731,7 +2733,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-02-r17（开局饰品指令一发出即收浮窗）');
+  console.log('[main] 视觉链路构建 2026-11-02-r18（开局走传呼机确认 / 进地牢才切广播）');
 });
 
 app.on('before-quit', () => {
