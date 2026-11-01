@@ -21,6 +21,8 @@ class LiveVision {
     this.running = false;
     this.lastPhase = null;
     this.lastResult = null;
+    // 饰品奖励（关底/关卡）发过指令后上锁，避免弹窗遮挡导致重复发指令
+    this._rewardLocked = false;
     this.history = [];
     this.window = null;
     this.errors = 0;
@@ -55,6 +57,7 @@ class LiveVision {
     this.running = true;
     this.pipeline.reset();
     this.lastPhase = null;
+    this._rewardLocked = false;
     this._loop();
     return { ok: true, running: true, interval: this.interval };
   }
@@ -111,6 +114,26 @@ class LiveVision {
 
       const res = this.pipeline.classify(gray, width, height);
       this.lastResult = res;
+
+      // 关底/关卡饰品奖励的画面锚点（底部「拒绝饰品」）在选完之后会被
+      // 「获得饰品」弹窗遮住，弹窗消失后锚点又回来，于是同一个画面会被
+      // 反复判成关底奖励、重复发指令。这里在发过一次之后直接停掉对这两个
+      // 环节的判定，直到画面真的走到卡包/路线（= 已经进入下一个环节）。
+      if (this._rewardLocked && res.phase === 'boss_reward') {
+        return {
+          ok: true,
+          phase: this.lastPhase,
+          changed: false,
+          confident: false,
+          suppressed: true,
+          reason: '饰品奖励已发放，等离开该画面',
+          scores: this._round(res.scores),
+          readings: null,
+          width,
+          height,
+        };
+      }
+
       const confident = (res.confident === undefined ? true : res.confident) && res.phase !== null;
 
       // 只对当前环节算结构化读数，别的环节没必要花时间
@@ -133,6 +156,12 @@ class LiveVision {
 
       let changed = false;
       if (confident && reported && reported !== this.lastPhase) {
+        // 饰品奖励发过指令后上锁；等真正走到卡包/路线再解锁
+        if (reported === 'boss_reward' || reported === 'combat_reward') {
+          this._rewardLocked = true;
+        } else if (reported === 'cardpack' || reported === 'route') {
+          this._rewardLocked = false;
+        }
         const from = this.lastPhase;
         this.lastPhase = reported;
         changed = true;

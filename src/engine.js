@@ -31,6 +31,7 @@ const PHASES = {
   SHOP:             'shop',
   HIDDEN_BOSS:      'hidden_boss',
   BOSS_REWARD:      'boss_reward',
+  COMBAT_REWARD:    'combat_reward',
   FREE:             'free',
 };
 
@@ -247,6 +248,11 @@ const DEFAULT_TEMPLATES = {
     '致：从关底奖励中选择第{option}个。',
   ],
 
+  combat_reward: [
+    '致：这一战的饰品里，取走第{option}个。',
+    '致：从战斗奖励中挑第{option}个。',
+  ],
+
   free_instruction: [
     '致：做三个俄式挺身俯卧撑。',
     '致：下一场战斗时将编队中第{pos1}位罪人和第{pos2}位罪人互换位置。',
@@ -437,6 +443,7 @@ class InstructionEngine {
       case PHASES.JUDGMENT:         result = await this._genJudgment(rawRationality, context); break;
       case PHASES.HIDDEN_BOSS:      result = await this._genHiddenBoss(); break;
       case PHASES.BOSS_REWARD:      result = await this._genBossReward(context); break;
+      case PHASES.COMBAT_REWARD:    result = await this._genCombatReward(context); break;
       default: throw new Error(`Unknown phase: ${phase}`);
     }
     result.debugTrace = this._finishTrace();
@@ -1149,6 +1156,18 @@ class InstructionEngine {
       }
     }
 
+    // 链条式战斗里技能只能从左往右连（分散式才可自由指定目标）。
+    // 所以多罪人指令必须按队伍顺序（第1位 → 第7位）下发，
+    // 否则「先点名后排罪人」会让玩家在链条上接不下去。
+    if (instructions.length > 1 && fieldSinners.length > 0) {
+      const order = new Map(fieldSinners.map((s, i) => [s, i]));
+      const posOf = (inst) => {
+        const s = inst && inst.meta && inst.meta.sinner;
+        return order.has(s) ? order.get(s) : Number.MAX_SAFE_INTEGER;
+      };
+      instructions.sort((a, b) => posOf(a) - posOf(b));
+    }
+
     return { instructions, phase: PHASES.COMBAT, isGuidance: false };
   }
 
@@ -1505,10 +1524,31 @@ class InstructionEngine {
     }
   }
 
+  /**
+   * 关卡饰品奖励：打完普通战斗节点后出现，只有卡、没有「追加的苦难」。
+   * 与关底奖励分开措辞（关底是「关底奖励」，这里是「战斗奖励」）。
+   * 张数尽量用视觉读数，读不到就按 2 张估。
+   */
+  async _genCombatReward(context) {
+    const templates = await this._getTemplates();
+    const vision = (context && context.vision) || null;
+    const cards = Number(vision && vision.readings && vision.readings.cards);
+    const total = Number.isFinite(cards) && cards >= 1 ? Math.min(5, cards) : 2;
+    const option = Math.floor(Math.random() * total) + 1;
+
+    const tpl = this._pickTieredTemplate(templates, 'combat_reward');
+    const text = this._fillTemplate(tpl, { option: String(option) });
+    return {
+      instructions: [this._makeInstruction(PHASES.COMBAT_REWARD, text, false, {
+        option, totalOptions: total,
+      })],
+      phase: PHASES.COMBAT_REWARD, isGuidance: false,
+    };
+  }
+
   // ═══════════════════════════════════════════
   //  Template loading
   // ═══════════════════════════════════════════
-
   // ═══════════════════════════════════════════
   //  Free instruction (random idle trigger)
   // ═══════════════════════════════════════════

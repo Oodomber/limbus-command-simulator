@@ -132,6 +132,7 @@ const PHASE_LABELS = {
   shop: '商店',
   hidden_boss: '隐藏BOSS',
   boss_reward: '关底选择',
+  combat_reward: '关卡饰品奖励',
 };
 
 function getNextPhase(current) {
@@ -282,8 +283,8 @@ const VISION_TO_ENGINE_PHASE = {
   event_reward: 'event_reward',
   shop: 'shop',
   boss_reward: 'boss_reward',
-  // 视觉侧把关卡饰品奖励单独报一个环节，但生成仍走关底那套逻辑
-  combat_reward: 'boss_reward',
+  // 关卡饰品奖励是独立环节，措辞与关底奖励分开
+  combat_reward: 'combat_reward',
 };
 
 let autoAdvanceBusy = false;
@@ -471,7 +472,7 @@ function getConfigDefaults() {
     enabledPhases: [
       'deploy_identity', 'deploy_ego', 'starlight', 'starting_relic',
       'cardpack', 'route', 'combat', 'event', 'event_reward',
-      'judgment', 'shop', 'hidden_boss', 'boss_reward'
+      'judgment', 'shop', 'hidden_boss', 'boss_reward', 'combat_reward'
     ],
     settings: {
       hotkeyRequest: 'F9',
@@ -1083,8 +1084,11 @@ function registerIpcHandlers() {
     if (!runState.active) return null;
 
     const enabledPhases = store.get('enabledPhases') || [];
+    // 关卡饰品奖励是后加的环节，老配置里没有它 —— 跟着「关底奖励」的开关走
+    const isEnabled = (p) => enabledPhases.includes(p)
+      || (p === 'combat_reward' && enabledPhases.includes('boss_reward'));
     const isPreDungeon = PHASE_ORDER.includes(phase) && phase !== 'dungeon';
-    if (!isPreDungeon && !enabledPhases.includes(phase)) return null;
+    if (!isPreDungeon && !isEnabled(phase)) return null;
     // If pre-dungeon phase is disabled, auto-advance
     if (isPreDungeon && !enabledPhases.includes(phase)) {
       runState.currentPhase = getNextPhase(runState.currentPhase);
@@ -2404,7 +2408,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-10-31-r6（自动推进的指令会真的送进传呼机）');
+  console.log('[main] 视觉链路构建 2026-11-01-r7（关卡奖励独立文案 / 战斗按队伍顺序 / 饰品奖励去重）');
 });
 
 app.on('before-quit', () => {

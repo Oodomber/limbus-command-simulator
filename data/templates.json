@@ -189,7 +189,6 @@
   "boss_reward": [
     "致：从关底奖励中选择第{option}个。"
   ],
-
   "free_instruction": [
     "致：做三个俄式挺身俯卧撑。",
     "致：下一场战斗时将编队中第{pos1}位罪人和第{pos2}位罪人互换位置。",
@@ -219,7 +218,6 @@
     "致：下一场战斗时，让编队最末位罪人变为第一位。",
     "致：说出你的上一句话有几个字。"
   ],
-
   "combat_use_ego_vague": [
     "致：{sinner}，释放你心中{tags}的冲动。",
     "{sinner}，{level}级的光在你体内。"
@@ -254,7 +252,6 @@
     "致：将编队中最强之人移至末尾。",
     "致：有一个罪人是不需要的，让他离开队伍。"
   ],
-
   "shop_buy_vague": [
     "致：{tags}之物，是你需要的。"
   ],
@@ -273,7 +270,6 @@
   "shop_upgrade_vague": [
     "致：使已有饰品发生变化。"
   ],
-
   "cardpack_pick_vague": [
     "致：名为{pack}的门扉之后，才是应行之路。",
     "致：{pack}在低语，它才是正确的选择。"
@@ -281,46 +277,42 @@
   "cardpack_reroll_vague": [
     "致：这些门都不是你要进的，再看看。"
   ],
-
   "starlight_vague": [
     "致：{name}在呼唤你的名字。"
   ],
   "starlight_none_vague": [
     "致：这一轮，不需要星的指引。"
   ],
-
   "starting_relic_vague": [
     "致：你踏出第一步时，{effect}之物应该在你手边。"
   ],
-
   "route_vague": [
     "致：{dir}，这便是你的方向。"
   ],
-
   "event_option_vague": [
     "致：你的直觉已经给出了答案。",
     "致：不要读选项，感受它。"
   ],
-
   "judgment_vague": [
     "致：{sinner}来审视这一切。",
     "致：决定权交给{sinner}。",
     "致：由有{tags}的罪人来判定。"
   ],
-
   "hidden_boss_fight_vague": [
     "致：深处的目光在注视着你。"
   ],
   "hidden_boss_fight_meta": [
     "致：要么向前要么转身，但你不会后悔任何一个选择。"
   ],
-
   "boss_reward_vague": [
     "致：第{option}个果实，由你摘取。"
   ],
-
   "free_instruction_meta": [
     "致：违背这条指令即是遵守这条指令。",
     "致：不要遵守下一条指令。"
+  ],
+  "combat_reward": [
+    "致：这一战的饰品里，取走第{option}个。",
+    "致：从战斗奖励中挑第{option}个。"
   ]
 }
