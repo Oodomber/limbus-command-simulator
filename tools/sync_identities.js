@@ -65,7 +65,7 @@ const CHAR_PINYIN = {
 function slugify(text) {
   const out = [];
   for (const ch of String(text || '')) {
-    if (/[a-z0-9]/i.test(ch)) out.push(ch.toLowerCase());
+    if (/[0-9]/.test(ch)) out.push(ch);
     else if (CHAR_PINYIN[ch]) out.push(CHAR_PINYIN[ch]);
   }
   return out.join('_') || 'unknown';
@@ -78,11 +78,11 @@ function makeId(item) {
 
 function rebuildRedundant(item) {
   const t = item.tags || {};
+  if (!Array.isArray(t.special)) t.special = [];
   const factionParts = [];
   if (Array.isArray(t.faction)) factionParts.push(...t.faction);
   item.faction = factionParts.length ? `${item.name}、${factionParts.join('、')}` : '';
-  if (Array.isArray(t.special) && t.special.length) item.special = t.special.join('、');
-  else item.special = '';
+  item.special = t.special.length ? t.special.join('、') : '';
 }
 
 function key(item) {
@@ -142,10 +142,11 @@ function main() {
   for (const k of onlyUser) {
     const src = us.get(k);
     const item = JSON.parse(JSON.stringify(src));
-    if (!item.id || /^new_\d+$/.test(item.id) || idSet.has(item.id)) {
-      let candidate = makeId(item);
+    const canonical = makeId(item);
+    if (item.id !== canonical) {
+      let candidate = canonical;
       let n = 2;
-      while (idSet.has(candidate)) candidate = `${makeId(item)}_${n++}`;
+      while (idSet.has(candidate)) candidate = `${canonical}_${n++}`;
       console.log(`  id 规范化：${item.id} -> ${candidate}`);
       item.id = candidate;
     }

@@ -172,13 +172,19 @@ function splitEgoTitle(title) {
   lines.push('');
   lines.push('## 结论');
   lines.push('');
-  lines.push(`- 人格：缺 **${newIdentities.length}** 条，其中「黎明事务所」那两条你已经在本机的 userData 副本里手补过；另有 **1 条是改名**（流浪乐队头目 → 老大），不算新增。`);
-  lines.push(`- E.G.O：缺 **${newEgos.length}** 条，但其中 4 条是**改名**（终末火柴之光×3 → 第四根火柴之焰、智慧的青枝 → 知识树之枝），真正新增约 **${Math.max(0, newEgos.length - goneEgos.length)}** 条。`);
+  lines.push(`- 人格：wiki **${idTitles.length}** 条 / 本地 **${identities.length}** 条 / 缺 **${newIdentities.length}** 条 / 本地独有 **${goneIdentities.length}** 条。`);
+  lines.push(`- E.G.O：wiki **${egoTitles.length}** 条 / 本地 **${egos.length}** 条 / 缺 **${newEgos.length}** 条 / 本地独有 **${goneEgos.length}** 条。`);
+  if (newIdentities.length === 0 && goneIdentities.length === 0) {
+    lines.push('- 人格已经和 wiki 完全对齐（改名已按游戏内文案落实，id 未动）。');
+  }
+  if (newEgos.length > 0) {
+    lines.push('- E.G.O 还差上面列出的这些；补齐方式与人格相同（编辑器新增 → `tools/sync_identities.js` 并入打包基线）。');
+  }
   lines.push('- 也就是说：人格和 EGO 的缺口很小，**真正的大头在饰品 / 事件 / 卡包**，而这三类的取数入口还没打通。');
   lines.push('');
   lines.push('## 下一步建议');
   lines.push('');
-  lines.push('1. 先解决「本地副本遮蔽」：`src/dataLoader.js` 优先读 `%APPDATA%/limbus-command-simulator/data/*.json`，你机器上已经有 `identities.json`(183) 与 `egos.json`(110) 的副本，**比打包版还多**。不处理的话，改了 `data/` 也不会生效。');
+  lines.push(`1. 「本地副本遮蔽」：\`src/dataLoader.js\` 优先读 \`%APPDATA%/limbus-command-simulator/data/*.json\`（本机 identities **${identities.length}** / egos **${egos.length}**）。补齐时必须让「打包基线」与「用户副本」内容一致，否则改了 \`data/\` 也不生效。`);
   lines.push('2. 人格/EGO 可以直接增量补：按 name 对齐，老条目保留 id（wiki 的 `E.G.O::` 与本地 `E.G.O:` 只是写法差异），新增条目生成新 id。');
   lines.push('3. 饰品 / 事件 / 卡包 需要先把取数入口打通，再谈差异——这一步的工作量比人格/EGO 大一个数量级。');
   lines.push('');

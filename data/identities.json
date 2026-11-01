@@ -1065,7 +1065,7 @@
     "tags": {
       "faction": [
         "脑叶公司本部",
-        "EE.G.O装备"
+        "E.G.O装备"
       ],
       "effect": [
         "破裂",
@@ -5924,6 +5924,306 @@
     ],
     "id": "gregor_limingshiwusuodaibiao",
     "faction": "黎明事务所代表、收尾人、黎明事务所",
+    "special": ""
+  },
+  {
+    "name": "LCE E.G.O::次元撕裂者",
+    "sinner": "李箱",
+    "rarity": "三灯",
+    "tags": {
+      "faction": [
+        "LCE",
+        "E.G.O装备",
+        "边狱公司"
+      ],
+      "effect": [
+        "破裂",
+        "充能"
+      ],
+      "damageType": [
+        "斩击"
+      ],
+      "sinAffinity": [
+        "傲慢",
+        "暴食",
+        "嫉妒"
+      ],
+      "special": []
+    },
+    "coreMechanic": [
+      "破裂",
+      "充能"
+    ],
+    "id": "yi_sang_ci_yuan_si_lie_zhe",
+    "faction": "LCE E.G.O::次元撕裂者、LCE、E.G.O装备、边狱公司",
+    "special": ""
+  },
+  {
+    "name": "高级定制::黑派 品牌经理",
+    "sinner": "堂吉诃德",
+    "rarity": "三灯",
+    "tags": {
+      "faction": [
+        "黑派",
+        "西西弗"
+      ],
+      "effect": [
+        "震颤",
+        "充能",
+        "保存",
+        "钉"
+      ],
+      "damageType": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "傲慢",
+        "嫉妒",
+        "怠惰"
+      ],
+      "special": []
+    },
+    "coreMechanic": [
+      "震颤",
+      "充能"
+    ],
+    "id": "don_quixote_gao_ji_ding_zhi_hei_pai_pin_pai_jing_li",
+    "faction": "高级定制::黑派 品牌经理、黑派、西西弗",
+    "special": ""
+  },
+  {
+    "name": "高级定制::黑派制鞋馆",
+    "sinner": "良秀",
+    "rarity": "三灯",
+    "tags": {
+      "faction": [
+        "黑派",
+        "西西弗"
+      ],
+      "effect": [
+        "充能",
+        "震颤",
+        "保存"
+      ],
+      "damageType": [
+        "打击"
+      ],
+      "sinAffinity": [
+        "嫉妒",
+        "傲慢",
+        "怠惰"
+      ],
+      "special": []
+    },
+    "coreMechanic": [
+      "震颤",
+      "充能"
+    ],
+    "id": "ryoshu_gao_ji_ding_zhi_hei_pai_zhi_xie_guan",
+    "faction": "高级定制::黑派制鞋馆、黑派、西西弗",
+    "special": ""
+  },
+  {
+    "name": "Cinq协会东部3科",
+    "sinner": "鸿璐",
+    "rarity": "三灯",
+    "tags": {
+      "faction": [
+        "收尾人",
+        "Cinq协会"
+      ],
+      "sinAffinity": [
+        "暴怒",
+        "忧郁",
+        "傲慢"
+      ],
+      "effect": [
+        "烧伤",
+        "呼吸法",
+        "点穴",
+        "防御等级降低"
+      ],
+      "damageType": [
+        "突刺"
+      ],
+      "special": [
+        "老板来碗忘情牛肉面"
+      ]
+    },
+    "coreMechanic": [
+      "烧伤",
+      "呼吸法"
+    ],
+    "id": "hong_lu_xie_hui_dong_bu_3_ke",
+    "faction": "Cinq协会东部3科、收尾人、Cinq协会",
+    "special": "老板来碗忘情牛肉面"
+  },
+  {
+    "name": "高级定制::黑派 3F 广播室",
+    "sinner": "鸿璐",
+    "rarity": "三灯",
+    "tags": {
+      "sinAffinity": [
+        "嫉妒",
+        "忧郁",
+        "怠惰"
+      ],
+      "faction": [
+        "黑派",
+        "西西弗"
+      ],
+      "effect": [
+        "充能",
+        "震颤",
+        "保存",
+        "怠惰抗性弱化"
+      ],
+      "damageType": [
+        "打击"
+      ],
+      "special": []
+    },
+    "coreMechanic": [
+      "震颤",
+      "充能"
+    ],
+    "id": "hong_lu_gao_ji_ding_zhi_hei_pai_3_guang_bo_shi",
+    "faction": "高级定制::黑派 3F 广播室、黑派、西西弗",
+    "special": ""
+  },
+  {
+    "name": "高级定制::红派 裁缝之王",
+    "sinner": "希斯克利夫",
+    "rarity": "三灯",
+    "tags": {
+      "sinAffinity": [
+        "嫉妒",
+        "色欲",
+        "暴怒"
+      ],
+      "faction": [
+        "红派",
+        "西西弗"
+      ],
+      "effect": [
+        "充能",
+        "流血",
+        "针族",
+        "搏动",
+        "钉"
+      ],
+      "damageType": [
+        "突刺"
+      ],
+      "special": []
+    },
+    "coreMechanic": [
+      "充能",
+      "流血"
+    ],
+    "id": "heathcliff_gao_ji_ding_zhi_hong_pai_cai_feng_zhi_wang",
+    "faction": "高级定制::红派 裁缝之王、红派、西西弗",
+    "special": ""
+  },
+  {
+    "name": "高级定制::红派精品店",
+    "sinner": "以实玛利",
+    "rarity": "三灯",
+    "tags": {
+      "sinAffinity": [
+        "嫉妒",
+        "色欲",
+        "暴怒"
+      ],
+      "damageType": [
+        "突刺"
+      ],
+      "faction": [
+        "红派",
+        "西西弗"
+      ],
+      "effect": [
+        "流血",
+        "充能",
+        "搏动",
+        "新装",
+        "更衣室"
+      ],
+      "special": []
+    },
+    "coreMechanic": [
+      "流血",
+      "充能"
+    ],
+    "id": "ishmael_gao_ji_ding_zhi_hong_pai_jing_pin_dian",
+    "faction": "高级定制::红派精品店、红派、西西弗",
+    "special": ""
+  },
+  {
+    "name": "高级定制::改衣室",
+    "sinner": "罗佳",
+    "rarity": "三灯",
+    "tags": {
+      "faction": [
+        "西西弗"
+      ],
+      "sinAffinity": [
+        "傲慢",
+        "嫉妒",
+        "怠惰"
+      ],
+      "damageType": [
+        "斩击"
+      ],
+      "effect": [
+        "充能",
+        "震颤",
+        "剪刀",
+        "漂流惯性",
+        "攻击等级提升"
+      ],
+      "special": []
+    },
+    "coreMechanic": [
+      "震颤",
+      "充能"
+    ],
+    "id": "rodion_gao_ji_ding_zhi_gai_yi_shi",
+    "faction": "高级定制::改衣室、西西弗",
+    "special": ""
+  },
+  {
+    "name": "高级定制::红派 赤红之神",
+    "sinner": "辛克莱",
+    "rarity": "三灯",
+    "tags": {
+      "sinAffinity": [
+        "暴食",
+        "暴怒",
+        "色欲"
+      ],
+      "faction": [
+        "红派",
+        "西西弗"
+      ],
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "流血",
+        "充能",
+        "强壮",
+        "无止境的饥饿",
+        "搏动"
+      ],
+      "special": []
+    },
+    "coreMechanic": [
+      "流血",
+      "充能"
+    ],
+    "id": "sinclair_gao_ji_ding_zhi_hong_pai_chi_hong_zhi_shen",
+    "faction": "高级定制::红派 赤红之神、红派、西西弗",
     "special": ""
   }
 ]

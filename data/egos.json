@@ -3008,5 +3008,36 @@
     },
     "attackCapacity": 1,
     "coinCount": 1
+  },
+  {
+    "id": "yi_sang_zhuangyanaidao",
+    "name": "庄严哀悼",
+    "sinner": "李箱",
+    "level": "HE",
+    "isBaseEgo": false,
+    "sinCost": {
+      "暴怒": 0,
+      "色欲": 0,
+      "怠惰": 1,
+      "暴食": 0,
+      "忧郁": 4,
+      "傲慢": 2,
+      "嫉妒": 0
+    },
+    "tags": {
+      "damageType": [
+        "突刺"
+      ],
+      "effect": [
+        "沉沦",
+        "蝶",
+        "广域乱射",
+        "震颤",
+        "丢弃",
+        "再次装填"
+      ]
+    },
+    "attackCapacity": 1,
+    "coinCount": 1
   }
 ]
