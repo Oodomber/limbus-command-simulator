@@ -6,6 +6,7 @@
 // ── DOM refs ──
 const pagerText = document.getElementById('pager-text');
 const pagerCursor = document.getElementById('pager-cursor');
+const pagerBatch = document.getElementById('pager-batch');
 const pagerButtons = document.getElementById('pager-buttons');
 const pagerGuidanceNav = document.getElementById('pager-guidance-nav');
 const guidanceInfo = document.getElementById('guidance-info');
@@ -99,6 +100,7 @@ function showWaiting() {
   currentInstructionId = null;
   currentBatchIndex = -1;
   currentBatchTotal = 0;
+  if (pagerBatch) { pagerBatch.textContent = ''; pagerBatch.classList.remove('visible'); }
   seenInstructions = new Set(); // reset for new batch
 }
 
@@ -110,6 +112,17 @@ window.pagerAPI.onShowInstruction((data) => {
   currentIsGuidance = data.isGuidance;
   currentBatchIndex = data.batchIndex ?? -1;
   currentBatchTotal = data.batchTotal ?? 0;
+
+  // 这一批不止一条时，在右下角标出「1 / 3」，玩家一眼知道后面还有
+  if (pagerBatch) {
+    if (currentBatchTotal > 1 && currentBatchIndex >= 0) {
+      pagerBatch.textContent = `${currentBatchIndex + 1} / ${currentBatchTotal}`;
+      pagerBatch.classList.add('visible');
+    } else {
+      pagerBatch.textContent = '';
+      pagerBatch.classList.remove('visible');
+    }
+  }
 
   pagerButtons.classList.add('hidden');
   pagerGuidanceNav.classList.add('hidden');

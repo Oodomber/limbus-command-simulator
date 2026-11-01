@@ -14,6 +14,7 @@ body {
 
 /* ── Pager Frame ── */
 #pager {
+  position: relative;
   width: 100%;
   height: 100vh;
   background: rgba(20, 20, 40, 0.88);
@@ -113,6 +114,26 @@ body {
   color: #ffd700;
   border-color: #ffd700;
 }
+
+
+/* 批次计数：右下角 1 / 3，仅多指令时出现 */
+#pager-batch {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(255, 215, 0, 0.85);
+  opacity: 0;
+  transition: opacity 200ms ease;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.35);
+  pointer-events: none;
+}
+
+#pager-batch.visible { opacity: 1; }
 
 /* ── Display ── */
 #pager-display {

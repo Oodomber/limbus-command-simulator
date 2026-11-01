@@ -9,6 +9,10 @@ class QueueManager {
     this._overlayReady = false;
     this._isAnimating = false;
 
+    // 普通批次的序号（1/3、2/3…），只有 batchTotal > 1 时才会显示
+    this._batchTotal = 0;
+    this._batchIndex = 0;
+
     // Callbacks set by main process
     this._onShowInstruction = null;
     this._onShowWaiting = null;
@@ -32,6 +36,9 @@ class QueueManager {
       // Guidance batch: send all at once with index/total for navigation
       this._showGuidanceBatch(list);
     } else {
+      // 记下这一批的规模：入队时确定，显示时逐条递增，玩家才知道还剩几条
+      this._batchTotal = list.length;
+      this._batchIndex = 0;
       for (const inst of list) {
         this._queue.push(inst);
       }
@@ -181,6 +188,9 @@ class QueueManager {
         text: inst.text,
         phase: inst.phase,
         isGuidance: inst.isGuidance,
+        // 普通批次也要带序号：抽到 2~3 条指令时，玩家得知道后面还有几条
+        batchIndex: this._batchIndex,
+        batchTotal: this._batchTotal,
       });
     }
   }
@@ -192,6 +202,8 @@ class QueueManager {
     }
     const next = this._queue.shift();
     this._showInstruction(next);
+    // 显示完这一条之后序号 +1，下一条就是 2/3、3/3
+    if (this._batchTotal > 1) this._batchIndex = Math.min(this._batchIndex + 1, this._batchTotal);
   }
 
   _showWaiting() {

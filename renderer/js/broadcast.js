@@ -2,6 +2,7 @@
 // 文字效果与传呼机一致：逐字「乱码滚动」，整串吐完后瞬间定格成正文。
 const bannerEl = document.getElementById('banner');
 const textEl = document.getElementById('banner-text');
+const seqEl = document.getElementById('banner-seq');
 
 // 与 renderer/js/overlay.js 里那张乱码表保持一致，两边观感才统一
 const SCRAMBLE_CHARS = '日月金木水火土天地玄黃宇宙洪荒龍鳳鬼神乾坤陰陽風雲雷電山澤河海春秋冬夏仁義禮智忠孝廉恥文武劍刀槍戟弓箭矛盾甲冑城郭宮殿樓閣花草竹石鳥獸蟲魚魂魄精氣神魔仙妖';
@@ -24,7 +25,19 @@ function scrambleUpTo(target, revealed) {
   return out;
 }
 
-function show(text, duration) {
+// 同一批里还有别的指令时，右上角标出 1/3，玩家就知道后面还有
+function renderSequence(sequence) {
+  if (!seqEl) return;
+  if (sequence && sequence.total > 1) {
+    seqEl.textContent = sequence.index + ' / ' + sequence.total;
+    seqEl.classList.add('visible');
+  } else {
+    seqEl.textContent = '';
+    seqEl.classList.remove('visible');
+  }
+}
+
+function show(text, duration, sequence) {
   if (hideTimer) { clearTimeout(hideTimer); hideTimer = null; }
   if (typeTimer) { clearInterval(typeTimer); typeTimer = null; }
   if (collapseTimer) { clearTimeout(collapseTimer); collapseTimer = null; }
@@ -37,6 +50,7 @@ function show(text, duration) {
   bannerEl.classList.add('show');
 
   textEl.textContent = '';
+  renderSequence(sequence);
 
   let revealed = 0;
   typeTimer = setInterval(() => {
@@ -62,7 +76,7 @@ function hide() {
   }, 320);
 }
 
-window.broadcastAPI.onShow((data) => show(data && data.text, data && data.duration));
+window.broadcastAPI.onShow((data) => show(data && data.text, data && data.duration, data && data.sequence));
 window.broadcastAPI.onHide(() => hide());
 
 // 音效：和传呼机一样，用 <audio id="sfx-xxx">，名字里的下划线换成连字符

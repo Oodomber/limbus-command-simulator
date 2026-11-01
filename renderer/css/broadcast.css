@@ -115,3 +115,21 @@ html, body {
   0%, 100% { text-shadow: 0 0 10px rgba(74, 240, 255, 0.28), 0 0 24px rgba(74, 240, 255, 0.12); }
   50%      { text-shadow: 0 0 14px rgba(74, 240, 255, 0.46), 0 0 34px rgba(74, 240, 255, 0.22); }
 }
+
+/* 一批里的第几条：右上角一小枚金色序号，只在多指令时出现 */
+#banner-seq {
+  position: absolute;
+  top: 8px;
+  right: 22px;
+  font-size: clamp(13px, 1.05vw, 17px);
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: rgba(232, 203, 132, 0.92);
+  opacity: 0;
+  transition: opacity 220ms ease;
+  text-shadow: 0 0 10px rgba(232, 203, 132, 0.35);
+  font-variant-numeric: tabular-nums;
+}
+
+#banner-seq.visible { opacity: 1; }
+

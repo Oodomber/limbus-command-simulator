@@ -366,10 +366,15 @@ function setupVisionAuto() {
       if (payload.phase === 'cardpack') {
         dungeonStarted = true;
         console.log('[vision] 识别到卡包页 → 判定已进入地牢，开始自动发放指令');
-        // 广播模式：自由环节开始就把传呼机收起来，别挡画面
-        if (isBroadcastMode() && overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
-          overlayWindow.hide();
-          console.log('[vision] 广播模式 → 已收起传呼机');
+        // 广播模式：自由环节开始就把传呼机和悬浮球收起来，别挡画面
+        if (isBroadcastMode()) {
+          if (overlayWindow && !overlayWindow.isDestroyed() && overlayWindow.isVisible()) {
+            overlayWindow.hide();
+          }
+          if (orbWindow && !orbWindow.isDestroyed() && orbWindow.isVisible()) {
+            orbWindow.hide();
+          }
+          console.log('[vision] 广播模式 → 已收起传呼机与悬浮球');
         }
       } else {
         why = '尚未进入地牢（等第一次识别到卡包页）';
@@ -671,16 +676,18 @@ function createBroadcastWindow() {
   broadcastWindow.on('closed', () => { broadcastWindow = null; });
 }
 
-/** 把一条文字推给横幅（窗口没建就建，还没加载完就等加载完） */
-function showBroadcastText(text) {
+/** 把一条文字推给横幅（窗口没建就建，还没加载完就等加载完）
+ *  seq = { index, total }：这一批里的第几条，多于一条时横幅角落显示 1/3 */
+function showBroadcastText(text, seq) {
   if (!text) return 0;
   if (!broadcastWindow || broadcastWindow.isDestroyed()) createBroadcastWindow();
   const bw = broadcastWindow;
   const duration = broadcastDuration(text);
+  const sequence = seq && seq.total > 1 ? { index: seq.index, total: seq.total } : null;
 
   const send = () => {
     if (!bw || bw.isDestroyed()) return;
-    bw.webContents.send('broadcast:show', { text, duration });
+    bw.webContents.send('broadcast:show', { text, duration, sequence });
     // 音效由横幅窗口自己播，和传呼机一样是「窗口自带的 <audio>」
     if (store.get('settings.soundEnabled') !== false) {
       bw.webContents.send('broadcast:play-sound', 'bibi_long');
@@ -713,11 +720,12 @@ function broadcastInstructions(instructions) {
   if (broadcastHideTimer) { clearTimeout(broadcastHideTimer); broadcastHideTimer = null; }
 
   let offset = 0;
-  for (const text of items) {
+  items.forEach((text, idx) => {
     const at = offset;
-    setTimeout(() => showBroadcastText(text), at);
+    const seq = { index: idx + 1, total: items.length };
+    setTimeout(() => showBroadcastText(text, seq), at);
     offset += broadcastSlot(text);
-  }
+  });
 
   broadcastHideTimer = setTimeout(() => {
     if (broadcastWindow && !broadcastWindow.isDestroyed()) {
@@ -1120,6 +1128,15 @@ function registerIpcHandlers() {
     // 开局前的页面照样会被识别，但闸门会拦住不出指令。
     // 注意：必须放在 runState.active = true 之后，否则重试逻辑会以为还没开局。
     setTimeout(() => { autoStartVision(); }, 0);
+
+    // 广播模式：开局就把「编队快捷键」这条提醒播出去（传呼机/悬浮球都不再显示，
+    // 编队的改动只能靠这个快捷键，玩家不知道就永远改不了编队）
+    if (isBroadcastMode()) {
+      const accel = store.get('settings.hotkeyFormation') || 'F4';
+      setTimeout(() => {
+        showBroadcastText(`广播模式：指令以横幅播报，不需要确认。\n调整编队请按 ${accel}。`);
+      }, 800);
+    }
     karmaScareTriggered = false;
     runState.karmaScareThreshold = store.get('settings.karmaScareThreshold') ?? 100;
     queueManager.clear();
@@ -2212,6 +2229,7 @@ function registerShortcuts() {
     vetoDanmaku:    store.get('settings.hotkeyVetoDanmaku')    || 'F11',
     complete:       store.get('settings.hotkeyComplete')       || 'F2',
     fail:           store.get('settings.hotkeyFail')           || 'F3',
+    formation:      store.get('settings.hotkeyFormation')      || 'F4',
   };
 
   // ── Handler: Request instruction (open phase picker on overlay) ──
@@ -2280,12 +2298,22 @@ function registerShortcuts() {
     }
   }
 
+  // ── Handler: 编队窗口（广播模式下传呼机/悬浮球都收起，编队只能靠快捷键）──
+  function handleFormation() {
+    if (formationWindow && !formationWindow.isDestroyed() && formationWindow.isVisible()) {
+      formationWindow.close();
+    } else {
+      createFormationWindow();
+    }
+  }
+
   const handlers = {
     request: handleRequest,
     toggleOverlay: handleToggleOverlay,
     vetoDanmaku: handleVetoDanmaku,
     complete: handleComplete,
     fail: handleFail,
+    formation: handleFormation,
   };
 
   for (const [action, accel] of Object.entries(hotkeys)) {
@@ -2408,12 +2436,11 @@ app.whenReady().then(async () => {
         if (overlayWindow && !overlayWindow.isDestroyed()) {
           overlayWindow.webContents.send('pager:show-waiting');
         }
-        const inst = queueManager.enqueue([{
-          id: 'dev-fake-1',
-          text: '（自检）这条指令只用来确认传呼机能不能显示',
-          phase: 'cardpack',
-          isGuidance: false,
-        }]);
+        const inst = queueManager.enqueue([
+          { id: 'dev-fake-1', text: '（自检）这条指令只用来确认传呼机能不能显示', phase: 'cardpack', isGuidance: false },
+          { id: 'dev-fake-2', text: '（自检）第二条：用来确认批次计数 2/3 正常', phase: 'cardpack', isGuidance: false },
+          { id: 'dev-fake-3', text: '（自检）第三条：最后一条', phase: 'cardpack', isGuidance: false },
+        ]);
         const ov = overlayWindow && !overlayWindow.isDestroyed() ? overlayWindow : null;
         console.log('[vision2/fake-pager] enqueued =', JSON.stringify(inst && inst.length));
         console.log('[vision2/fake-pager] overlay 存在 =', !!ov,
@@ -2425,7 +2452,7 @@ app.whenReady().then(async () => {
           // 等打字机把文字吐出来再看 DOM，否则刚入队那一瞬 text 必然还是空的
           setTimeout(() => {
             ov.webContents.executeJavaScript(
-              'JSON.stringify({loading:document.readyState,hasPager:!!document.getElementById("pager"),bodyBg:getComputedStyle(document.body).backgroundColor,pagerH:document.getElementById("pager")?document.getElementById("pager").getBoundingClientRect().height:0,text:(document.getElementById("pager-text")||{}).innerText||""})'
+              'JSON.stringify({loading:document.readyState,hasPager:!!document.getElementById("pager"),bodyBg:getComputedStyle(document.body).backgroundColor,pagerH:document.getElementById("pager")?document.getElementById("pager").getBoundingClientRect().height:0,text:(document.getElementById("pager-text")||{}).innerText||"",batch:(()=>{const b=document.getElementById("pager-batch");return b?{text:b.innerText,op:b.getBoundingClientRect().opacity,cls:b.className,w:b.getBoundingClientRect().width,vis:getComputedStyle(b).opacity}:"missing";})()})'
             ).then((r) => console.log('[vision2/fake-pager] dom =', r)).catch((e) => console.log('[vision2/fake-pager] dom 失败:', e.message));
             // 直接把传呼机窗口自己截下来：屏幕截图受 DWM/分层窗口影响看不准，
             // capturePage 拿到的是渲染进程真正画出来的东西，这是唯一可信的证据。
@@ -2456,6 +2483,7 @@ app.whenReady().then(async () => {
         store.set('settings.displayMode', 'broadcast');
         const fake = [
           { text: '致：良秀必须使用HE级EGO。\n致：唐吉诃德使用上方技能。\n致：默尔索使用下方技能。' },
+          { text: '致：选择第2个卡包。' },
         ];
         const n = broadcastInstructions(fake);
         console.log('[vision2/fake-broadcast] 播报', n, '条');
@@ -2640,7 +2668,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-02-r13（广播音效）');
+  console.log('[main] 视觉链路构建 2026-11-02-r14（多指令批次序号 / 广播收起悬浮球 / 开局弹窗选难度与模式 / 编队快捷键）');
 });
 
 app.on('before-quit', () => {

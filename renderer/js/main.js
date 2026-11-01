@@ -974,6 +974,23 @@ async function showRunStartModal() {
       </select>
     </div>
 
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div>
+        <label style="color:#ccc;font-weight:bold;display:block;margin-bottom:6px;">难度</label>
+        <select id="run-difficulty-select" style="width:100%;padding:8px;background:#0f0f23;color:#e0e0e0;border:1px solid #3a3a5a;border-radius:6px;font-size:14px;">
+          <option value="normal">普通（关底三选一）</option>
+          <option value="hard">困难（关底四选二）</option>
+        </select>
+      </div>
+      <div>
+        <label style="color:#ccc;font-weight:bold;display:block;margin-bottom:6px;">指令显示</label>
+        <select id="run-display-select" style="width:100%;padding:8px;background:#0f0f23;color:#e0e0e0;border:1px solid #3a3a5a;border-radius:6px;font-size:14px;">
+          <option value="pager">传呼机（点完成/失败）</option>
+          <option value="broadcast">广播（自动消失）</option>
+        </select>
+      </div>
+    </div>
+
     <div style="display:flex;gap:8px;">
       <button id="run-start-confirm" style="flex:1;padding:12px;background:#ffd700;color:#1a1a2e;border:none;border-radius:6px;font-weight:bold;font-size:15px;cursor:pointer;">
         谨遵指令
@@ -1017,7 +1034,14 @@ async function showRunStartModal() {
       return;
     }
 
+    // 开局前在这一步定下难度与显示方式（设置页不再重复放这两个选项）
+    const difficulty = document.getElementById('run-difficulty-select').value;
+    const displayMode = document.getElementById('run-display-select').value;
+
     overlay.remove();
+
+    await window.electronAPI.setConfig('settings.currentGameMode', difficulty);
+    await window.electronAPI.setConfig('settings.displayMode', displayMode);
 
     const result = await window.electronAPI.startRun(poolName, egoPoolName);
     if (result.success) {
@@ -1401,9 +1425,6 @@ async function showTeamCoreMechanic() {
 async function loadSettings(config) {
   const settings = config.settings || {};
 
-  document.getElementById('setting-game-mode').value = settings.currentGameMode || 'hard';
-  const modeSel = document.getElementById('setting-display-mode');
-  if (modeSel) modeSel.value = settings.displayMode || 'pager';
   document.getElementById('setting-opacity').value = (settings.overlayOpacity || 0.9) * 100;
   document.getElementById('setting-scale').value = (settings.overlayScale || 1.0) * 100;
   document.getElementById('setting-sound').checked = settings.soundEnabled !== false;
@@ -1420,24 +1441,6 @@ async function loadSettings(config) {
 }
 
 function setupSettings() {
-  document.getElementById('setting-game-mode').addEventListener('change', async (e) => {
-    await window.electronAPI.setConfig('settings.currentGameMode', e.target.value);
-  });
-
-  const modeSel = document.getElementById('setting-display-mode');
-  if (modeSel) {
-    modeSel.addEventListener('change', async (e) => {
-      await window.electronAPI.setConfig('settings.displayMode', e.target.value);
-    });
-  }
-
-  const btnTestBroadcast = document.getElementById('btn-test-broadcast');
-  if (btnTestBroadcast) {
-    btnTestBroadcast.addEventListener('click', async () => {
-      await window.electronAPI.testBroadcast();
-    });
-  }
-
   document.getElementById('setting-opacity').addEventListener('input', async (e) => {
     const val = parseInt(e.target.value) / 100;
     document.getElementById('opacity-value').textContent = e.target.value + '%';
@@ -1811,7 +1814,7 @@ function setupDevEntry() {
       console.log('[Dev] Triple-click detected, opening dev page');
       logoClickCount = 0;
       clearTimeout(logoClickTimer);
-      showDevAuthModal();
+      showDevMenu();
     } else {
       clearTimeout(logoClickTimer);
       logoClickTimer = setTimeout(() => {
@@ -1937,6 +1940,7 @@ async function showDevMenu() {
     <div style="display:flex;flex-direction:column;gap:8px;">
       <button class="dev-menu-btn" data-action="editor">✏️ 数据编辑器 (人格/EGO/饰品)</button>
       <button class="dev-menu-btn" data-action="capture-panel">🎥 视觉采集面板（截图/样本/实时识别）</button>
+      <button class="dev-menu-btn" data-action="test-broadcast">📢 测试广播（播一条样例横幅）</button>
       <button class="dev-menu-btn" data-action="weaver">🕸 编织器 (指令生成调试)</button>
       <button class="dev-menu-btn" data-action="reload">🔄 重新加载数据</button>
       <button class="dev-menu-btn" data-action="stats">📊 查看数据统计</button>
@@ -1976,6 +1980,10 @@ async function showDevMenu() {
     // 采集面板默认是隐藏的（识别不需要它），这里只是把它显示出来
     await window.electronAPI.vision2Open();
     showToast('🎥', '视觉采集面板已打开');
+  });
+  box.querySelector('[data-action="test-broadcast"]').addEventListener('click', async () => {
+    await window.electronAPI.testBroadcast();
+    overlay.remove();
   });
   box.querySelector('[data-action="weaver"]').addEventListener('click', async () => {
     await window.electronAPI.openWeaver();
