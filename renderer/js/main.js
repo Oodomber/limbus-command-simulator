@@ -2535,11 +2535,34 @@ function renderEditorRows(skipSync) {
       var preservedLevel = template.level || '';
       Object.keys(template).forEach(function(k) {
         if (typeof template[k] === 'string') template[k] = '';
+        else if (typeof template[k] === 'number') template[k] = 0;
+        else if (typeof template[k] === 'boolean') template[k] = false;
         else if (Array.isArray(template[k])) template[k] = [];
-        else if (typeof template[k] === 'object' && template[k]) template[k] = {};
+        else if (typeof template[k] === 'object' && template[k]) {
+          // 保留字段形状（tags / sinCost 等），只是把值清空，避免新增条目缺键
+          var src = template[k];
+          var blank = {};
+          Object.keys(src).forEach(function(sk) {
+            var sv = src[sk];
+            if (typeof sv === 'string') blank[sk] = '';
+            else if (typeof sv === 'number') blank[sk] = 0;
+            else if (typeof sv === 'boolean') blank[sk] = false;
+            else if (Array.isArray(sv)) blank[sk] = [];
+            else if (sv && typeof sv === 'object') blank[sk] = {};
+            else blank[sk] = null;
+          });
+          template[k] = blank;
+        }
       });
       template.id = 'new_' + Date.now();
       template.name = '新条目';
+      // sinCost 固定补齐七种罪孽，避免沿用 data[0] 的不完整键集
+      if (template.sinCost && typeof template.sinCost === 'object') {
+        var SINS = ['暴怒','色欲','怠惰','暴食','忧郁','傲慢','嫉妒'];
+        var cost = {};
+        SINS.forEach(function(s) { cost[s] = 0; });
+        template.sinCost = cost;
+      }
       if (selectedSinner) template.sinner = selectedSinner;
       if (preservedLevel) template.level = preservedLevel;
 

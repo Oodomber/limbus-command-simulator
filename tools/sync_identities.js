@@ -161,4 +161,6 @@ function main() {
   console.log('提示：用户副本仍然优先，两边内容一致即可；如需让打包基线生效可删除用户副本。');
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { SINNER_PINYIN, CHAR_PINYIN, slugify, makeId };

@@ -113,9 +113,17 @@ function splitEgoTitle(title) {
   const newIdentities = idTitles.filter((t) => !localIdKeys.has(idKey(t)));
   const goneIdentities = identities.filter((x) => !wikiIdKeys.has(norm(`${x.sinner}${x.name}`)));
 
-  const localEgoKeys = new Set(egos.map((x) => norm(x.name)));
-  const newEgos = egoTitles.filter((t) => !localEgoKeys.has(norm(splitEgoTitle(t).name)));
-  const goneEgos = egos.filter((x) => !egoTitles.some((t) => norm(splitEgoTitle(t).name) === norm(x.name)));
+  // E.G.O 对齐规则：wiki 标题有时不带罪人（如「乌瞰刀」），有时带（如「AEDD-格里高尔」）。
+  // 带罪人 → 按 sinner|name 严格比；不带罪人 → 只要本地有同名即可。
+  const egoKey = (sinner, name) => norm(`${sinner || ''}|${name || ''}`);
+  const localEgoPairs = new Set(egos.map((x) => egoKey(x.sinner, x.name)));
+  const localEgoNames = new Set(egos.map((x) => norm(x.name)));
+  const wikiEgoNames = new Set(egoTitles.map((t) => norm(splitEgoTitle(t).name)));
+  const newEgos = egoTitles.filter((t) => {
+    const s = splitEgoTitle(t);
+    return s.sinner ? !localEgoPairs.has(egoKey(s.sinner, s.name)) : !localEgoNames.has(norm(s.name));
+  });
+  const goneEgos = egos.filter((x) => !wikiEgoNames.has(norm(x.name)));
 
   const lines = [];
   lines.push('# 数据差异报告');
