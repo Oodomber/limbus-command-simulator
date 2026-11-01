@@ -623,6 +623,14 @@ function broadcastDuration(text) {
   return Math.min(BROADCAST_MAX_MS, BROADCAST_BASE_MS + (lines - 1) * BROADCAST_LINE_MS);
 }
 
+// 设置页「测试广播」按钮用：播一条两行的样例，方便直接看效果
+ipcMain.handle('broadcast:test', () => {
+  const sample = '致：唐吉诃德使用上方技能。\n致：默尔索使用下方技能。';
+  showBroadcastText(sample);
+  console.log('[broadcast] 测试广播已播放');
+  return { ok: true, duration: broadcastDuration(sample) };
+});
+
 function createBroadcastWindow() {
   const wa = screen.getPrimaryDisplay().workArea;
   const w = Math.round(wa.width * 0.66);
@@ -2604,7 +2612,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-01-r9（广播模式 / 难度统一 / 清理死 UI）');
+  console.log('[main] 视觉链路构建 2026-11-01-r10（广播横幅改版 + 测试广播按钮）');
 });
 
 app.on('before-quit', () => {

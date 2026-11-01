@@ -149,6 +149,7 @@ if (isFormation || isWeaver) {
     // ── Config ──
     getConfig: (keyPath) => ipcRenderer.invoke('config:get', keyPath),
     setConfig: (keyPath, value) => ipcRenderer.invoke('config:set', keyPath, value),
+    testBroadcast: () => ipcRenderer.invoke('broadcast:test'),
 
     // ── Free templates ──
     getFreeTemplates: () => ipcRenderer.invoke('templates:get-free'),

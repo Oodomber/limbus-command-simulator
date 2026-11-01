@@ -1431,6 +1431,13 @@ function setupSettings() {
     });
   }
 
+  const btnTestBroadcast = document.getElementById('btn-test-broadcast');
+  if (btnTestBroadcast) {
+    btnTestBroadcast.addEventListener('click', async () => {
+      await window.electronAPI.testBroadcast();
+    });
+  }
+
   document.getElementById('setting-opacity').addEventListener('input', async (e) => {
     const val = parseInt(e.target.value) / 100;
     document.getElementById('opacity-value').textContent = e.target.value + '%';
