@@ -2612,7 +2612,7 @@ app.whenReady().then(async () => {
 
   console.log('[main] 谨遵指令 started');
   // 构建标记：用来一眼确认跑到的是不是带「队列清理 + 传呼机置顶」修复的这版。
-  console.log('[main] 视觉链路构建 2026-11-01-r10（广播横幅改版 + 测试广播按钮）');
+  console.log('[main] 视觉链路构建 2026-11-01-r11（广播横幅：黑/蓝/金三色）');
 });
 
 app.on('before-quit', () => {

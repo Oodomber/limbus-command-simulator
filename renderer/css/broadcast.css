@@ -1,7 +1,7 @@
 /* 指令广播横幅
-   设计参照游戏内那套「金属牌匾」的调子：
-   深色搪瓷底 + 单层细金线圈边 + 四角内缩的金色包角 + 米白正文。
-   故意不做动画——指令是拿来读的，不是拿来看的。 */
+   三色基调：黑（底） / 金（结构线） / 青蓝（正文，与传呼机同色 #4af0ff）。
+   结构只留「上下一道金线 + 两侧一对短包角」，其余交给留白。
+   动画只做三件事：底板浮现、金线从中间向两端展开、正文轻微呼吸。 */
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -20,78 +20,98 @@ html, body {
   left: 0;
   right: 0;
   top: 0;
-  padding: 8px 18px 0;
+  padding: 10px 22px 0;
   display: flex;
   justify-content: center;
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 260ms ease, transform 260ms ease;
 }
 
 #banner.hidden { display: none; }
 
+#banner.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .plate {
   position: relative;
   width: 100%;
-  padding: 20px 40px 22px;
+  padding: 22px 44px 24px;
   background:
     linear-gradient(180deg,
-      rgba(9, 8, 7, 0.965) 0%,
-      rgba(24, 20, 16, 0.955) 42%,
-      rgba(16, 13, 10, 0.955) 62%,
-      rgba(8, 7, 6, 0.965) 100%);
-  border-top: 2px solid rgba(168, 137, 74, 0.72);
-  border-bottom: 2px solid rgba(168, 137, 74, 0.72);
+      rgba(6, 8, 11, 0.94) 0%,
+      rgba(11, 15, 21, 0.94) 38%,
+      rgba(8, 11, 16, 0.94) 70%,
+      rgba(4, 6, 9, 0.94) 100%);
   box-shadow:
-    0 14px 40px rgba(0, 0, 0, 0.55),
-    inset 0 1px 0 rgba(226, 195, 121, 0.18),
-    inset 0 -1px 0 rgba(226, 195, 121, 0.10);
+    0 16px 44px rgba(0, 0, 0, 0.6),
+    inset 0 0 0 1px rgba(201, 169, 78, 0.16);
 }
 
-/* 内层细金线，和游戏里牌匾的双线框呼应 */
-.plate::before {
-  content: "";
-  position: absolute;
-  inset: 5px;
-  border: 1px solid rgba(201, 169, 78, 0.30);
-  pointer-events: none;
-}
-
-/* 上下两道极短的装饰线段，居中断开，模仿牌匾上方的刻度 */
+/* 上下一道金线，进场时从中心向两端展开 */
+.plate::before,
 .plate::after {
   content: "";
   position: absolute;
-  left: 50%;
-  top: 5px;
-  width: 46%;
-  height: 1px;
-  transform: translateX(-50%);
+  left: 0;
+  width: 100%;
+  height: 2px;
   background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(201, 169, 78, 0.0) 6%,
-    rgba(201, 169, 78, 0.45) 50%,
-    rgba(201, 169, 78, 0.0) 94%,
-    transparent 100%);
-  pointer-events: none;
+    rgba(201, 169, 78, 0.06) 0%,
+    rgba(224, 191, 112, 0.92) 26%,
+    rgba(244, 216, 148, 1) 50%,
+    rgba(224, 191, 112, 0.92) 74%,
+    rgba(201, 169, 78, 0.06) 100%);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 460ms cubic-bezier(0.16, 0.84, 0.24, 1);
 }
 
-/* 四角包角：两条边的金色 L，从内层框线往里缩 */
+.plate::before { top: 0; }
+.plate::after { bottom: 0; transition-delay: 60ms; }
+
+#banner.show .plate::before,
+#banner.show .plate::after {
+  transform: scaleX(1);
+}
+
+/* 两侧的一对短包角，只做竖向一小段，压住左右边缘 */
 .corner {
   position: absolute;
-  width: 16px;
-  height: 16px;
-  pointer-events: none;
-  opacity: 0.75;
+  width: 2px;
+  height: 44px;
+  top: 50%;
+  margin-top: -22px;
+  background: linear-gradient(180deg,
+    rgba(201, 169, 78, 0) 0%,
+    rgba(236, 206, 138, 0.95) 50%,
+    rgba(201, 169, 78, 0) 100%);
+  opacity: 0;
+  transition: opacity 320ms ease 220ms;
 }
-.corner.tl { left: 10px;  top: 10px;    border-left: 2px solid #b99a52; border-top: 2px solid #b99a52; }
-.corner.tr { right: 10px; top: 10px;    border-right: 2px solid #b99a52; border-top: 2px solid #b99a52; }
-.corner.bl { left: 10px;  bottom: 10px; border-left: 2px solid #b99a52; border-bottom: 2px solid #b99a52; }
-.corner.br { right: 10px; bottom: 10px; border-right: 2px solid #b99a52; border-bottom: 2px solid #b99a52; }
+
+.corner.l { left: 0; }
+.corner.r { right: 0; }
+
+#banner.show .corner { opacity: 1; }
 
 #banner-text {
   font-size: clamp(22px, 2.15vw, 33px);
-  line-height: 1.62;
+  line-height: 1.6;
   font-weight: 700;
   letter-spacing: 2px;
-  color: #f1e7d2;
+  color: #4af0ff;
   text-align: center;
   white-space: pre-line;
-  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.85);
+  text-shadow:
+    0 0 10px rgba(74, 240, 255, 0.32),
+    0 0 26px rgba(74, 240, 255, 0.16);
+  animation: breathe 3.4s ease-in-out infinite;
+}
+
+@keyframes breathe {
+  0%, 100% { text-shadow: 0 0 10px rgba(74, 240, 255, 0.28), 0 0 24px rgba(74, 240, 255, 0.12); }
+  50%      { text-shadow: 0 0 14px rgba(74, 240, 255, 0.46), 0 0 34px rgba(74, 240, 255, 0.22); }
 }
