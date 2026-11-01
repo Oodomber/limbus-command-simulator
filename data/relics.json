@@ -1,7 +1,7 @@
 [
   {
     "id": "lianyuyandiezhimeng",
-    "name": "炼狱炎蝶之梦",
+    "name": "地狱蝶之梦",
     "tier": "II",
     "image": "resources/relics/lianyuyandiezhimeng.png",
     "tags": {
@@ -165,7 +165,7 @@
   },
   {
     "id": "shishangjiachong",
-    "name": "嗜伤甲虫",
+    "name": "拟伤虫",
     "tier": "II",
     "image": "resources/relics/shishangjiachong.png",
     "tags": {
