@@ -411,6 +411,18 @@ function setupVisionAuto() {
   liveVision.onPhase(async (payload) => {
     if (autoAdvanceBusy) return;
 
+    // ── 层数推进：只看画面怎么走，不跟指令生成绑死 ──
+    // 之前是在「生成 boss_reward 指令」时 +1，于是：关底奖励被关掉/被去重/生成失败时
+    // 层数就不涨，后面整局都在用低层的卡包池出指令。
+    // 现在改成「上一屏是关底奖励、这一屏变成卡包/路线」= 确实翻层了，才 +1。
+    const prevPhase = runState._lastVisionPhase || null;
+    if (prevPhase === 'boss_reward' && (payload.phase === 'cardpack' || payload.phase === 'route')) {
+      runState.currentFloor = (runState.currentFloor || 1) + 1;
+      runState.usedCardpackRerolls = 0;
+      console.log(`[vision] 离开关底奖励 → 进入第 ${runState.currentFloor} 层`);
+    }
+    runState._lastVisionPhase = payload.phase;
+
     // 每一道闸门都报出来。之前这些 return 全是静默的，导致「面板明明识别出了环节
     // 但传呼机不动」根本没法定位——现在日志里会直接写清是哪一条拦下的。
     let why = null;
@@ -1267,6 +1279,7 @@ function registerIpcHandlers() {
     runState.starlightEffects = null;
     runState.isHardMode = store.get('settings.currentGameMode') === 'hard';
     runState.currentFloor = 1;
+    runState._lastVisionPhase = null;  // 层数推进的「上一屏」记录，新一局要清空
     runState.coreMechanics = [];
     runState.usedCardpackRerolls = 0;
     dungeonStarted = false;  // 等第一次识别到卡包页才认为真正进了地牢
@@ -1588,11 +1601,8 @@ function registerIpcHandlers() {
         runState.pendingBatchRemaining = Array.isArray(result.instructions) ? result.instructions.length : 1;
       }
 
-      // Advance floor when boss_reward is requested (not on each instruction completion)
-      if (phase === 'boss_reward') {
-        runState.currentFloor = (runState.currentFloor || 1) + 1;
-        runState.usedCardpackRerolls = 0;  // reset per floor
-      }
+      // 层数在「画面从关底奖励切到卡包/路线」时统一推进（见 setupVisionAuto），
+      // 这里不再 +1，否则会和识别路径重复计数。
 
       // 自动推进（context.vision 存在）意味着游戏已经换到新环节了，
       // 上一条没确认的指令已经作废。不先清队列的话，queueManager 会因为
@@ -2139,10 +2149,7 @@ function registerIpcHandlers() {
         if (phaseId === 'starlight' && result.starlightEffects) {
           runState.starlightEffects = result.starlightEffects;
         }
-        // Advance floor on boss_reward (same as instruction:generate path)
-        if (phaseId === 'boss_reward') {
-          runState.currentFloor = (runState.currentFloor || 1) + 1;
-        }
+        // 层数推进统一在 setupVisionAuto 里按画面切换做，这里不再 +1
         if (!result.isGuidance && phaseId !== 'deploy_identity') {
           runState.pendingBatchRemaining = Array.isArray(result.instructions) ? result.instructions.length : 1;
         }

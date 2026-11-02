@@ -56,7 +56,7 @@ const STARLIGHT_IDS = {
   FULL_POSSIBILITY:    'star_fortune',    // 全面的可能性 — +1 cardpack & relic
 };
 
-const GOLDEN_BOUGH_TYPES = ['PIGRITIA', 'SUPERBIA', 'MOROSITAS', 'IRA'];
+const GOLDEN_BOUGH_TYPES = ['PIGRITIA', 'SUPERBIA', 'MOROSITAS', 'IRA', 'LUXURIA'];
 
 const SHOP_EFFECT_TAGS = ['烧伤', '流血', '震颤', '破裂', '沉沦', '呼吸法', '充能', '打击', '斩击', '突刺'];
 
@@ -1030,10 +1030,15 @@ class InstructionEngine {
     }
 
     const instructions = [];
+    // EGO 指令的开放条件：第 2 层以后。第 1 层敌人太弱，用 EGO 既浪费又吵。
+    const allowEgo = (context.currentFloor || 1) >= 2;
 
     // ── 20%: Speed-based instruction ──
     if (Math.random() < 0.20) {
-      const speedKeys = ['combat_speed_attack', 'combat_speed_guard', 'combat_speed_ego', 'combat_speed_overclock'];
+      // 速度类里 EGO 两档权重压低（各占 1/6 → 合并后约 1/3 里的一半），
+      // 第 1 层直接不出 EGO 类速度指令。
+      const speedKeys = ['combat_speed_attack', 'combat_speed_attack', 'combat_speed_guard', 'combat_speed_guard'];
+      if (allowEgo) speedKeys.push('combat_speed_ego', 'combat_speed_overclock');
       const key = this._pickRandom(speedKeys);
       const maxRank = Math.min(fieldSinners.length, 7);
       const rank = Math.floor(Math.random() * maxRank) + 1;
@@ -1095,19 +1100,21 @@ class InstructionEngine {
         if (isRational) {
           individualOptions = ['combat_upper_skill','combat_upper_skill','combat_upper_skill',
              'combat_lower_skill','combat_lower_skill','combat_lower_skill',
-             'combat_use_ego','combat_guard'];
+             'combat_guard'];
         } else {
           individualOptions = ['combat_upper_skill','combat_upper_skill',
              'combat_lower_skill','combat_lower_skill',
-             'combat_use_ego','combat_use_ego','combat_use_ego',
-             'combat_guard','combat_guard','combat_guard'];
+             'combat_guard','combat_guard','combat_guard','combat_guard'];
         }
-        // If sinner only has base EGOs in pool, remove overclock-prone weight
-        // (keep at most 1 "combat_use_ego" entry since base EGO is always available)
-        if (!hasNonBaseEgo && hasAnyEgoInPool) {
-          // All EGOs in pool are base — reduce weight to 1 entry
-          individualOptions = individualOptions.filter(k => k !== 'combat_use_ego');
+        // EGO 指令：第 2 层起才出现，且权重比原来低（理性 1/8、非理性 1/9）
+        if (allowEgo && hasAnyEgoInPool) {
           individualOptions.push('combat_use_ego');
+          if (!isRational) individualOptions.push('combat_use_ego');
+        }
+        // 池里只有初始 EGO 时再压一档（初始 EGO 不能超频，指令价值低）
+        if (!hasNonBaseEgo && hasAnyEgoInPool) {
+          individualOptions = individualOptions.filter(k => k !== 'combat_use_ego');
+          if (allowEgo) individualOptions.push('combat_use_ego');
         }
 
         const key = this._pickRandom(individualOptions);
@@ -1455,29 +1462,23 @@ class InstructionEngine {
     const teamSet = new Set(context.currentTeam ? [...context.currentTeam.keys()] : []);
     const formationSet = new Set(context.formation || []);
 
-    // Determine candidate pool based on rationality:
-    //   Rational  → pick from deployed team / formation (best stats)
-    //   Irrational → pick from sinners NOT in formation
-    //   Neutral   → random from all 12
+    // 判定只能在「当前能派出的人」里选：
+    //   战斗中触发的判定只有场上的罪人可点，选了没上场的玩家根本没法执行。
+    //   所以只要编队非空，一律以编队为候选（理性/非理性都不再跳出编队）。
+    //   编队为空时（比如还没设编队）才退回「全部 12 人」，避免完全出不了指令。
     let candidates;
+    const inFormation = SINNERS.filter(s => formationSet.has(s));
     const isRational = this._isRational(rawRationality, context);
-    const isIrrational = this._isIrrational(rawRationality, context);
 
-    if (isRational) {
-      // Prefer formation sinners; fall back to team; fall back to all 12
-      const inFormation = SINNERS.filter(s => formationSet.has(s));
-      candidates = inFormation.length > 0 ? inFormation
-        : (teamSet.size > 0 ? [...teamSet] : SINNERS);
-      this._trace('判定选人', `理性→编队内(${candidates.length}人): ${candidates.join(',')}`);
-    } else if (isIrrational) {
-      // Pick from sinners NOT in formation
-      const notInFormation = SINNERS.filter(s => !formationSet.has(s));
-      candidates = notInFormation.length > 0 ? notInFormation : SINNERS;
-      this._trace('判定选人', `非理性→编队外(${candidates.length}人): ${candidates.join(',')}`);
+    if (inFormation.length > 0) {
+      candidates = inFormation;
+      this._trace('判定选人', `编队内(${candidates.length}人): ${candidates.join(',')}`);
+    } else if (teamSet.size > 0) {
+      candidates = [...teamSet];
+      this._trace('判定选人', `无编队→出战队伍(${candidates.length}人): ${candidates.join(',')}`);
     } else {
-      // Neutral: all 12
       candidates = SINNERS;
-      this._trace('判定选人', `中庸→全部12人`);
+      this._trace('判定选人', '无编队→全部12人');
     }
 
     const sinner = this._pickRandom(candidates);
