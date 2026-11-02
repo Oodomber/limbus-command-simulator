@@ -630,8 +630,33 @@ function closeSplashWindow() {
   }
 }
 
-function createMainWindow() {
-  mainWindow = new BrowserWindow({
+/**
+ * 干净退出：关主窗口时必须把所有「看不见但活着」的窗口一起销毁。
+ * 之前的坑：采集器的隐藏持流窗口、广播横幅窗口都没人销毁 →
+ * window-all-closed 永远不触发 → 进程留在后台占着单实例锁，
+ * 下次双击就报「已被占用」。最后再用 app.exit 兜底，绝不留僵尸。
+ */
+let quittingAll = false;
+function forceQuitAll() {
+  if (quittingAll) return;
+  quittingAll = true;
+  isQuitting = true;
+  try { stopFreeInstructionTimer(); } catch (e) { /* ignore */ }
+  try { destroyBroadcastWindow(); } catch (e) { /* ignore */ }
+  if (hideOverlayTimeout) { clearTimeout(hideOverlayTimeout); hideOverlayTimeout = null; }
+  const list = [splashWindow, overlayWindow, orbWindow, stargazingWindow,
+    formationWindow, weaverWindow, historyWindow, broadcastWindow];
+  for (const w of list) {
+    try { if (w && !w.isDestroyed()) w.destroy(); } catch (e) { /* ignore */ }
+  }
+  try { if (liveVision) liveVision.destroy(); } catch (e) { /* ignore */ }
+  try { if (captureController) { captureController.destroy(); captureController = null; } } catch (e) { /* ignore */ }
+  try { globalShortcut.unregisterAll(); } catch (e) { /* ignore */ }
+  // 兜底：600ms 后无条件退出（有窗口拦截 close 也不会留下僵尸进程）
+  setTimeout(() => app.exit(0), 600);
+}
+
+function createMainWindow() {  mainWindow = new BrowserWindow({
     width: 1100,
     height: 750,
     minWidth: 900,
@@ -664,15 +689,7 @@ function createMainWindow() {
   // When main window is closed, force-close all child windows
   // so the app can fully exit (overlay prevents close → minimize)
   mainWindow.on('close', () => {
-    isQuitting = true;
-    stopFreeInstructionTimer();
-    if (hideOverlayTimeout) { clearTimeout(hideOverlayTimeout); hideOverlayTimeout = null; }
-    if (overlayWindow && !overlayWindow.isDestroyed()) overlayWindow.destroy();
-    if (orbWindow && !orbWindow.isDestroyed()) orbWindow.destroy();
-    if (stargazingWindow && !stargazingWindow.isDestroyed()) stargazingWindow.destroy();
-    if (formationWindow && !formationWindow.isDestroyed()) formationWindow.destroy();
-    if (weaverWindow && !weaverWindow.isDestroyed()) weaverWindow.destroy();
-    if (historyWindow && !historyWindow.isDestroyed()) historyWindow.destroy();
+    forceQuitAll();
   });
 
   mainWindow.on('closed', () => {
@@ -1402,8 +1419,14 @@ function registerIpcHandlers() {
     // Combat requires formation; prompt and auto-open
     if (phase === 'combat' && (!runState.formation || runState.formation.length === 0)) {
       createFormationWindow();
-      if (overlayWindow && !overlayWindow.isDestroyed()) {
-        overlayWindow.webContents.send('pager:show-warning', '请先在编队窗口中指定罪人出击顺序');
+      const accel = store.get('settings.hotkeyFormation') || 'F4';
+      const tip = `战斗指令需要出击顺序：请按 ${accel} 打开编队窗口指定后再来。`;
+      console.log('[vision] combat 未生成指令：编队为空（已提示玩家去设编队）');
+      if (useBroadcastNow()) {
+        // 广播模式下传呼机是收起的，警告必须走横幅，否则玩家什么都看不到
+        showBroadcastText(tip);
+      } else if (overlayWindow && !overlayWindow.isDestroyed()) {
+        overlayWindow.webContents.send('pager:show-warning', `请先在编队窗口中指定罪人出击顺序（${accel}）`);
       }
       return null;
     }
@@ -2506,6 +2529,15 @@ function registerShortcuts() {  // Unregister all existing shortcuts
 // ── Single-instance lock (prevents F10 shortcut conflicts) ──
 const gotSingleInstanceLock = app.requestSingleInstanceLock();
 if (!gotSingleInstanceLock) {
+  // 静默退出会让玩家以为「点了没反应」。明确告诉他后台还有一份在跑。
+  try {
+    require('electron').dialog.showErrorBox(
+      '谨遵指令已在运行',
+      '检测到一个后台实例仍占用着程序（可能是上次没关干净）。\n\n'
+      + '请打开任务管理器，结束「谨遵指令」进程后再启动；\n'
+      + '如果它其实在运行，直接点它的任务栏窗口即可。'
+    );
+  } catch (e) { /* ignore */ }
   app.quit();
 } else {
   app.on('second-instance', (_event, _cmdLine, _workingDir) => {
