@@ -1462,23 +1462,22 @@ class InstructionEngine {
     const teamSet = new Set(context.currentTeam ? [...context.currentTeam.keys()] : []);
     const formationSet = new Set(context.formation || []);
 
-    // 判定只能在「当前能派出的人」里选：
-    //   战斗中触发的判定只有场上的罪人可点，选了没上场的玩家根本没法执行。
-    //   所以只要编队非空，一律以编队为候选（理性/非理性都不再跳出编队）。
-    //   编队为空时（比如还没设编队）才退回「全部 12 人」，避免完全出不了指令。
+    // 判定只能在「场上的人」里选：战斗中触发的判定最多只有 7 人可以点，
+    // 所以取编队的前 7 位（编队本身就是出击顺序）；不足 7 位就照现有的人来。
+    // 编队为空时退回出战队伍 / 全部 12 人，避免完全出不了指令。
     let candidates;
-    const inFormation = SINNERS.filter(s => formationSet.has(s));
+    const inFormation = (context.formation || []).filter(Boolean).slice(0, 7);
     const isRational = this._isRational(rawRationality, context);
 
     if (inFormation.length > 0) {
       candidates = inFormation;
-      this._trace('判定选人', `编队内(${candidates.length}人): ${candidates.join(',')}`);
+      this._trace('判定选人', `编队前7(${candidates.length}人): ${candidates.join(',')}`);
     } else if (teamSet.size > 0) {
-      candidates = [...teamSet];
+      candidates = [...teamSet].slice(0, 7);
       this._trace('判定选人', `无编队→出战队伍(${candidates.length}人): ${candidates.join(',')}`);
     } else {
-      candidates = SINNERS;
-      this._trace('判定选人', '无编队→全部12人');
+      candidates = SINNERS.slice(0, 7);
+      this._trace('判定选人', '无编队→前7人');
     }
 
     const sinner = this._pickRandom(candidates);
